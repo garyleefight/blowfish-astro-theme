@@ -8,7 +8,6 @@ import BlowfishBadge from '../components/BlowfishBadge.astro';
 import BlowfishBlockquote from '../components/BlowfishBlockquote.astro';
 import BlowfishButton from '../components/BlowfishButton.astro';
 import BlowfishCard from '../components/BlowfishCard.astro';
-import BlowfishDetails from '../components/BlowfishDetails.astro';
 import BlowfishFigure from '../components/BlowfishFigure.astro';
 import BlowfishGallery from '../components/BlowfishGallery.astro';
 import BlowfishGitHubCard from '../components/BlowfishGitHubCard.astro';
@@ -78,11 +77,8 @@ const sampleVideo =
   </section>
 
   <section class="docs-block bf-card">
-    <h2>Details and Accordion</h2>
+    <h2>Accordion</h2>
     <div class="docs-demo">
-      <BlowfishDetails title="Compatibility note" defaultOpen={true}>
-        Most commonly used Blowfish-style aliases are supported.
-      </BlowfishDetails>
       <BlowfishAccordion heading="FAQ">
         <BlowfishAccordionItem title="Can I use Hugo templates directly?" open={true}>
           No. This package recreates behavior with Astro-native components.
@@ -92,8 +88,7 @@ const sampleVideo =
         </BlowfishAccordionItem>
       </BlowfishAccordion>
     </div>
-    <pre><code>{`<BlowfishDetails title="Compatibility note" defaultOpen={true}>...</BlowfishDetails>
-<BlowfishAccordion heading="FAQ">
+    <pre><code>{`<BlowfishAccordion heading="FAQ">
   <BlowfishAccordionItem title="Can I use Hugo templates directly?" open={true}>...</BlowfishAccordionItem>
 </BlowfishAccordion>`}</code></pre>
   </section>

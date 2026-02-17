@@ -37,12 +37,11 @@ import { BlowfishBaseLayout, BlowfishAlert, BlowfishBadge, BlowfishButton } from
 This package does not execute Hugo templates/shortcodes.
 It recreates equivalent behavior in Astro and preserves parameter names where practical.
 
-## Included components (phase 1 shortcode layer)
+## Included components
 
 - `BlowfishBaseLayout`
 - `BlowfishAccordion`, `BlowfishAccordionItem`
 - `BlowfishAlert`
-- `BlowfishApexCharts` (placeholder hook)
 - `BlowfishArticle`
 - `BlowfishBadge`
 - `BlowfishBlockquote`
@@ -51,8 +50,6 @@ It recreates equivalent behavior in Astro and preserves parameter names where pr
 - `BlowfishCarousel`
 - `BlowfishChart` (placeholder hook)
 - `BlowfishCodeImporter`
-- `BlowfishDetails`
-- `BlowfishEmoji`
 - `BlowfishFigure`
 - `BlowfishGallery`
 - `BlowfishGist`
@@ -61,9 +58,7 @@ It recreates equivalent behavior in Astro and preserves parameter names where pr
 - `BlowfishKaTeX`
 - `BlowfishLead`
 - `BlowfishLTR`, `BlowfishRTL`
-- `BlowfishMarkdown`
 - `BlowfishMermaid`
-- `BlowfishShortcode`
 - `BlowfishTabs`, `BlowfishTab`
 - `BlowfishTimeline`, `BlowfishTimelineItem`
 - `BlowfishTypeIt`
@@ -79,6 +74,5 @@ It recreates equivalent behavior in Astro and preserves parameter names where pr
 
 ## Examples
 
-- Shortcode usage examples: `docs/SHORTCODE_USAGE.md`
-- Compatibility and aliases: `COMPATIBILITY.md`
+- Full parity tracker: `docs/PARITY_TRACKER.md`
 - Homepage layout docs demo: `/homepage-layout` (when running dev server)
