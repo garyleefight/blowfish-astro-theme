@@ -6,10 +6,69 @@ export interface Props {
 }
 
 const { provider, id, host } = Astro.props;
+const normalizedHost = host
+  ? host.replace(/^https?:\/\//, '').replace(/\/+$/, '')
+  : '';
 ---
 
 {provider && id && (
-  <script is:inline>
-    {`window.__BLOWFISH_ANALYTICS__ = ${JSON.stringify({ provider, id, host })};`}
-  </script>
+  <>
+    {provider === 'ga' && (
+      <>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${id}`}></script>
+        <script is:inline>
+          {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', ${JSON.stringify(id)});`}
+        </script>
+      </>
+    )}
+
+    {provider === 'fathom' && (
+      <script
+        defer
+        src={normalizedHost ? `https://${normalizedHost}/script.js` : 'https://cdn.usefathom.com/script.js'}
+        data-site={id}
+      ></script>
+    )}
+
+    {provider === 'umami' && (
+      <>
+        <script
+          data-id="umami-script"
+          async
+          src={normalizedHost ? `https://${normalizedHost}/script.js` : 'https://analytics.umami.is/script.js'}
+          data-website-id={id}
+        ></script>
+        <script is:inline>
+          {`document.querySelector('script[data-id="umami-script"]')?.addEventListener('load', function () {
+  const type = document.head.querySelector('meta[property="og:type"]')?.getAttribute('content') || 'website';
+  const title = document.head.querySelector('meta[property="og:title"]')?.getAttribute('content') || document.title;
+  const url = document.head.querySelector('meta[property="og:url"]')?.getAttribute('content') || window.location.href;
+  window.umami?.track(type + ':' + title, { url });
+});`}
+        </script>
+      </>
+    )}
+
+    {provider === 'seline' && (
+      <>
+        <script
+          async
+          src="https://cdn.seline.so/seline.js"
+          data-token={id}
+          data-id="seline-script"
+        ></script>
+        <script is:inline>
+          {`document.querySelector('script[data-id="seline-script"]')?.addEventListener('load', function () {
+  const type = document.head.querySelector('meta[property="og:type"]')?.getAttribute('content') || 'website';
+  const title = document.head.querySelector('meta[property="og:title"]')?.getAttribute('content') || document.title;
+  const url = document.head.querySelector('meta[property="og:url"]')?.getAttribute('content') || window.location.href;
+  window.seline?.track('user:' + type + ':' + title, { type, title, url });
+});`}
+        </script>
+      </>
+    )}
+  </>
 )}

@@ -1,0 +1,47 @@
+---
+export interface PropRow {
+  name: string;
+  type: string;
+  required: boolean;
+  possibleValues?: string;
+  defaultValue?: string;
+  notes?: string;
+}
+
+export interface Props {
+  rows?: PropRow[];
+}
+
+const { rows = [] } = Astro.props;
+---
+
+{rows.length > 0 ? (
+  <div class="overflow-x-auto rounded-md border border-neutral-300 dark:border-neutral-700">
+    <table class="w-full border-collapse text-sm">
+      <thead class="bg-neutral-100 dark:bg-neutral-800">
+        <tr>
+          <th class="px-3 py-2 text-left font-semibold">Prop</th>
+          <th class="px-3 py-2 text-left font-semibold">Type</th>
+          <th class="px-3 py-2 text-left font-semibold">Required</th>
+          <th class="px-3 py-2 text-left font-semibold">Possible Values</th>
+          <th class="px-3 py-2 text-left font-semibold">Default</th>
+          <th class="px-3 py-2 text-left font-semibold">Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row) => (
+          <tr class="border-t border-neutral-300 dark:border-neutral-700">
+            <td class="px-3 py-2 font-mono text-xs">{row.name}</td>
+            <td class="px-3 py-2 font-mono text-xs">{row.type}</td>
+            <td class="px-3 py-2">{row.required ? 'Yes' : 'No'}</td>
+            <td class="px-3 py-2">{row.possibleValues || '-'}</td>
+            <td class="px-3 py-2">{row.defaultValue || '-'}</td>
+            <td class="px-3 py-2">{row.notes || '-'}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+) : (
+  <p class="text-sm text-neutral-500 dark:text-neutral-400">No props. Component behavior is slot/content-only.</p>
+)}
