@@ -1,0 +1,56 @@
+---
+import BlowfishAuthorExtra from '../../components/article/BlowfishAuthorExtra.astro';
+import BlowfishAuthorLinks from '../../components/article/BlowfishAuthorLinks.astro';
+import BlowfishHeroBackground from '../../components/hero/BlowfishHeroBackground.astro';
+import BlowfishHeroBasic from '../../components/hero/BlowfishHeroBasic.astro';
+import BlowfishHeroBig from '../../components/hero/BlowfishHeroBig.astro';
+import BlowfishHeroThumbAndBackground from '../../components/hero/BlowfishHeroThumbAndBackground.astro';
+import BlowfishSiteLayout from '../../layouts/site/BlowfishSiteLayout.astro';
+
+const imgA = 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600';
+const imgB = 'https://images.unsplash.com/photo-1518773553398-650c184e0bb3?w=1600';
+---
+
+<BlowfishSiteLayout title="Hero Partials" nav={[{ label: 'Home', href: '/' }, { label: 'Theme List', href: '/theme/list' }]}> 
+  <h1>Hero Partials Parity</h1>
+  <p class="bf-muted">Mappings for `layouts/partials/hero/*` and `author*` partials.</p>
+
+  <section class="bf-card bf-hero-demo">
+    <h2>hero/basic</h2>
+    <BlowfishHeroBasic image={imgA} imagePosition="center" />
+  </section>
+
+  <section class="bf-card bf-hero-demo">
+    <h2>hero/big</h2>
+    <BlowfishHeroBig image={imgA} caption="Sample big hero caption" />
+  </section>
+
+  <section class="bf-card bf-hero-demo">
+    <h2>hero/background</h2>
+    <BlowfishHeroBackground image={imgB} blur={true} />
+  </section>
+
+  <section class="bf-card bf-hero-demo">
+    <h2>hero/thumbAndBackground</h2>
+    <BlowfishHeroThumbAndBackground backgroundImage={imgB} featureImage={imgA} blur={true} />
+  </section>
+
+  <section class="bf-card bf-hero-demo">
+    <h2>author-links / author-extra</h2>
+    <BlowfishAuthorLinks links={[{ name: 'github', href: 'https://github.com' }, { name: 'linkedin', href: 'https://linkedin.com' }]} />
+    <BlowfishAuthorExtra
+      data={{
+        name: 'Sirui Li',
+        bio: 'Tech lead focused on pragmatic systems.',
+        image: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=500',
+        social: [{ name: 'github', href: 'https://github.com' }, { name: 'linkedin', href: 'https://linkedin.com' }]
+      }}
+      link="#"
+    />
+  </section>
+</BlowfishSiteLayout>
+
+<style>
+  .bf-hero-demo { padding: 1rem; margin-top: 1rem; }
+  .bf-hero-demo h2 { margin-top: 0; font-size: 1.05rem; }
+</style>

@@ -1,0 +1,41 @@
+---
+interface LinkItem {
+  name: string;
+  href: string;
+}
+
+export interface Props {
+  links?: LinkItem[];
+}
+
+const { links = [] } = Astro.props;
+---
+
+{links.length > 0 && (
+  <div class="bf-author-links">
+    {links.map((link) => (
+      <a href={link.href} target="_blank" rel="me noopener noreferrer" aria-label={link.name} title={link.name}>
+        {link.name}
+      </a>
+    ))}
+  </div>
+)}
+
+<style>
+  .bf-author-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    color: var(--bf-muted);
+  }
+
+  .bf-author-links a {
+    color: var(--bf-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  .bf-author-links a:hover {
+    color: var(--bf-primary);
+  }
+</style>

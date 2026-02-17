@@ -50,8 +50,8 @@ Source baseline: `/tmp/blowfish-upstream` (GitHub `nunocoracao/blowfish`).
 - PARTIAL `layouts/partials/search.html` -> `src/pages/search.astro` + `src/pages/search-index.json.ts`
 - PARTIAL `layouts/partials/pagination.html` -> `src/components/site/BlowfishPagination.astro`
 - PARTIAL `layouts/partials/breadcrumbs.html` -> `src/components/site/BlowfishBreadcrumbs.astro`
-- TODO `layouts/partials/hero/*`
-- TODO `layouts/partials/author*.html`
+- PARTIAL `layouts/partials/hero/*` -> `src/components/hero/*`
+- PARTIAL `layouts/partials/author*.html` -> `src/components/article/BlowfishAuthor*.astro`
 - PARTIAL `layouts/partials/toc.html` -> `src/components/article/BlowfishToc.astro`
 - PARTIAL `layouts/partials/schema.html` -> `src/components/site/BlowfishSchema.astro`
 - PARTIAL `layouts/partials/related.html` -> `src/components/article/BlowfishRelated.astro`

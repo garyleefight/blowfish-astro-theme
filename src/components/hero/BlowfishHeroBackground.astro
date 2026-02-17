@@ -1,0 +1,87 @@
+---
+export interface Props {
+  image?: string;
+  imagePosition?: string;
+  blur?: boolean;
+  addHeaderSpace?: boolean;
+}
+
+const { image, imagePosition, blur = false, addHeaderSpace = true } = Astro.props;
+---
+
+{addHeaderSpace && <div class="bf-hero-bg-header-space" />}
+
+{image && (
+  <div class="bf-hero-bg-root">
+    <img
+      id="bf-hero-bg-image"
+      src={image}
+      alt=""
+      role="presentation"
+      class="bf-hero-bg-image"
+      style={imagePosition ? `object-position:${imagePosition};` : undefined}
+    />
+    <div class="bf-hero-bg-overlay-1" />
+    <div class="bf-hero-bg-overlay-2" />
+  </div>
+)}
+
+{blur && <div id="bf-hero-bg-blur" class="bf-hero-bg-blur" />}
+
+<script is:inline>
+  const blurEl = document.getElementById('bf-hero-bg-blur');
+  const imgEl = document.getElementById('bf-hero-bg-image');
+  if (blurEl && imgEl) {
+    const toggle = () => {
+      blurEl.style.opacity = window.scrollY > 20 ? '1' : '0';
+    };
+    window.addEventListener('scroll', toggle, { passive: true });
+    toggle();
+  }
+</script>
+
+<style>
+  .bf-hero-bg-header-space { height: 150px; }
+  @media (min-width: 768px) { .bf-hero-bg-header-space { height: 200px; } }
+
+  .bf-hero-bg-root {
+    position: fixed;
+    inset: 0 auto auto 0;
+    width: 100%;
+    height: 800px;
+    z-index: -3;
+  }
+
+  .bf-hero-bg-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .bf-hero-bg-overlay-1 {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(15, 17, 21, 0.92), transparent);
+  }
+
+  .bf-hero-bg-overlay-2 {
+    position: absolute;
+    inset: 0;
+    opacity: 0.6;
+    background: linear-gradient(to top, rgba(15, 17, 21, 0.92), rgba(243, 245, 249, 0.35));
+  }
+
+  .bf-hero-bg-blur {
+    position: fixed;
+    inset: 0 auto auto 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    backdrop-filter: blur(16px);
+    background: rgba(15, 17, 21, 0.4);
+    transition: opacity 180ms ease;
+    z-index: -2;
+  }
+</style>
