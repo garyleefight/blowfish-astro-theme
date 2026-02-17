@@ -1,5 +1,6 @@
 ---
-import BlowfishArticleLinkCard from './BlowfishArticleLinkCard.astro';
+import BlowfishArticleMetaBasic from './BlowfishArticleMetaBasic.astro';
+import { t } from '../../lib/i18n';
 
 export interface Props {
   title: string;
@@ -8,9 +9,56 @@ export interface Props {
   date?: string;
   readingTime?: string;
   thumbnail?: string;
+  external?: boolean;
+  draft?: boolean;
 }
 
-const props = Astro.props;
+const {
+  title,
+  href,
+  summary,
+  date,
+  readingTime,
+  thumbnail,
+  external = false,
+  draft = false,
+} = Astro.props;
 ---
 
-<BlowfishArticleLinkCard {...props} />
+<article class="article-link--related relative min-h-full min-w-full overflow-hidden rounded-lg border border-neutral-300 dark:border-neutral-600">
+  {thumbnail && (
+    <div class="flex-none relative overflow-hidden thumbnail_card_related">
+      <img src={thumbnail} role="presentation" loading="lazy" decoding="async" fetchpriority="low" class="not-prose absolute inset-0 w-full h-full object-cover" />
+    </div>
+  )}
+
+  {draft && (
+    <span class="absolute top-0 right-0 m-2">
+      <span class="rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">{t('article.draft')}</span>
+    </span>
+  )}
+
+  <div class="p-4">
+    <header>
+      <a href={href} target={external ? '_blank' : undefined} rel={external ? 'external' : undefined} class="not-prose before:absolute before:inset-0 decoration-primary-500 dark:text-neutral text-xl font-bold text-neutral-800 hover:underline hover:underline-offset-2">
+        <h2>
+          {title}
+          {external && (
+            <span class="cursor-default align-top text-xs text-neutral-400 dark:text-neutral-500">
+              <span class="rtl:hidden">&#8599;</span>
+              <span class="ltr:hidden">&#8598;</span>
+            </span>
+          )}
+        </h2>
+      </a>
+    </header>
+
+    <div class="text-sm text-neutral-500 dark:text-neutral-400">
+      <BlowfishArticleMetaBasic date={date} readingTime={readingTime} />
+    </div>
+
+    {summary && <div class="article-link__summary prose dark:prose-invert mt-1 line-clamp-5">{summary}</div>}
+  </div>
+
+  <div class="px-6 pt-4 pb-2"></div>
+</article>

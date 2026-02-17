@@ -1,25 +1,47 @@
 ---
-import { pickString } from '../lib/props';
+import BlowfishRepoCard from './BlowfishRepoCard.astro';
+import { pickBoolean, pickString } from '../lib/props';
+import { fetchJsonSafe } from '../lib/remote';
+
+interface GitHubResponse {
+  full_name?: string;
+  html_url?: string;
+  description?: string | null;
+  language?: string | null;
+  stargazers_count?: number;
+  forks?: number;
+}
 
 export interface Props {
   repo?: string;
   repository?: string;
   user?: string;
   owner?: string;
+  showThumbnail?: boolean;
 }
 
 const props = Astro.props as Record<string, unknown>;
 const repo = pickString(props, ['repo', 'repository']);
 const owner = pickString(props, ['user', 'owner']);
+const showThumbnail = pickBoolean(props, ['showThumbnail'], true);
 const path = owner ? `${owner}/${repo}` : repo;
-const href = `https://github.com/${path}`;
+const apiUrl = `https://api.github.com/repos/${path}`;
+const fallbackHref = `https://github.com/${path}`;
+const data = path ? await fetchJsonSafe<GitHubResponse>(apiUrl) : null;
+
+const href = data?.html_url || fallbackHref;
+const fullName = data?.full_name || path || 'GitHub';
+const thumbnail = showThumbnail && path ? `https://opengraph.githubassets.com/0/${path}` : undefined;
 ---
 
-<a class="bf-card bf-gh" href={href} target="_blank" rel="noopener noreferrer">
-  <strong>{path}</strong>
-  <span class="bf-muted">Open on GitHub</span>
-</a>
-
-<style>
-  .bf-gh { display: grid; gap: 0.2rem; padding: 0.8rem 1rem; color: inherit; text-decoration: none; }
-</style>
+<BlowfishRepoCard
+  href={href}
+  icon="github"
+  title="GitHub"
+  fullName={fullName}
+  description={data?.description || undefined}
+  language={data?.language || undefined}
+  stars={typeof data?.stargazers_count === 'number' ? data.stargazers_count : undefined}
+  forks={typeof data?.forks === 'number' ? data.forks : undefined}
+  thumbnail={thumbnail}
+/>

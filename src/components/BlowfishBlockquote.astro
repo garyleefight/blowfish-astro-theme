@@ -13,12 +13,7 @@ const author = pickString(props, ['author', 'name']);
 const cite = pickString(props, ['cite', 'source']);
 ---
 
-<blockquote class="bf-card bf-blockquote">
+<blockquote class="m-0 rounded-xl border border-neutral-300 border-l-4 border-l-primary-500 bg-neutral-50/70 px-4 py-3 shadow-sm dark:border-neutral-700 dark:bg-neutral-800/60">
   <slot />
-  {(author || cite) && <footer>{author}{author && cite ? ', ' : ''}{cite}</footer>}
+  {(author || cite) && <footer class="mt-2 text-sm text-neutral-500 dark:text-neutral-400">{author}{author && cite ? ', ' : ''}{cite}</footer>}
 </blockquote>
-
-<style>
-  .bf-blockquote { margin: 0; padding: 0.9rem 1rem; border-left: 4px solid var(--bf-primary); }
-  .bf-blockquote footer { margin-top: 0.5rem; color: var(--bf-muted); font-size: 0.9rem; }
-</style>

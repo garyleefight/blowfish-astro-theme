@@ -10,29 +10,13 @@ const { image, imagePosition, caption, alt = '' } = Astro.props;
 ---
 
 {image && (
-  <figure class="bf-hero-big-wrap">
+  <figure>
     <img
       src={image}
       alt={alt}
-      class="bf-hero-big"
+      class="single_hero_round nozoom w-full rounded-lg object-cover"
       style={imagePosition ? `object-position:${imagePosition};` : undefined}
     />
-    {caption && <figcaption>{caption}</figcaption>}
+    {caption && <figcaption class="text-center text-sm text-neutral-700 hover:underline dark:text-neutral-400">{caption}</figcaption>}
   </figure>
 )}
-
-<style>
-  .bf-hero-big-wrap { margin: 0; }
-  .bf-hero-big {
-    width: 100%;
-    border-radius: 0.6rem;
-    display: block;
-    object-fit: cover;
-  }
-  .bf-hero-big-wrap figcaption {
-    text-align: center;
-    margin-top: 0.35rem;
-    color: var(--bf-muted);
-    font-size: 0.85rem;
-  }
-</style>

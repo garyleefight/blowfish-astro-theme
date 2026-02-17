@@ -1,0 +1,43 @@
+---
+import BlowfishIcon from '../../BlowfishIcon.astro';
+import { t } from '../../../lib/i18n';
+
+export interface TranslationItem {
+  label: string;
+  href: string;
+  title?: string;
+}
+
+export interface Props {
+  translations?: TranslationItem[];
+  currentLanguage?: string;
+}
+
+const { translations = [], currentLanguage = t('global.language') } = Astro.props;
+---
+
+{translations.length > 0 && (
+  <div class="translation nested-menu">
+    <button class="translation_button cursor-pointer flex items-center" type="button" aria-label={currentLanguage}>
+      <span class="me-1">
+        <BlowfishIcon name="language" />
+      </span>
+      <span class="text-sm font-medium text-neutral-700 hover:text-primary-600 dark:text-neutral-200 dark:hover:text-primary-400">
+        {currentLanguage}
+      </span>
+    </button>
+    <ul class="menuhide">
+      <li class="rounded-xl backdrop-blur shadow-2xl p-2 flex flex-col gap-1 bg-neutral/25 dark:bg-neutral-800/25">
+        {translations.map((item) => (
+          <a
+            href={item.href}
+            class="flex items-center px-3 py-1 text-neutral-700 hover:text-primary-600 dark:text-neutral-200 dark:hover:text-primary-400"
+            title={item.title}
+          >
+            <span class="text-sm font-sm">{item.label}</span>
+          </a>
+        ))}
+      </li>
+    </ul>
+  </div>
+)}

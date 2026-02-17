@@ -1,5 +1,8 @@
 ---
 import { pickString } from '../lib/props';
+import { t } from '../lib/i18n';
+import { markdownToHtml } from '../lib/markdown';
+import { fetchTextSafe } from '../lib/remote';
 
 export interface Props {
   source?: string;
@@ -10,15 +13,16 @@ export interface Props {
 
 const props = Astro.props as Record<string, unknown>;
 const source = pickString(props, ['source', 'path', 'url']);
-const title = pickString(props, ['title'], 'Markdown Importer');
+const title = pickString(props, ['title'], t('components.markdown_importer_title'));
+const markdown = source ? await fetchTextSafe(source) : null;
+const rendered = markdown ? await markdownToHtml(markdown) : '';
 ---
 
-<section class="bf-card bf-mdimporter">
-  <p><strong>{title}</strong></p>
-  <p class="bf-muted">Placeholder for md import source: <code>{source}</code></p>
+<section class="rounded-md border border-neutral-200 p-5 pt-3 shadow-2xl dark:border-neutral-700">
+  <p class="m-0 text-sm text-neutral-700 dark:text-neutral-300"><strong>{title}</strong></p>
+  {rendered ? (
+    <article class="prose mt-3 max-w-full dark:prose-invert" set:html={rendered} />
+  ) : (
+    <p class="mt-2 mb-0 text-sm text-neutral-600 dark:text-neutral-400">{t('components.markdown_source_unavailable')} <code>{source}</code></p>
+  )}
 </section>
-
-<style>
-  .bf-mdimporter { padding: 0.8rem 1rem; }
-  .bf-mdimporter p { margin: 0.3rem 0; }
-</style>

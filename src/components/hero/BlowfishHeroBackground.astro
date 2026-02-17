@@ -9,79 +9,22 @@ export interface Props {
 const { image, imagePosition, blur = false, addHeaderSpace = true } = Astro.props;
 ---
 
-{addHeaderSpace && <div class="bf-hero-bg-header-space" />}
+{addHeaderSpace && <div id="hero" class="h-[150px] md:h-[200px]"></div>}
 
 {image && (
-  <div class="bf-hero-bg-root">
+  <div class="fixed inset-x-0 top-0 h-[800px] single_hero_background nozoom">
     <img
-      id="bf-hero-bg-image"
+      id="background-image"
       src={image}
       alt=""
       role="presentation"
-      class="bf-hero-bg-image"
+      class="absolute inset-0 h-full w-full object-cover"
       style={imagePosition ? `object-position:${imagePosition};` : undefined}
     />
-    <div class="bf-hero-bg-overlay-1" />
-    <div class="bf-hero-bg-overlay-2" />
+    <div class="absolute inset-0 bg-gradient-to-t from-neutral to-transparent mix-blend-normal dark:from-neutral-800"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-neutral to-neutral-100 opacity-60 mix-blend-normal dark:from-neutral-800 dark:to-neutral-800"></div>
   </div>
 )}
 
-{blur && <div id="bf-hero-bg-blur" class="bf-hero-bg-blur" />}
-
-<script is:inline>
-  const blurEl = document.getElementById('bf-hero-bg-blur');
-  const imgEl = document.getElementById('bf-hero-bg-image');
-  if (blurEl && imgEl) {
-    const toggle = () => {
-      blurEl.style.opacity = window.scrollY > 20 ? '1' : '0';
-    };
-    window.addEventListener('scroll', toggle, { passive: true });
-    toggle();
-  }
-</script>
-
-<style>
-  .bf-hero-bg-header-space { height: 150px; }
-  @media (min-width: 768px) { .bf-hero-bg-header-space { height: 200px; } }
-
-  .bf-hero-bg-root {
-    position: fixed;
-    inset: 0 auto auto 0;
-    width: 100%;
-    height: 800px;
-    z-index: -3;
-  }
-
-  .bf-hero-bg-image {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .bf-hero-bg-overlay-1 {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(15, 17, 21, 0.92), transparent);
-  }
-
-  .bf-hero-bg-overlay-2 {
-    position: absolute;
-    inset: 0;
-    opacity: 0.6;
-    background: linear-gradient(to top, rgba(15, 17, 21, 0.92), rgba(243, 245, 249, 0.35));
-  }
-
-  .bf-hero-bg-blur {
-    position: fixed;
-    inset: 0 auto auto 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    backdrop-filter: blur(16px);
-    background: rgba(15, 17, 21, 0.4);
-    transition: opacity 180ms ease;
-    z-index: -2;
-  }
-</style>
+{blur && <div id="background-blur" class="fixed inset-x-0 top-0 h-full single_hero_background nozoom opacity-0 bg-neutral-100/75 backdrop-blur-xl dark:bg-neutral-800/60"></div>}
+{blur && <script is:inline data-blur-id="background-blur" data-scroll-divisor="300"></script>}

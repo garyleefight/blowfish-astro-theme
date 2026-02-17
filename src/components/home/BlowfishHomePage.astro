@@ -1,4 +1,5 @@
 ---
+import { t } from '../../lib/i18n';
 import BlowfishHomeRecent from './BlowfishHomeRecent.astro';
 import type { BlowfishHomepageConfig, BlowfishRecentArticle } from '../../types/homepage';
 
@@ -11,13 +12,13 @@ export interface Props {
 const { config, contentHtml = '', articles = [] } = Astro.props;
 ---
 
-<article class="bf-home-page-layout">
+<article class="max-w-full prose dark:prose-invert">
   {config.title && (
     <header>
       <h1>{config.title}</h1>
     </header>
   )}
-  <section class="bf-home-page-prose">{contentHtml ? <div set:html={contentHtml} /> : <slot />}</section>
+  <section class="w-full">{contentHtml ? <div set:html={contentHtml} /> : <slot />}</section>
 </article>
 
 {config.showRecent && (
@@ -26,17 +27,6 @@ const { config, contentHtml = '', articles = [] } = Astro.props;
     limit={config.recentLimit || 4}
     cardView={Boolean(config.cardView)}
     showMoreLink={config.showMoreLink}
+    heading={t('shortcode.recent_articles')}
   />
 )}
-
-<style>
-  .bf-home-page-layout h1 {
-    margin: 0;
-    font-size: clamp(1.9rem, 3vw, 2.5rem);
-    font-weight: 800;
-  }
-
-  .bf-home-page-prose {
-    margin-top: 0.7rem;
-  }
-</style>

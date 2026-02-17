@@ -1,34 +1,59 @@
 ---
+import BlowfishIcon from '../BlowfishIcon.astro';
+import { t } from '../../lib/i18n';
+
+interface SharingItem {
+  name: 'twitter' | 'linkedin' | 'email';
+  href: string;
+  title: string;
+  icon: string;
+}
+
 export interface Props {
   url: string;
   title: string;
+  links?: Array<'twitter' | 'linkedin' | 'email'>;
 }
 
-const { url, title } = Astro.props;
+const { url, title, links = ['twitter', 'linkedin', 'email'] } = Astro.props;
 const encodedUrl = encodeURIComponent(url);
 const encodedTitle = encodeURIComponent(title);
+
+const allLinks: Record<'twitter' | 'linkedin' | 'email', SharingItem> = {
+  twitter: {
+    name: 'twitter',
+    href: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
+    title: t('sharing.twitter'),
+    icon: 'twitter',
+  },
+  linkedin: {
+    name: 'linkedin',
+    href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+    title: t('sharing.linkedin'),
+    icon: 'linkedin',
+  },
+  email: {
+    name: 'email',
+    href: `mailto:?subject=${encodedTitle}&body=${encodedUrl}`,
+    title: t('sharing.email'),
+    icon: 'email',
+  },
+};
+
+const resolvedLinks = links.map((name) => allLinks[name]).filter(Boolean);
 ---
 
-<div class="bf-sharing-links">
-  <a href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`} target="_blank" rel="noopener noreferrer">X/Twitter</a>
-  <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-  <a href={`mailto:?subject=${encodedTitle}&body=${encodedUrl}`}>Email</a>
-</div>
-
-<style>
-  .bf-sharing-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.55rem;
-    margin-top: 1rem;
-  }
-
-  .bf-sharing-links a {
-    border: 1px solid var(--bf-border);
-    border-radius: 999px;
-    padding: 0.25rem 0.6rem;
-    color: var(--bf-muted);
-    text-decoration: none;
-    font-size: 0.86rem;
-  }
-</style>
+<section class="flex flex-row flex-wrap justify-center pt-4 text-xl">
+  {resolvedLinks.map((link) => (
+    <a
+      target="_blank"
+      class="m-1 rounded bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
+      href={link.href}
+      title={link.title}
+      aria-label={link.title}
+      rel={link.name === 'email' ? undefined : 'noopener noreferrer'}
+    >
+      <BlowfishIcon name={link.icon} />
+    </a>
+  ))}
+</section>

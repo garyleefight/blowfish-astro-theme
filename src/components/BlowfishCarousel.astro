@@ -1,5 +1,6 @@
 ---
 import { pickArray, pickString } from '../lib/props';
+import { t } from '../lib/i18n';
 
 interface Item {
   src?: string;
@@ -17,26 +18,21 @@ export interface Props {
 
 const props = Astro.props as Record<string, unknown>;
 const images = pickArray<Item>(props, ['images', 'items']);
+const normalizedImages = images.map((img) => {
+  const record = img as Record<string, unknown>;
+  return {
+    src: pickString(record, ['src', 'image', 'url']),
+    alt: pickString(record, ['alt', 'title', 'caption'], t('components.slide_alt')),
+    caption: pickString(record, ['caption', 'title'])
+  };
+});
 ---
 
-<div class="bf-carousel" role="region" aria-label="carousel">
-  {images.map((img) => {
-    const src = pickString(img as Record<string, unknown>, ['src', 'image', 'url']);
-    const alt = pickString(img as Record<string, unknown>, ['alt', 'title', 'caption'], 'slide');
-    const caption = pickString(img as Record<string, unknown>, ['caption', 'title']);
-
-    return (
-      <figure class="bf-card">
-        <img src={src} alt={alt} loading="lazy" />
-        {caption && <figcaption>{caption}</figcaption>}
+<div class="flex snap-x snap-mandatory gap-3 overflow-x-auto" role="region" aria-label={t('components.carousel_label')}>
+  {normalizedImages.map((img) => (
+      <figure class="m-0 min-w-[90%] md:min-w-[540px] snap-start overflow-hidden rounded-md border border-neutral-200 shadow-sm dark:border-neutral-700">
+        <img src={img.src} alt={img.alt} loading="lazy" class="mt-0 mb-0 block aspect-video w-full object-cover" />
+        {img.caption && <figcaption class="px-3 py-2 text-sm text-neutral-600 dark:text-neutral-400">{img.caption}</figcaption>}
       </figure>
-    );
-  })}
+    ))}
 </div>
-
-<style>
-  .bf-carousel { display: flex; gap: 0.8rem; overflow-x: auto; scroll-snap-type: x mandatory; }
-  .bf-carousel figure { min-width: min(540px, 90%); margin: 0; scroll-snap-align: start; }
-  .bf-carousel img { width: 100%; display: block; aspect-ratio: 16 / 9; object-fit: cover; }
-  .bf-carousel figcaption { padding: 0.4rem 0.7rem 0.6rem; color: var(--bf-muted); font-size: 0.8rem; }
-</style>

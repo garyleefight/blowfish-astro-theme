@@ -15,12 +15,7 @@ const display = pickBoolean(props, ['display', 'block'], false);
 ---
 
 {display ? (
-  <div class="bf-card bf-katex">{equation}</div>
+  <div class="rounded-md border border-neutral-200 px-4 py-3 font-mono shadow-sm dark:border-neutral-700">{equation}</div>
 ) : (
-  <span class="bf-katex-inline">{equation}</span>
+  <span class="font-mono">{equation}</span>
 )}
-
-<style>
-  .bf-katex { padding: 0.8rem 1rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-  .bf-katex-inline { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-</style>

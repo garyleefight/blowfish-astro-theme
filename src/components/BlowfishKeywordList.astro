@@ -7,6 +7,7 @@ interface KeywordItem {
   label?: string;
   href?: string;
   url?: string;
+  icon?: string;
 }
 
 export interface Props {
@@ -18,16 +19,8 @@ const props = Astro.props as Record<string, unknown>;
 const items = pickArray<KeywordItem>(props, ['items', 'keywords']);
 ---
 
-<div class="bf-keyword-list">
+<div class="flex flex-row flex-wrap items-center space-x-2">
   {items.map((item) => (
-    <BlowfishKeyword text={item.text || item.label} href={item.href || item.url} />
+    <BlowfishKeyword text={item.text || item.label} href={item.href || item.url} icon={item.icon} />
   ))}
 </div>
-
-<style>
-  .bf-keyword-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-  }
-</style>

@@ -22,17 +22,17 @@ import BlowfishMetaZenMode from '../../components/meta/BlowfishMetaZenMode.astro
 const related = [
   { title: 'Related post 1', href: '#', summary: 'Deeper dive on template parity.', date: '2026-02-14', thumbnail: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=900' },
   { title: 'Related post 2', href: '#', summary: 'Extending shortcodes in Astro.', date: '2026-02-13', thumbnail: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900' },
-  { title: 'Related post 3', href: '#', summary: 'Search and metadata parity.', date: '2026-02-12', thumbnail: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=900' }
+  { title: 'Related post 3', href: '#', summary: 'Search and metadata parity.', date: '2026-02-12', thumbnail: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=900' },
 ];
 ---
 
 <BlowfishSiteLayout title="Single Template" nav={[{ label: 'Home', href: '/' }, { label: 'Theme List', href: '/theme/list' }]}> 
   <BlowfishBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Blog', href: '/theme/list' }, { label: 'Single Post' }]} />
-  <article class="bf-single bf-card">
+  <article class="rounded-xl border border-neutral-300 bg-neutral-50/70 p-4 shadow-sm dark:border-neutral-700 dark:bg-neutral-800/60">
     <header>
-      <h1>Single Post Template</h1>
+      <h1 class="m-0 text-3xl font-bold">Single Post Template</h1>
       <BlowfishArticleMetaBasic date="2026-02-17" updated="2026-02-18" readingTime="5 min" wordCount={1200} />
-      <div class="bf-meta-row">
+      <div class="mt-2 flex flex-wrap items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
         <BlowfishMetaDate date="2026-02-17T00:00:00Z" />
         <BlowfishMetaDateUpdated date="2026-02-18T00:00:00Z" />
         <BlowfishMetaReadingTime minutes={5} />
@@ -49,12 +49,12 @@ const related = [
       />
     </header>
 
-    <div class="bf-single-grid">
-      <section class="bf-prose">
-        <h2 id="intro">Introduction</h2>
-        <p>This page now uses article partial components to better match Blowfish single template structure.</p>
-        <h2 id="approach">Approach</h2>
-        <p>We split metadata, taxonomy, toc, sharing, related items, and series into reusable parts.</p>
+    <div class="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_260px]">
+      <section>
+        <h2 id="intro" class="text-xl font-semibold">Introduction</h2>
+        <p class="mt-2">This page now uses article partial components to better match Blowfish single template structure.</p>
+        <h2 id="approach" class="mt-5 text-xl font-semibold">Approach</h2>
+        <p class="mt-2">We split metadata, taxonomy, toc, sharing, related items, and series into reusable parts.</p>
       </section>
       <div>
         <BlowfishToc items={[{ id: 'intro', label: 'Introduction' }, { id: 'approach', label: 'Approach' }]} />
@@ -66,7 +66,7 @@ const related = [
       items={[
         { title: 'Part 1: Homepage', href: '/homepage-layout' },
         { title: 'Part 2: Templates', href: '/theme/single', current: true },
-        { title: 'Part 3: Runtime', href: '#' }
+        { title: 'Part 3: Runtime', href: '#' },
       ]}
     />
 
@@ -77,21 +77,3 @@ const related = [
   <BlowfishRelated items={related} />
   <BlowfishPagination prevHref="#" nextHref="#" />
 </BlowfishSiteLayout>
-
-<style>
-  .bf-single { padding: 1rem; }
-  .bf-single h1 { margin: 0; }
-  .bf-single-grid {
-    margin-top: 0.85rem;
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 260px);
-  }
-
-  .bf-prose p { color: color-mix(in srgb, var(--bf-text) 90%, white 10%); }
-  .bf-meta-row { margin-top: 0.45rem; display: flex; gap: 0.55rem; flex-wrap: wrap; align-items: center; color: var(--bf-muted); font-size: 0.86rem; }
-
-  @media (max-width: 900px) {
-    .bf-single-grid { grid-template-columns: 1fr; }
-  }
-</style>

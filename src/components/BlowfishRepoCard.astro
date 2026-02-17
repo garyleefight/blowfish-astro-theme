@@ -1,0 +1,90 @@
+---
+import BlowfishIcon from './BlowfishIcon.astro';
+import { getRepoLanguageColor } from '../lib/repo-colors';
+import { t } from '../lib/i18n';
+
+export interface Props {
+  href: string;
+  icon: string;
+  title: string;
+  fullName: string;
+  description?: string | null;
+  language?: string | null;
+  stars?: number | null;
+  forks?: number | null;
+  likes?: number | null;
+  downloads?: number | null;
+  thumbnail?: string;
+}
+
+const {
+  href,
+  icon,
+  title,
+  fullName,
+  description,
+  language,
+  stars,
+  forks,
+  likes,
+  downloads,
+  thumbnail,
+} = Astro.props;
+
+const languageColor = getRepoLanguageColor(language);
+---
+
+<a
+  class="block w-full overflow-hidden rounded-md border border-neutral-200 text-inherit no-underline shadow-2xl transition hover:border-primary-500 dark:border-neutral-700 dark:hover:border-primary-400"
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  {thumbnail && <img src={thumbnail} alt={t('components.repository_thumbnail_alt')} class="mt-0 mb-0 h-full w-full object-cover" loading="lazy" />}
+
+  <div class="p-5 pt-3">
+    <div class="flex items-center gap-2">
+      <span class="text-2xl text-neutral-800 dark:text-neutral"><BlowfishIcon name={icon} /></span>
+      <div class="m-0 text-xl font-bold text-neutral-800 dark:text-neutral">{fullName || title}</div>
+    </div>
+
+    {description && <p class="m-0 mt-2 text-md text-neutral-800 dark:text-neutral">{description}</p>}
+
+    <div class="m-0 mt-2 flex flex-wrap items-center gap-y-1">
+      {language && (
+        <>
+          <span class="mr-1 inline-block h-3 w-3 rounded-full" style={`background-color: ${languageColor};`} />
+          <div class="m-0 mr-5 text-md text-neutral-800 dark:text-neutral">{language}</div>
+        </>
+      )}
+
+      {typeof stars === 'number' && (
+        <>
+          <span class="mr-1 text-md text-neutral-800 dark:text-neutral"><BlowfishIcon name="star" /></span>
+          <div class="m-0 mr-5 text-md text-neutral-800 dark:text-neutral">{stars}</div>
+        </>
+      )}
+
+      {typeof forks === 'number' && (
+        <>
+          <span class="mr-1 text-md text-neutral-800 dark:text-neutral"><BlowfishIcon name="fork" /></span>
+          <div class="m-0 mr-5 text-md text-neutral-800 dark:text-neutral">{forks}</div>
+        </>
+      )}
+
+      {typeof likes === 'number' && (
+        <>
+          <span class="mr-1 text-md text-neutral-800 dark:text-neutral"><BlowfishIcon name="heart-empty" /></span>
+          <div class="m-0 mr-5 text-md text-neutral-800 dark:text-neutral">{likes}</div>
+        </>
+      )}
+
+      {typeof downloads === 'number' && (
+        <>
+          <span class="mr-1 text-md text-neutral-800 dark:text-neutral"><BlowfishIcon name="download" /></span>
+          <div class="m-0 mr-5 text-md text-neutral-800 dark:text-neutral">{downloads}</div>
+        </>
+      )}
+    </div>
+  </div>
+</a>

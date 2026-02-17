@@ -1,22 +1,37 @@
 ---
+import '../styles/theme.css';
+
 export interface Props {
   title?: string;
   description?: string;
+  defaultAppearance?: 'light' | 'dark';
+  autoSwitchAppearance?: boolean;
 }
 
-const { title = 'Site', description = '' } = Astro.props;
+const {
+  title = 'Site',
+  description = '',
+  defaultAppearance = 'light',
+  autoSwitchAppearance = true,
+} = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html
+  lang="en"
+  class="scroll-smooth"
+  data-default-appearance={defaultAppearance}
+  data-auto-appearance={String(autoSwitchAppearance)}
+>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
   </head>
-  <body>
-    <main class="bf-shell bf-stack">
+  <body class="flex flex-col h-screen m-auto leading-7 max-w-7xl px-6 sm:px-14 md:px-24 lg:px-32 text-lg bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral">
+    <main class="grow">
       <slot />
     </main>
   </body>

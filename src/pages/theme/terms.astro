@@ -4,32 +4,17 @@ import BlowfishSiteLayout from '../../layouts/site/BlowfishSiteLayout.astro';
 const terms = [
   { label: 'astro', count: 12, href: '#' },
   { label: 'hugo', count: 5, href: '#' },
-  { label: 'cloudflare', count: 8, href: '#' }
+  { label: 'cloudflare', count: 8, href: '#' },
 ];
 ---
 
 <BlowfishSiteLayout title="Terms Template" nav={[{ label: 'Home', href: '/' }, { label: 'Theme List', href: '/theme/list' }]}> 
   <header>
-    <h1>All Tags</h1>
+    <h1 class="m-0 text-3xl font-bold">All Tags</h1>
   </header>
-  <section class="bf-terms">
+  <section class="mt-4 flex flex-wrap gap-3">
     {terms.map((term) => (
-      <a class="bf-card" href={term.href}>{term.label} ({term.count})</a>
+      <a class="rounded-xl border border-neutral-300 bg-neutral-50/70 px-3 py-2 text-neutral-900 no-underline shadow-sm transition-colors hover:border-primary-500 dark:border-neutral-700 dark:bg-neutral-800/60 dark:text-neutral dark:hover:border-primary-400" href={term.href}>{term.label} ({term.count})</a>
     ))}
   </section>
 </BlowfishSiteLayout>
-
-<style>
-  .bf-terms {
-    margin-top: 1rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-  }
-
-  .bf-terms a {
-    padding: 0.45rem 0.7rem;
-    text-decoration: none;
-    color: var(--bf-text);
-  }
-</style>

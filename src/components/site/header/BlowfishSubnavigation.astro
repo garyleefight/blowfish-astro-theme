@@ -1,0 +1,35 @@
+---
+import BlowfishIcon from '../../BlowfishIcon.astro';
+
+export interface MenuItem {
+  name: string;
+  url: string;
+  title?: string;
+  pre?: string;
+}
+
+export interface Props {
+  subnavMenu?: MenuItem[];
+  logo?: string;
+}
+
+const { subnavMenu = [], logo } = Astro.props;
+const isExternal = (url: string) => url.startsWith('http:') || url.startsWith('https:');
+---
+
+{subnavMenu.length > 0 && (
+  <div class:list={['main-menu flex pb-3 flex-col items-end justify-between md:justify-start space-x-3', logo && '-mt-[15px]']}>
+    <div class="hidden md:flex items-center space-x-5">
+      {subnavMenu.map((item) => (
+        <a href={item.url} target={isExternal(item.url) ? '_blank' : undefined} class="flex items-center text-neutral-700 hover:text-primary-600 dark:text-neutral-200 dark:hover:text-primary-400">
+          {item.pre && (
+            <span class={item.name ? 'mr-1' : undefined}>
+              <BlowfishIcon name={item.pre} />
+            </span>
+          )}
+          <span class="text-xs font-light" title={item.title}>{item.name}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+)}

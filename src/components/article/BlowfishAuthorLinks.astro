@@ -14,35 +14,20 @@ const { links = [] } = Astro.props;
 ---
 
 {links.length > 0 && (
-  <div class="bf-author-links">
+  <div class="flex flex-wrap text-neutral-400 dark:text-neutral-500">
     {links.map((link) => (
-      <a href={link.href} target="_blank" rel="me noopener noreferrer" aria-label={link.name} title={link.name}>
-        <BlowfishIcon name={link.name} size="1rem" />
+      <a
+        class="px-1 hover:text-primary-700 dark:hover:text-primary-400"
+        href={link.href}
+        target="_blank"
+        aria-label={link.name}
+        title={link.name}
+        rel="me noopener noreferrer"
+      >
+        <span class="inline-block align-text-bottom">
+          <BlowfishIcon name={link.name} />
+        </span>
       </a>
     ))}
   </div>
 )}
-
-<style>
-  .bf-author-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-    color: var(--bf-muted);
-  }
-
-  .bf-author-links a {
-    color: var(--bf-muted);
-    text-decoration: none;
-    font-size: 0.9rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.5rem;
-    height: 1.5rem;
-  }
-
-  .bf-author-links a:hover {
-    color: var(--bf-primary);
-  }
-</style>

@@ -17,8 +17,4 @@ const speed = pickNumber(props, ['speed', 'lifeLike'], 75);
 const loop = pickBoolean(props, ['loop'], false);
 ---
 
-<span class="bf-typeit" data-speed={speed} data-loop={loop ? 'true' : 'false'}>{displayText}</span>
-
-<style>
-  .bf-typeit { border-right: 1px solid var(--bf-muted); padding-right: 0.1rem; }
-</style>
+<span class="bf-typeit border-r border-neutral-400 pe-0.5 dark:border-neutral-500" data-speed={speed} data-loop={loop ? 'true' : 'false'}>{displayText}</span>

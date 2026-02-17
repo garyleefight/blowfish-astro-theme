@@ -1,10 +1,13 @@
 ---
 import { pickNumber, pickString } from '../lib/props';
+import { t } from '../lib/i18n';
+import { fetchTextSafe } from '../lib/remote';
 
 export interface Props {
   url?: string;
   src?: string;
   path?: string;
+  type?: string;
   lang?: string;
   language?: string;
   title?: string;
@@ -17,18 +20,34 @@ export interface Props {
 
 const props = Astro.props as Record<string, unknown>;
 const url = pickString(props, ['url', 'src', 'path']);
-const lang = pickString(props, ['lang', 'language'], 'text');
+const lang = pickString(props, ['type', 'lang', 'language'], 'text');
 const title = pickString(props, ['title', 'heading']);
-const startLine = pickNumber(props, ['startLine', 'from'], 0);
-const endLine = pickNumber(props, ['endLine', 'to'], 0);
+const startLineRaw = pickNumber(props, ['startLine', 'from'], 1);
+const endLineRaw = pickNumber(props, ['endLine', 'to'], -1);
+
+const content = url ? await fetchTextSafe(url) : null;
+const lines = content ? content.split('\n') : [];
+const totalLines = lines.length;
+
+const startIndex = Math.max(0, startLineRaw - 1);
+const endIndex = endLineRaw === -1 ? totalLines : Math.min(endLineRaw, totalLines);
+const hasRangeError = startIndex > endIndex;
+const selectedLines = !hasRangeError ? lines.slice(startIndex, endIndex) : [];
+const code = selectedLines.join('\n');
 ---
 
-<section class="bf-card bf-code-importer">
-  {(title || url) && <p><strong>{title || 'Code Importer'}</strong>{url ? ` - ${url}` : ''}</p>}
-  <pre><code>[code-import placeholder] lang={lang} lines={startLine || ''}-{endLine || ''}</code></pre>
-</section>
+<section class="rounded-md border border-neutral-200 p-5 pt-3 shadow-2xl dark:border-neutral-700">
+  {(title || url) && (
+    <p class="m-0 text-sm text-neutral-700 dark:text-neutral-300">
+      <strong>{title || t('components.code_importer_title')}</strong>{url ? ` - ${url}` : ''}
+    </p>
+  )}
 
-<style>
-  .bf-code-importer { padding: 0.8rem 1rem; }
-  .bf-code-importer pre { overflow: auto; margin: 0.4rem 0 0; }
-</style>
+  {hasRangeError ? (
+    <p class="mt-2 mb-0 text-sm text-red-600 dark:text-red-400">{t('components.invalid_line_range')}</p>
+  ) : code ? (
+    <pre class="mt-2 overflow-auto rounded-md border border-neutral-200 bg-neutral-100 p-3 text-sm dark:border-neutral-700 dark:bg-neutral-900/50"><code class={`language-${lang}`}>{code}</code></pre>
+  ) : (
+    <p class="mt-2 mb-0 text-sm text-neutral-600 dark:text-neutral-400">{t('components.remote_source_unavailable')}</p>
+  )}
+</section>

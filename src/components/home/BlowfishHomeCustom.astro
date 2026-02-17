@@ -11,7 +11,7 @@ export interface Props {
 const { config, contentHtml = '', articles = [] } = Astro.props;
 ---
 
-<section class="bf-home-custom-layout">
+<section class="w-full">
   {contentHtml ? <div set:html={contentHtml} /> : <slot />}
 </section>
 

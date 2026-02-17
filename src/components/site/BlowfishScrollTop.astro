@@ -1,4 +1,16 @@
-<button class="bf-scroll-top" id="bf-scroll-top" type="button" aria-label="Scroll to top">↑</button>
+---
+import { t } from '../../lib/i18n';
+---
+
+<button
+  class="fixed right-4 bottom-4 z-45 h-9 w-9 rounded-full border border-neutral-300 bg-neutral-100/90 text-neutral-900 opacity-0 shadow-lg transition dark:border-neutral-700 dark:bg-neutral-800/90 dark:text-neutral"
+  id="bf-scroll-top"
+  type="button"
+  aria-label={t('nav.scroll_to_top_title')}
+  title={t('nav.scroll_to_top_title')}
+>
+  ↑
+</button>
 
 <script is:inline>
   const btn = document.getElementById('bf-scroll-top');
@@ -11,22 +23,3 @@
   toggle();
   btn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 </script>
-
-<style>
-  .bf-scroll-top {
-    position: fixed;
-    right: 1rem;
-    bottom: 1rem;
-    width: 2.2rem;
-    height: 2.2rem;
-    border-radius: 999px;
-    border: 1px solid var(--bf-border);
-    background: color-mix(in srgb, var(--bf-surface) 86%, black 14%);
-    color: var(--bf-text);
-    box-shadow: var(--bf-shadow);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 160ms ease;
-    z-index: 45;
-  }
-</style>

@@ -11,8 +11,4 @@ const props = Astro.props as Record<string, unknown>;
 const code = pickString(props, ['code', 'diagram', 'graph']);
 ---
 
-<pre class="bf-card bf-mermaid"><code class="language-mermaid">{code}</code></pre>
-
-<style>
-  .bf-mermaid { padding: 0.8rem 1rem; overflow: auto; }
-</style>
+<pre class="bf-mermaid overflow-auto rounded-md border border-neutral-200 px-4 py-3 shadow-sm dark:border-neutral-700"><code class="language-mermaid">{code}</code></pre>

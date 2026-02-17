@@ -1,4 +1,5 @@
 ---
+import { t } from '../../lib/i18n';
 import BlowfishAuthorLinks from './BlowfishAuthorLinks.astro';
 
 export interface Props {
@@ -12,33 +13,13 @@ export interface Props {
 const { name, headline, image, bio, links = [] } = Astro.props;
 ---
 
-<section class="bf-card bf-author">
-  {image && <img src={image} alt={name} />}
-  <div>
-    <h3>{name}</h3>
-    {headline && <p>{headline}</p>}
-    {bio && <p>{bio}</p>}
-    <BlowfishAuthorLinks links={links} />
+<div class="author flex mt-4">
+  {image && <img src={image} alt={name} class="!mt-0 !mb-0 me-4 h-24 w-24 rounded-full object-cover" />}
+  <div class="place-self-center">
+    <div class="text-[0.6rem] uppercase leading-3 text-neutral-500 dark:text-neutral-400">{t('author.byline_title')}</div>
+    <div class="font-semibold leading-6 text-neutral-800 dark:text-neutral-300">{name}</div>
+    {headline && <div class="text-sm text-neutral-700 dark:text-neutral-400">{headline}</div>}
+    {bio && <div class="text-sm text-neutral-700 dark:text-neutral-400">{bio}</div>}
+    <div class="text-2xl sm:text-lg"><BlowfishAuthorLinks links={links} /></div>
   </div>
-</section>
-
-<style>
-  .bf-author {
-    margin-top: 1.2rem;
-    padding: 0.8rem 0.9rem;
-    display: grid;
-    gap: 0.7rem;
-    grid-template-columns: auto 1fr;
-    align-items: center;
-  }
-
-  .bf-author img {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 999px;
-    object-fit: cover;
-  }
-
-  .bf-author h3 { margin: 0; font-size: 1rem; }
-  .bf-author p { margin: 0.25rem 0 0; color: var(--bf-muted); }
-</style>
+</div>

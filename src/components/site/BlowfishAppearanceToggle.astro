@@ -1,35 +1,30 @@
-<button id="bf-appearance-toggle" class="bf-appearance-toggle" type="button" aria-label="Toggle appearance">
-  Theme
+---
+import BlowfishIcon from '../BlowfishIcon.astro';
+import { t } from '../../lib/i18n';
+
+export interface Props {
+  id?: 'appearance-switcher' | 'appearance-switcher-mobile';
+  class?: string;
+}
+
+const { id = 'appearance-switcher', class: className } = Astro.props;
+---
+
+<button
+  id={id}
+  aria-label={t('nav.appearance_switcher')}
+  type="button"
+  class:list={[
+    'text-base text-neutral-700 hover:text-primary-600 dark:text-neutral-200 dark:hover:text-primary-400',
+    id === 'appearance-switcher-mobile' &&
+      'flex items-center justify-center',
+    className,
+  ]}
+>
+  <div class="flex items-center justify-center dark:hidden">
+    <BlowfishIcon name="moon" />
+  </div>
+  <div class="items-center justify-center hidden dark:flex">
+    <BlowfishIcon name="sun" />
+  </div>
 </button>
-
-<script is:inline>
-  const KEY = 'bf-theme';
-  const root = document.documentElement;
-  const button = document.getElementById('bf-appearance-toggle');
-
-  const apply = (mode) => {
-    root.setAttribute('data-theme', mode);
-    if (button) button.textContent = mode === 'light' ? 'Light' : 'Dark';
-  };
-
-  const initial = localStorage.getItem(KEY) || 'dark';
-  apply(initial);
-
-  button?.addEventListener('click', () => {
-    const next = (root.getAttribute('data-theme') || 'dark') === 'dark' ? 'light' : 'dark';
-    localStorage.setItem(KEY, next);
-    apply(next);
-  });
-</script>
-
-<style>
-  .bf-appearance-toggle {
-    border: 1px solid var(--bf-border);
-    border-radius: 0.5rem;
-    background: color-mix(in srgb, var(--bf-surface) 88%, black 12%);
-    color: var(--bf-text);
-    padding: 0.35rem 0.55rem;
-    font-size: 0.82rem;
-    cursor: pointer;
-  }
-</style>

@@ -5,17 +5,17 @@ export interface Props {
   defaultTab?: string;
   default?: string;
   selected?: string;
+  group?: string;
 }
 
 const props = Astro.props as Record<string, unknown>;
 const defaultTab = pickString(props, ['defaultTab', 'default', 'selected']);
+const group = pickString(props, ['group']);
 ---
 
-<section class="bf-card bf-tabs" data-default-tab={defaultTab}>
-  <slot />
-</section>
-
-<style>
-  .bf-tabs { padding: 0.8rem 1rem; }
-  .bf-tabs :global(.bf-tab[data-active='false']) { display: none; }
-</style>
+<div class="tab__container w-full" data-tab-group={group} data-default-tab={defaultTab}>
+  <div class="tab__nav" role="tablist">
+    <div class="flex flex-wrap gap-1"></div>
+  </div>
+  <div class="tab__content mt-4"><slot /></div>
+</div>

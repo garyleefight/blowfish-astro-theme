@@ -1,15 +1,18 @@
 ---
 import BlowfishIcon from '../BlowfishIcon.astro';
+import { t } from '../../lib/i18n';
 
-export interface Props { count?: number; }
-const { count } = Astro.props;
+export interface Props { count?: number; id?: string; }
+const { count, id = 'likes_count' } = Astro.props;
+const loadingText = t('global.loading');
+const likesTitle = t('article.likes', { Count: typeof count === 'number' ? count : 0 });
 ---
 
-<span class="bf-meta-count">
-  {typeof count === 'number' ? count : 'loading'}
-  <BlowfishIcon name="heart" size="0.9rem" />
+<span>
+  <span
+    id={id}
+    class="animate-pulse inline-block text-transparent max-h-3 rounded-full -mt-[2px] align-middle bg-neutral-300 dark:bg-neutral-400"
+    title={likesTitle}
+  >{typeof count === 'number' ? count : loadingText}</span>
+  <span class="inline-block align-text-bottom"><BlowfishIcon name="heart" /></span>
 </span>
-
-<style>
-  .bf-meta-count { display: inline-flex; align-items: center; gap: 0.25rem; }
-</style>

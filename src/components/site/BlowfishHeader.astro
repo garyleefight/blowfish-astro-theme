@@ -1,97 +1,154 @@
 ---
-import BlowfishAppearanceToggle from './BlowfishAppearanceToggle.astro';
+import BlowfishDesktopMenu, { type MenuItem as HeaderMenuItem } from './header/BlowfishDesktopMenu.astro';
+import BlowfishMobileMenu from './header/BlowfishMobileMenu.astro';
+import BlowfishSubnavigation from './header/BlowfishSubnavigation.astro';
 
-export interface NavItem {
+export type MenuItem = HeaderMenuItem;
+export interface TranslationItem {
   label: string;
   href: string;
+  title?: string;
 }
 
 export interface Props {
-  title: string;
-  nav?: NavItem[];
+  layout?: 'basic' | 'fixed' | 'fixed-fill' | 'fixed-fill-blur' | 'fixed-gradient';
+  siteTitle?: string;
+  title?: string;
+  logo?: string;
+  disableTextInHeader?: boolean;
+  mainMenu?: MenuItem[];
+  nav?: { label: string; href: string }[];
+  subnavMenu?: MenuItem[];
+  translations?: TranslationItem[];
+  currentLanguage?: string;
+  enableA11y?: boolean;
   enableSearch?: boolean;
   enableAppearanceToggle?: boolean;
+  showDisableBlurA11y?: boolean;
+  showDisableImagesA11y?: boolean;
+  highlightCurrentMenuArea?: boolean;
 }
 
-const { title, nav = [], enableSearch = true, enableAppearanceToggle = true } = Astro.props;
+const {
+  layout = 'basic',
+  siteTitle,
+  title,
+  logo,
+  disableTextInHeader = false,
+  mainMenu,
+  nav = [],
+  subnavMenu = [],
+  translations = [],
+  currentLanguage = 'EN',
+  enableA11y = false,
+  enableSearch = false,
+  enableAppearanceToggle = false,
+  showDisableBlurA11y = true,
+  showDisableImagesA11y = true,
+  highlightCurrentMenuArea = false,
+} = Astro.props;
+
+const resolvedTitle = siteTitle || title || 'Blowfish Astro Theme';
+const resolvedMainMenu: MenuItem[] =
+  mainMenu ?? nav.map((item) => ({ name: item.label, url: item.href }));
 ---
 
-<header class="bf-site-header">
-  <div class="bf-site-header-inner">
-    <a class="bf-site-brand" href="/">{title}</a>
-    <nav class="bf-site-nav" aria-label="Main">
-      {nav.map((item) => (
-        <a href={item.href}>{item.label}</a>
-      ))}
-    </nav>
-    <div class="bf-site-actions">
-      {enableSearch && (
-        <form class="bf-site-search" action="/search" method="get">
-          <input type="search" name="q" placeholder="Search" />
-        </form>
+{layout !== 'basic' && <div class="min-h-[148px]"></div>}
+
+{layout === 'fixed-gradient' && (
+  <div class="fixed inset-x-0 min-h-[130px] opacity-65 bg-gradient-to-b from-neutral from-60% dark:from-neutral-800 to-transparent mix-blend-normal z-80"></div>
+)}
+
+<div
+  class:list={[
+    layout === 'basic' && 'relative',
+    layout === 'fixed' && 'fixed inset-x-0 z-100',
+    layout === 'fixed-fill' && 'fixed inset-x-0 bg-neutral dark:bg-neutral-800 z-100',
+    layout === 'fixed-fill-blur' && 'fixed inset-x-0 z-100',
+    layout === 'fixed-gradient' && 'fixed inset-x-0 z-100',
+  ]}
+>
+  {(layout === 'fixed' || layout === 'fixed-fill-blur' || layout === 'fixed-gradient') && (
+    <div
+      id="menu-blur"
+      class:list={[
+        'absolute opacity-0 inset-x-0 top-0 h-full single_hero_background nozoom backdrop-blur-2xl',
+        layout === 'fixed' && 'shadow-2xl bg-neutral/25 dark:bg-neutral-800/25',
+        layout === 'fixed-fill-blur' &&
+          'backdrop-saturate-220 backdrop-brightness-112 dark:backdrop-saturate-180 dark:backdrop-brightness-95 bg-primary-200/80 bg-linear-60 dark:bg-primary-800/30 shadow-xl',
+        layout === 'fixed-gradient' && 'shadow-2xl',
+      ]}
+    ></div>
+  )}
+
+  <div class:list={layout === 'basic' ? undefined : 'relative m-auto leading-7 max-w-7xl px-6 sm:px-14 md:px-24 lg:px-32'}>
+    <div class="main-menu flex items-center w-full gap-2 p-1 pl-0">
+      {logo && (
+        <div>
+          <a href="/" class="flex" aria-label={resolvedTitle}>
+            <img src={logo} class="logo max-h-20 max-w-20 object-scale-down object-left nozoom" alt="" />
+          </a>
+        </div>
       )}
-      {enableAppearanceToggle && <BlowfishAppearanceToggle />}
+
+      {!disableTextInHeader && (
+        <a href="/" class="text-base font-medium truncate min-w-0 shrink">
+          {resolvedTitle}
+        </a>
+      )}
+
+      <div class="flex items-center ms-auto">
+        <div class="hidden md:flex">
+          <BlowfishDesktopMenu
+            mainMenu={resolvedMainMenu}
+            translations={translations}
+            currentLanguage={currentLanguage}
+            enableA11y={enableA11y}
+            enableSearch={enableSearch}
+            enableAppearanceToggle={enableAppearanceToggle}
+            showDisableBlurA11y={showDisableBlurA11y}
+            showDisableImagesA11y={showDisableImagesA11y}
+          />
+        </div>
+        <div class="flex md:hidden">
+          <BlowfishMobileMenu
+            mainMenu={resolvedMainMenu}
+            subnavMenu={subnavMenu}
+            translations={translations}
+            currentLanguage={currentLanguage}
+            enableA11y={enableA11y}
+            enableSearch={enableSearch}
+            enableAppearanceToggle={enableAppearanceToggle}
+            showDisableBlurA11y={showDisableBlurA11y}
+            showDisableImagesA11y={showDisableImagesA11y}
+          />
+        </div>
+      </div>
     </div>
+
+    <BlowfishSubnavigation subnavMenu={subnavMenu} logo={logo} />
   </div>
-</header>
+</div>
 
-<style>
-  .bf-site-header {
-    position: sticky;
-    top: 0;
-    z-index: 30;
-    backdrop-filter: blur(10px);
-    background: color-mix(in srgb, var(--bf-bg) 82%, transparent);
-    border-bottom: 1px solid var(--bf-border);
-  }
+{highlightCurrentMenuArea && (
+  <script is:inline>
+    (function () {
+      var mainmenu = document.querySelector('.main-menu');
+      if (!mainmenu) return;
 
-  .bf-site-header-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0.7rem 1rem;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 1rem;
-    align-items: center;
-  }
+      var path = window.location.pathname;
+      var links = mainmenu.querySelectorAll('a[href="' + path + '"]');
 
-  .bf-site-brand {
-    color: var(--bf-text);
-    text-decoration: none;
-    font-weight: 800;
-  }
+      links.forEach(function (link) {
+        var targets = link.querySelectorAll('span');
+        targets.forEach(function (el) {
+          el.classList.add('active');
+        });
+      });
+    })();
+  </script>
+)}
 
-  .bf-site-nav {
-    display: flex;
-    gap: 0.8rem;
-    flex-wrap: wrap;
-  }
-
-  .bf-site-nav a {
-    color: var(--bf-muted);
-    text-decoration: none;
-    font-size: 0.95rem;
-  }
-
-  .bf-site-search input {
-    border: 1px solid var(--bf-border);
-    background: color-mix(in srgb, var(--bf-surface) 88%, black 12%);
-    color: var(--bf-text);
-    border-radius: 0.5rem;
-    padding: 0.35rem 0.55rem;
-    min-width: 10rem;
-  }
-
-  .bf-site-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.45rem;
-    justify-content: flex-end;
-  }
-
-  @media (max-width: 760px) {
-    .bf-site-header-inner {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
+{(layout === 'fixed' || layout === 'fixed-fill-blur' || layout === 'fixed-gradient') && (
+  <script is:inline data-blur-id="menu-blur" data-scroll-divisor="300"></script>
+)}

@@ -1,14 +1,19 @@
 ---
 import BlowfishIcon from '../BlowfishIcon.astro';
+import { t } from '../../lib/i18n';
 
 export interface Props { url: string; }
 const { url } = Astro.props;
 ---
 
-<a href={url} target="_blank" rel="noopener noreferrer" class="bf-meta-icon" title="Edit">
-  <BlowfishIcon name="edit" size="1rem" />
-</a>
-
-<style>
-  .bf-meta-icon { color: var(--bf-muted); text-decoration: none; font-size: 1rem; display: inline-flex; }
-</style>
+<span class="mb-[2px]">
+  <a
+    href={url}
+    class="text-lg hover:text-primary-500"
+    rel="noopener noreferrer"
+    target="_blank"
+    title={t('article.edit_title')}
+  >
+    <span class="inline-block align-text-bottom"><BlowfishIcon name="edit" /></span>
+  </a>
+</span>

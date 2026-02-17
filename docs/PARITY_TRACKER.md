@@ -5,6 +5,17 @@ Goal: reproduce official Blowfish theme behavior in Astro-native implementation.
 Source baseline: `/tmp/blowfish-upstream` (GitHub `nunocoracao/blowfish`).
 Process configuration: `REWRITE_CONFIG.json` (mandatory update checklist for future rewrite passes).
 
+## Priority plan status (Claude 8-step)
+
+- DONE 1. Tailwind foundation + scheme/component CSS imports
+- DONE 2. Inline SVG icon system + key component wiring
+- DONE 3. `.dark` class appearance flow + toggle behavior
+- DONE 4. Expanded `<head>` metadata + verification + favicon + appearance bootstrap
+- DONE 5. Header rewrite with desktop/mobile/subnavigation and 5 layout variants
+- DONE 6. Numbered pagination with ellipsis + prev/next rel
+- DONE 7. Removal of invented alert/badge/button variants
+- DONE 8. i18n foundation + target component/page string migration
+
 ## Status legend
 
 - DONE: Implemented in Astro package
@@ -22,58 +33,68 @@ Process configuration: `REWRITE_CONFIG.json` (mandatory update checklist for fut
 
 ## Recent Articles
 
-- PARTIAL `layouts/partials/recent-articles/main.html`
-- PARTIAL `layouts/partials/recent-articles/list.html`
-- PARTIAL `layouts/partials/recent-articles/cardview.html`
-- PARTIAL `layouts/partials/recent-articles/cardview-fullwidth.html`
+- DONE `layouts/partials/recent-articles/main.html`
+- DONE `layouts/partials/recent-articles/list.html`
+- DONE `layouts/partials/recent-articles/cardview.html`
+- DONE `layouts/partials/recent-articles/cardview-fullwidth.html`
 
 ## Shortcodes
 
 - DONE major shortcode surface in `src/components/*`
 - DONE missing shortcode stubs/components from upstream:
   - `codeberg`, `forgejo`, `gitea`, `gitlab`, `huggingface`, `keyword`, `keywordList`, `list`, `mdimporter`, `screenshot`, `swatches`
+- DONE shortcode/home/hero/meta scoped legacy component CSS removal (all component-local `<style>` blocks removed; utility/Tailwind classes now drive rendering)
 
 ## Core templates
 
-- PARTIAL `layouts/_default/baseof.html` -> `src/layouts/site/BlowfishSiteLayout.astro`
-- PARTIAL `layouts/_default/list.html` -> `src/pages/theme/list.astro`
-- PARTIAL `layouts/_default/single.html` -> `src/pages/theme/single.astro`
-- PARTIAL `layouts/_default/term.html` -> `src/pages/theme/term.astro`
-- PARTIAL `layouts/_default/terms.html` -> `src/pages/theme/terms.astro`
-- PARTIAL `layouts/404.html` -> `src/pages/404.astro`
-- PARTIAL `layouts/robots.txt` -> `src/pages/robots.txt.ts`
+- DONE `layouts/_default/baseof.html` -> `src/layouts/site/BlowfishSiteLayout.astro` (Astro-adapted)
+- DONE `layouts/_default/list.html` -> `src/pages/theme/list.astro` (parity demo route)
+- DONE `layouts/_default/single.html` -> `src/pages/theme/single.astro` (parity demo route)
+- DONE `layouts/_default/term.html` -> `src/pages/theme/term.astro` (parity demo route)
+- DONE `layouts/_default/terms.html` -> `src/pages/theme/terms.astro` (parity demo route)
+- DONE `layouts/404.html` -> `src/pages/404.astro`
+- DONE `layouts/robots.txt` -> `src/pages/robots.txt.ts`
 
 ## Site partials
 
-- PARTIAL `layouts/partials/header/*` -> `src/components/site/BlowfishHeader.astro`
-- PARTIAL `layouts/partials/footer.html` -> `src/components/site/BlowfishFooter.astro`
-- PARTIAL `layouts/partials/head.html` -> `src/components/site/BlowfishHead.astro`
-- PARTIAL `layouts/partials/search.html` -> `src/pages/search.astro` + `src/pages/search-index.json.ts`
-- PARTIAL `layouts/partials/pagination.html` -> `src/components/site/BlowfishPagination.astro`
-- PARTIAL `layouts/partials/breadcrumbs.html` -> `src/components/site/BlowfishBreadcrumbs.astro`
-- PARTIAL `layouts/partials/hero/*` -> `src/components/hero/*`
-- PARTIAL `layouts/partials/author*.html` -> `src/components/article/BlowfishAuthor*.astro`
-- PARTIAL `layouts/partials/toc.html` -> `src/components/article/BlowfishToc.astro`
-- PARTIAL `layouts/partials/schema.html` -> `src/components/site/BlowfishSchema.astro`
-- PARTIAL `layouts/partials/related.html` -> `src/components/article/BlowfishRelated.astro`
-- PARTIAL analytics partials -> `src/components/site/BlowfishAnalytics.astro`
+- DONE `layouts/partials/header/*` -> `src/components/site/BlowfishHeader.astro` + `src/components/site/header/*`
+  - includes upstream header component parity for `desktop-menu`, `mobile-menu`, `a11y`, and `translations`
+- DONE `layouts/partials/footer.html` -> `src/components/site/BlowfishFooter.astro` (menu/icons + attribution wired)
+- DONE `layouts/partials/head.html` -> `src/components/site/BlowfishHead.astro` (expanded metadata + appearance bootstrap + social image fallback + alternate output links props)
+- DONE `layouts/partials/search.html` -> `src/components/site/BlowfishSearch.astro` + `src/pages/index.json.ts` (+ compatibility endpoint `src/pages/search-index.json.ts`)
+- DONE `layouts/partials/pagination.html` -> `src/components/site/BlowfishPagination.astro` (numbered pages + ellipsis)
+- DONE `layouts/partials/breadcrumbs.html` -> `src/components/site/BlowfishBreadcrumbs.astro`
+- DONE `layouts/partials/hero/*` -> `src/components/hero/*`
+- DONE `layouts/partials/author*.html` -> `src/components/article/BlowfishAuthor*.astro`
+- DONE `layouts/partials/toc.html` -> `src/components/article/BlowfishToc.astro`
+- DONE `layouts/partials/schema.html` -> `src/components/site/BlowfishSchema.astro`
+- DONE `layouts/partials/related.html` -> `src/components/article/BlowfishRelated.astro`
+- DONE analytics partials -> `src/components/site/BlowfishAnalytics.astro`
 
 ## Article rendering
 
-- PARTIAL `layouts/partials/article-link/simple.html` -> `src/components/article/BlowfishArticleLinkSimple.astro`
-- PARTIAL `layouts/partials/article-link/card.html` -> `src/components/article/BlowfishArticleLinkCard.astro`
-- PARTIAL `layouts/partials/article-link/card-related.html` -> `src/components/article/BlowfishArticleLinkCardRelated.astro`
-- PARTIAL article meta partials (`article-meta/*`, `meta/*`) -> `src/components/article/BlowfishArticleMeta*.astro`, `src/components/meta/BlowfishMeta*.astro`
-- PARTIAL article pagination / sharing / series -> `src/components/article/BlowfishSharingLinks.astro`, `src/components/article/BlowfishSeries.astro`, `src/components/site/BlowfishPagination.astro`
+- DONE `layouts/partials/article-link/simple.html` -> `src/components/article/BlowfishArticleLinkSimple.astro`
+- DONE `layouts/partials/article-link/card.html` -> `src/components/article/BlowfishArticleLinkCard.astro`
+- DONE `layouts/partials/article-link/card-related.html` -> `src/components/article/BlowfishArticleLinkCardRelated.astro`
+- DONE article meta partials (`article-meta/*`, `meta/*`) -> `src/components/article/BlowfishArticleMeta*.astro`, `src/components/meta/BlowfishMeta*.astro`
+  - i18n updates added for date-updated/word-count/zen-mode labels
+- DONE article pagination / sharing / series -> `src/components/article/BlowfishSharingLinks.astro`, `src/components/article/BlowfishSeries.astro`, `src/components/site/BlowfishPagination.astro`
+  - Tailwind utility rewrite applied to article link/meta/taxonomy/toc/series/related/sharing components; scoped legacy CSS removed in this batch
+  - Upstream markup/class parity tightened in this pass for `article-link/simple`, `article-link/card`, `article-link/card-related`, `series`, `related`, `sharing-links`, `breadcrumbs`, and article meta blocks
 
 ## Assets and behavior
 
-- TODO port CSS components/schemes parity
-- PARTIAL port JS behavior parity: search, scroll-to-top, tabs, gallery, mermaid, chart, typeit, appearance toggle implemented in `src/components/site/BlowfishRuntime.astro` and `src/components/site/BlowfishAppearanceToggle.astro`
-- PARTIAL icon parity (full upstream icon/lib/img assets copied to `public/blowfish-*`; runtime mapping implemented for icon usages via `src/components/BlowfishIcon.astro`, broader coverage still TODO)
+- DONE port CSS components/schemes parity (`src/styles/schemes/*`, `src/styles/components/*`, Tailwind config + theme.css migrated; compatibility `--bf-*` token layer removed)
+- DONE port JS behavior parity: search modal + keyboard flow, scroll-to-top, tabs, gallery, mermaid, chart, typeit, appearance toggle implemented in `src/components/site/BlowfishRuntime.astro`, `src/components/site/BlowfishAppearanceToggle.astro`, and `src/components/site/BlowfishSearch.astro`
+- DONE background blur + a11y runtime parity hooks (`setBackgroundBlur`, `data-blur-id` targets for menu/hero blur, persisted a11y settings panel)
+- DONE appearance runtime parity hooks for mermaid/logo updates (`updateMermaidTheme`, `updateLogo`)
+- DONE icon parity baseline (inline SVG loading via `src/components/BlowfishIcon.astro`; key header/footer/share/alert/repo wiring done)
+- DONE i18n parity (`src/lib/i18n.ts` + `src/i18n/en.ts`; component/page UI labels migrated to `t()` for parity scope)
+- DONE demo hub now renders live component instances instead of plain catalog text (`src/pages/index.astro`)
+- DONE remote-data parity baseline for high-impact shortcodes:
+  - API-backed repo cards (`github`, `gitlab`, `codeberg`, `forgejo`, `gitea`, `huggingface`) now fetch and render live metadata at build time with fallback behavior
+  - `codeimporter` and `mdimporter` now fetch and render remote source content (line slicing for code importer)
 
 ## Current focus
 
-1. Build core site template parity (`base`, `header`, `footer`, list/single/taxonomy pages)
-2. Add missing shortcodes
-3. Complete search/pagination/article-meta behaviors
+1. Optional micro-tuning against upstream visual diffs

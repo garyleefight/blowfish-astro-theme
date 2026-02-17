@@ -1,51 +1,36 @@
 ---
-import { pickString } from '../lib/props';
+import BlowfishIcon from './BlowfishIcon.astro';
 
 export interface Props {
-  type?: 'info' | 'success' | 'warning' | 'error';
-  style?: 'info' | 'success' | 'warning' | 'error';
-  alertType?: 'info' | 'success' | 'warning' | 'error';
-  title?: string;
-  heading?: string;
-  content?: string;
-  text?: string;
-  description?: string;
+  icon?: string;
+  cardColor?: string;
+  iconColor?: string;
+  textColor?: string;
 }
 
-const props = Astro.props as Record<string, unknown>;
-const type = pickString(props, ['type', 'style', 'alertType'], 'info') as Props['type'];
-const title = pickString(props, ['title', 'heading']);
-const content = pickString(props, ['content', 'text', 'description']);
-
-const colorMap = {
-  info: 'var(--bf-primary)',
-  success: 'var(--bf-success)',
-  warning: 'var(--bf-warning)',
-  error: 'var(--bf-danger)'
-};
-
-const selected = type && type in colorMap ? type : 'info';
+const {
+  icon = 'triangle-exclamation',
+  cardColor,
+  iconColor,
+  textColor,
+} = Astro.props;
 ---
 
-<aside class="bf-card bf-alert" style={`--bf-alert-color: ${colorMap[selected]};`}>
-  {title && <h4>{title}</h4>}
-  {content && <p>{content}</p>}
-  <slot />
-</aside>
+<div
+  class:list={[
+    'flex px-4 py-3 rounded-md shadow',
+    !cardColor && 'bg-primary-100 dark:bg-primary-900',
+  ]}
+  style={cardColor ? `background-color: ${cardColor}` : undefined}
+>
+  <span
+    class:list={['pe-3 flex items-center', !iconColor && 'text-primary-400']}
+    style={iconColor ? `color: ${iconColor}` : undefined}
+  >
+    <BlowfishIcon name={icon} />
+  </span>
 
-<style>
-  .bf-alert {
-    border-left: 4px solid var(--bf-alert-color);
-    padding: 0.8rem 1rem;
-  }
-
-  .bf-alert h4 {
-    margin: 0 0 0.35rem;
-    font-size: 0.95rem;
-  }
-
-  .bf-alert p {
-    margin: 0;
-    color: var(--bf-muted);
-  }
-</style>
+  <span class={textColor ? undefined : 'dark:text-neutral-300'} style={textColor ? `color: ${textColor}` : undefined}>
+    <slot />
+  </span>
+</div>

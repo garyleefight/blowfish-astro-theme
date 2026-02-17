@@ -1,4 +1,6 @@
 ---
+import { t } from '../../lib/i18n';
+
 interface SeriesItem {
   title: string;
   href: string;
@@ -8,27 +10,30 @@ interface SeriesItem {
 export interface Props {
   name: string;
   items?: SeriesItem[];
+  open?: boolean;
 }
 
-const { name, items = [] } = Astro.props;
+const { name, items = [], open = false } = Astro.props;
 ---
 
 {items.length > 0 && (
-  <section class="bf-card bf-series">
-    <h3>Series: {name}</h3>
-    <ol>
-      {items.map((item) => (
-        <li>
-          {item.current ? <strong>{item.title}</strong> : <a href={item.href}>{item.title}</a>}
-        </li>
-      ))}
-    </ol>
-  </section>
-)}
+  <details class="mt-2 mb-5 overflow-hidden rounded-lg ms-0 ps-5" open={open}>
+    <summary class="py-1 text-lg font-semibold cursor-pointer bg-primary-200 text-neutral-800 -ms-5 ps-5 dark:bg-primary-800 dark:text-neutral-100">
+      {name} - {t('article.part_of_series')}
+    </summary>
 
-<style>
-  .bf-series { margin-top: 1rem; padding: 0.8rem 0.95rem; }
-  .bf-series h3 { margin: 0 0 0.55rem; font-size: 1rem; }
-  .bf-series ol { margin: 0; padding-left: 1rem; display: grid; gap: 0.35rem; }
-  .bf-series a { color: var(--bf-primary); text-decoration: none; }
-</style>
+    {items.map((item, index) => (
+      <div class="py-1 border-dotted border-neutral-300 border-s-1 -ms-5 ps-5 dark:border-neutral-600">
+        {item.current ? (
+          <>
+            {t('article.part')} {index + 1}: {t('article.this_article')}
+          </>
+        ) : (
+          <a href={item.href}>
+            {t('article.part')} {index + 1}: {item.title}
+          </a>
+        )}
+      </div>
+    ))}
+  </details>
+)}

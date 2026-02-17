@@ -9,20 +9,13 @@ const { image, imagePosition, alt = '' } = Astro.props;
 ---
 
 {image && (
-  <div class="bf-hero-basic-wrap">
+  <div class="h-36 overflow-hidden md:h-56 lg:h-72">
     <img
       src={image}
       alt={alt}
       role="presentation"
-      class="bf-hero-basic"
+      class="h-full w-full object-cover nozoom"
       style={imagePosition ? `object-position:${imagePosition};` : undefined}
     />
   </div>
 )}
-
-<style>
-  .bf-hero-basic-wrap { overflow: hidden; height: 9rem; border-radius: 0.65rem; }
-  @media (min-width: 768px) { .bf-hero-basic-wrap { height: 14rem; } }
-  @media (min-width: 1024px) { .bf-hero-basic-wrap { height: 18rem; } }
-  .bf-hero-basic { width: 100%; height: 100%; object-fit: cover; display: block; }
-</style>

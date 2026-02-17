@@ -1,54 +1,156 @@
+---
+import { t } from '../../lib/i18n';
+
+const runtimeTabLabel = t('components.default_tab_title');
+const runtimeChartSeriesLabel = t('components.chart_series_label');
+---
+
 <script is:inline src="/blowfish-lib/packery/packery.pkgd.min.js"></script>
 <script is:inline src="/blowfish-lib/mermaid/mermaid.min.js"></script>
 <script is:inline src="/blowfish-lib/chart/chart.min.js"></script>
 <script is:inline src="/blowfish-lib/typeit/typeit.umd.js"></script>
+<script is:inline src="/blowfish-lib/lite-youtube-embed/lite-yt-embed.js"></script>
 
 <script is:inline>
+  const TAB_FALLBACK = {JSON.stringify(runtimeTabLabel)};
+  const CHART_SERIES_LABEL = {JSON.stringify(runtimeChartSeriesLabel)};
+  const TAB_BUTTON_BASE =
+    'tab__button px-3 py-2 text-sm font-semibold border-b-2 border-transparent rounded-t-md hover:bg-neutral-200 dark:hover:bg-neutral-700';
+  const TAB_BUTTON_ACTIVE = 'tab--active border-primary-500 dark:border-primary-400';
+
+  const escapeHtml = (value) =>
+    value
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;');
+
+  const setBackgroundBlur = (targetId, scrollDivisor = 300, disableBlur = false, isMenuBlur = false) => {
+    if (!targetId) return;
+    const blurElement = document.getElementById(targetId);
+    if (!blurElement) return;
+
+    if (blurElement.__bfBlurHandler) {
+      window.removeEventListener('scroll', blurElement.__bfBlurHandler);
+    }
+
+    if (disableBlur) {
+      blurElement.setAttribute('aria-hidden', 'true');
+      if (!isMenuBlur) {
+        blurElement.style.display = 'none';
+        blurElement.style.opacity = '0';
+      } else {
+        blurElement.style.display = '';
+      }
+    } else {
+      blurElement.style.display = '';
+      blurElement.removeAttribute('aria-hidden');
+    }
+
+    const updateBlur = () => {
+      if (!disableBlur || isMenuBlur) {
+        const scroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        blurElement.style.opacity = String(scroll / scrollDivisor);
+      }
+    };
+
+    blurElement.__bfBlurHandler = updateBlur;
+    blurElement.setAttribute('role', 'presentation');
+    blurElement.setAttribute('tabindex', '-1');
+    window.addEventListener('scroll', updateBlur);
+    updateBlur();
+  };
+
+  const initBackgroundBlur = () => {
+    let settings = {};
+    try {
+      settings = JSON.parse(localStorage.getItem('a11ySettings') || '{}');
+    } catch {}
+    const disableBlur = Boolean(settings.disableBlur);
+
+    document.querySelectorAll('script[data-blur-id]').forEach((script) => {
+      const targetId = script.getAttribute('data-blur-id');
+      const scrollDivisor = Number(script.getAttribute('data-scroll-divisor') || 300);
+      const isMenuBlur = targetId === 'menu-blur';
+      setBackgroundBlur(targetId, scrollDivisor, disableBlur, isMenuBlur);
+    });
+  };
+
   const runTabs = () => {
-    document.querySelectorAll('.bf-tabs').forEach((container) => {
-      const tabs = Array.from(container.querySelectorAll('.bf-tab'));
+    document.querySelectorAll('.tab__container, .bf-tabs').forEach((container) => {
+      const tabs = Array.from(container.querySelectorAll('.tab__panel, .bf-tab'));
       if (!tabs.length) return;
 
-      let nav = container.querySelector('.bf-tabs-nav');
+      let navHost = container.querySelector('.tab__nav');
+      if (!navHost) {
+        navHost = document.createElement('div');
+        navHost.className = 'tab__nav';
+        const navRow = document.createElement('div');
+        navRow.className = 'flex flex-wrap gap-1';
+        navHost.appendChild(navRow);
+        container.prepend(navHost);
+      }
+
+      let nav = navHost.querySelector(':scope > div');
       if (!nav) {
         nav = document.createElement('div');
-        nav.className = 'bf-tabs-nav';
-        container.prepend(nav);
+        nav.className = 'flex flex-wrap gap-1';
+        navHost.appendChild(nav);
       }
+
       nav.innerHTML = '';
 
-      const defaultTab = container.getAttribute('data-default-tab');
-      let activeName = tabs.find((tab) => tab.getAttribute('data-active') === 'true')?.getAttribute('data-name');
-      if (!activeName) activeName = defaultTab || tabs[0].getAttribute('data-name');
+      const defaultTab =
+        container.getAttribute('data-default-tab') || container.getAttribute('data-default');
+      let activeName =
+        tabs.find((tab) => tab.getAttribute('data-active') === 'true')?.getAttribute('data-tab-label') ||
+        tabs.find((tab) => tab.getAttribute('data-active') === 'true')?.getAttribute('data-name');
+      if (!activeName) {
+        activeName =
+          defaultTab ||
+          tabs[0].getAttribute('data-tab-label') ||
+          tabs[0].getAttribute('data-name') ||
+          TAB_FALLBACK;
+      }
 
       const activate = (name) => {
         tabs.forEach((tab) => {
-          const current = tab.getAttribute('data-name') === name;
+          const tabName = tab.getAttribute('data-tab-label') || tab.getAttribute('data-name') || TAB_FALLBACK;
+          const current = tabName === name;
+          tab.classList.toggle('tab--active', current);
           tab.style.display = current ? 'block' : 'none';
+          tab.setAttribute('data-active', current ? 'true' : 'false');
         });
+
         nav.querySelectorAll('button').forEach((btn) => {
-          btn.setAttribute('data-selected', btn.getAttribute('data-name') === name ? 'true' : 'false');
+          const selected = btn.getAttribute('data-name') === name;
+          btn.setAttribute('aria-selected', selected ? 'true' : 'false');
+          btn.className = `${TAB_BUTTON_BASE} ${selected ? TAB_BUTTON_ACTIVE : ''}`.trim();
         });
       };
 
       tabs.forEach((tab) => {
-        const name = tab.getAttribute('data-name') || 'Tab';
+        const name = tab.getAttribute('data-tab-label') || tab.getAttribute('data-name') || TAB_FALLBACK;
+        const icon = tab.getAttribute('data-tab-icon');
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.textContent = name;
-        btn.className = 'bf-tabs-btn';
+        btn.className = TAB_BUTTON_BASE;
         btn.setAttribute('data-name', name);
+        btn.setAttribute('role', 'tab');
+        btn.setAttribute('aria-selected', 'false');
+        btn.innerHTML = icon
+          ? `<span class="flex items-center gap-1"><span class="relative inline-block align-text-bottom icon"><img src="/blowfish-icons/${icon}.svg" alt="" class="h-[1em] w-[1em]" aria-hidden="true" /></span>${name}</span>`
+          : `<span class="flex items-center gap-1">${name}</span>`;
         btn.addEventListener('click', () => activate(name));
         nav.appendChild(btn);
       });
 
-      activate(activeName || tabs[0].getAttribute('data-name'));
+      activate(activeName);
     });
   };
 
   const runGallery = () => {
     if (!window.Packery) return;
-    document.querySelectorAll('.bf-gallery').forEach((gallery) => {
+    document.querySelectorAll('.gallery, .bf-gallery').forEach((gallery) => {
       if (gallery.__bfPackery) return;
       gallery.__bfPackery = new window.Packery(gallery, {
         itemSelector: 'figure',
@@ -69,7 +171,8 @@
     for (const block of blocks) {
       const parent = block.closest('.bf-mermaid');
       if (!parent || parent.getAttribute('data-rendered') === 'true') continue;
-      const code = block.textContent || '';
+      const code = parent.getAttribute('data-graph') || block.textContent || '';
+      parent.setAttribute('data-graph', code);
       const id = `bf-mermaid-${Math.random().toString(36).slice(2)}`;
       try {
         const rendered = await window.mermaid.render(id, code);
@@ -81,26 +184,54 @@
     }
   };
 
+  window.updateMermaidTheme = () => {
+    document.querySelectorAll('.bf-mermaid[data-rendered="true"]').forEach((parent) => {
+      const code = parent.getAttribute('data-graph');
+      if (!code) return;
+      parent.innerHTML = `<code class="language-mermaid">${escapeHtml(code)}</code>`;
+      parent.setAttribute('data-rendered', 'false');
+    });
+    runMermaid();
+  };
+
+  window.setBackgroundBlur = setBackgroundBlur;
+
   const runCharts = () => {
     if (!window.Chart) return;
     document.querySelectorAll('[data-bf-chart]').forEach((el) => {
       if (el.getAttribute('data-rendered') === 'true') return;
-      const type = el.getAttribute('data-type') || 'bar';
-      const labels = JSON.parse(el.getAttribute('data-labels') || '[]');
-      const data = JSON.parse(el.getAttribute('data-data') || '[]');
+      const configRaw = el.getAttribute('data-config');
       const canvas = document.createElement('canvas');
       el.appendChild(canvas);
-      new window.Chart(canvas.getContext('2d'), {
-        type,
-        data: {
-          labels,
-          datasets: [{ label: 'Series', data }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false
+      let rendered = false;
+
+      if (configRaw) {
+        try {
+          const config = JSON.parse(configRaw);
+          new window.Chart(canvas.getContext('2d'), config);
+          rendered = true;
+        } catch {
+          // fall back to data-* format if JSON parse fails
         }
-      });
+      }
+
+      if (!rendered) {
+        const type = el.getAttribute('data-type') || 'bar';
+        const labels = JSON.parse(el.getAttribute('data-labels') || '[]');
+        const data = JSON.parse(el.getAttribute('data-data') || '[]');
+        new window.Chart(canvas.getContext('2d'), {
+          type,
+          data: {
+            labels,
+            datasets: [{ label: CHART_SERIES_LABEL, data }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        });
+      }
+
       canvas.style.width = '100%';
       canvas.style.height = '220px';
       el.setAttribute('data-rendered', 'true');
@@ -126,6 +257,7 @@
   };
 
   const runAll = () => {
+    initBackgroundBlur();
     runTabs();
     runGallery();
     runMermaid();
@@ -139,36 +271,3 @@
     runAll();
   }
 </script>
-
-<style>
-  .bf-tabs-nav {
-    display: flex;
-    gap: 0.45rem;
-    flex-wrap: wrap;
-    margin-bottom: 0.7rem;
-  }
-
-  .bf-tabs-btn {
-    border: 1px solid var(--bf-border);
-    background: color-mix(in srgb, var(--bf-surface) 88%, black 12%);
-    color: var(--bf-muted);
-    padding: 0.22rem 0.6rem;
-    border-radius: 999px;
-    font-size: 0.82rem;
-    cursor: pointer;
-  }
-
-  .bf-tabs-btn[data-selected='true'] {
-    color: var(--bf-text);
-    border-color: color-mix(in srgb, var(--bf-primary) 55%, var(--bf-border));
-  }
-
-  .bf-mermaid svg {
-    max-width: 100%;
-    height: auto;
-  }
-
-  [data-bf-chart] {
-    min-height: 260px;
-  }
-</style>

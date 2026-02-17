@@ -1,6 +1,7 @@
 ---
+import { t } from '../../lib/i18n';
 export interface Props { date: string; }
 const { date } = Astro.props;
 ---
 
-<time datetime={date}>Updated {date}</time>
+<time datetime={date}>{t('article.date_updated', { Date: date })}</time>

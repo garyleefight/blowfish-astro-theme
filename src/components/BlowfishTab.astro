@@ -1,19 +1,22 @@
 ---
 import { pickBoolean, pickString } from '../lib/props';
+import { t } from '../lib/i18n';
 
 export interface Props {
   name?: string;
   title?: string;
   label?: string;
+  icon?: string;
   active?: boolean;
   open?: boolean;
 }
 
 const props = Astro.props as Record<string, unknown>;
-const name = pickString(props, ['name', 'title', 'label'], 'Tab');
+const name = pickString(props, ['name', 'title', 'label'], t('components.default_tab_title'));
+const icon = pickString(props, ['icon']);
 const active = pickBoolean(props, ['active', 'open'], false);
 ---
 
-<section class="bf-tab" data-name={name} data-active={active ? 'true' : 'false'}>
+<div class="tab__panel" data-tab-label={name} data-tab-icon={icon} data-active={active ? 'true' : 'false'}>
   <slot />
-</section>
+</div>

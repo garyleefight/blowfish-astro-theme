@@ -1,62 +1,19 @@
 ---
-import { pickString } from '../lib/props';
-
 export interface Props {
   href?: string;
-  url?: string;
-  link?: string;
-  label?: string;
-  text?: string;
-  title?: string;
-  variant?: 'primary' | 'outline' | 'ghost';
-  style?: 'primary' | 'outline' | 'ghost';
   target?: string;
   rel?: string;
 }
 
-const props = Astro.props as Record<string, unknown>;
-const href = pickString(props, ['href', 'url', 'link'], '#');
-const label = pickString(props, ['label', 'text', 'title'], 'Open');
-const variant = pickString(props, ['variant', 'style'], 'primary') as Props['variant'];
-const target = pickString(props, ['target']);
-const rel = pickString(props, ['rel']);
-
-const selected = variant === 'outline' || variant === 'ghost' ? variant : 'primary';
+const { href, target, rel } = Astro.props;
 ---
 
-<a class={`bf-btn bf-btn-${selected}`} href={href} target={target || undefined} rel={rel || undefined}>
-  {label}
+<a
+  class="!rounded-md bg-primary-600 px-4 py-2 !text-neutral !no-underline hover:!bg-primary-500 dark:bg-primary-800 dark:hover:!bg-primary-700"
+  href={href}
+  target={target}
+  rel={rel}
+  role="button"
+>
+  <slot />
 </a>
-
-<style>
-  .bf-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    padding: 0.5rem 0.9rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: transform 140ms ease, opacity 140ms ease;
-  }
-
-  .bf-btn:hover {
-    transform: translateY(-1px);
-  }
-
-  .bf-btn-primary {
-    background: var(--bf-primary);
-    color: #0b1220;
-  }
-
-  .bf-btn-outline {
-    border: 1px solid var(--bf-primary);
-    color: var(--bf-primary);
-    background: transparent;
-  }
-
-  .bf-btn-ghost {
-    color: var(--bf-text);
-    background: transparent;
-  }
-</style>

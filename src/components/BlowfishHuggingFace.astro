@@ -1,5 +1,16 @@
 ---
+import BlowfishRepoCard from './BlowfishRepoCard.astro';
 import { pickString } from '../lib/props';
+import { fetchJsonSafe } from '../lib/remote';
+
+interface HuggingFaceResponse {
+  id?: string;
+  description?: string;
+  pipeline_tag?: string;
+  task_categories?: string[];
+  likes?: number;
+  downloads?: number;
+}
 
 export interface Props {
   model?: string;
@@ -18,17 +29,34 @@ const path = pickString(props, ['path']);
 
 const resolvedType = explicitType || (dataset ? 'dataset' : space ? 'spaces' : 'model');
 const resolvedPath = path || model || dataset || space;
-const href = resolvedType === 'model'
-  ? `https://huggingface.co/${resolvedPath}`
-  : `https://huggingface.co/${resolvedType}/${resolvedPath}`;
+
+const apiUrl =
+  resolvedType === 'model'
+    ? `https://huggingface.co/api/models/${resolvedPath}`
+    : resolvedType === 'dataset'
+      ? `https://huggingface.co/api/datasets/${resolvedPath}`
+      : `https://huggingface.co/api/spaces/${resolvedPath}`;
+
+const href =
+  resolvedType === 'model'
+    ? `https://huggingface.co/${resolvedPath}`
+    : `https://huggingface.co/${resolvedType}/${resolvedPath}`;
+
+const data = resolvedPath ? await fetchJsonSafe<HuggingFaceResponse>(apiUrl) : null;
+const description = data?.description?.replace(/Dataset Card for .+?\s+Dataset Summary\s+/s, '') || undefined;
+const language =
+  resolvedType === 'model'
+    ? data?.pipeline_tag || 'model'
+    : data?.task_categories?.[0] || resolvedType;
 ---
 
-<a class="bf-card bf-repo-card" href={href} target="_blank" rel="noopener noreferrer">
-  <strong>Hugging Face</strong>
-  <span>{resolvedType}: {resolvedPath}</span>
-</a>
-
-<style>
-  .bf-repo-card { display: grid; gap: 0.2rem; padding: 0.8rem 1rem; text-decoration: none; color: inherit; }
-  .bf-repo-card span { color: var(--bf-muted); }
-</style>
+<BlowfishRepoCard
+  href={href}
+  icon="huggingface"
+  title="Hugging Face"
+  fullName={data?.id || resolvedPath || 'Hugging Face'}
+  description={description}
+  language={language}
+  likes={typeof data?.likes === 'number' ? data.likes : 0}
+  downloads={typeof data?.downloads === 'number' ? data.downloads : 0}
+/>

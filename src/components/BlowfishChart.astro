@@ -2,6 +2,9 @@
 import { pickString } from '../lib/props';
 
 export interface Props {
+  config?: string;
+  options?: string;
+  chart?: string;
   type?: 'bar' | 'line' | 'pie' | 'doughnut' | 'radar' | 'polarArea';
   chartType?: 'bar' | 'line' | 'pie' | 'doughnut' | 'radar' | 'polarArea';
   labels?: string;
@@ -13,18 +16,20 @@ export interface Props {
 }
 
 const props = Astro.props as Record<string, unknown>;
+const config = pickString(props, ['config', 'options', 'chart']);
 const type = pickString(props, ['type', 'chartType'], 'bar');
 const labels = pickString(props, ['labels', 'xLabels'], '[]');
 const data = pickString(props, ['data', 'series'], '[]');
 const title = pickString(props, ['title', 'heading']);
 ---
 
-<div class="bf-card bf-code" data-bf-chart data-type={type} data-labels={labels} data-data={data}>
-  {title && <h4>{title}</h4>}
-  <p class="bf-muted">Chart placeholder ({type}). Provide client chart runtime in host app.</p>
+<div
+  class="min-h-[260px] rounded-md border border-neutral-200 p-4 shadow-sm dark:border-neutral-700"
+  data-bf-chart
+  data-config={config}
+  data-type={type}
+  data-labels={labels}
+  data-data={data}
+>
+  {title && <h4 class="mt-0 mb-2 text-base font-semibold">{title}</h4>}
 </div>
-
-<style>
-  .bf-code { padding: 0.9rem 1rem; }
-  .bf-code h4 { margin: 0 0 0.35rem; }
-</style>

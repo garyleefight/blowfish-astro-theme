@@ -7,23 +7,19 @@ import BlowfishSiteLayout from '../../layouts/site/BlowfishSiteLayout.astro';
 const tag = 'astro';
 const posts = [
   { title: 'Astro layout composition guide', date: '2026-02-17', readingTime: '5 min', summary: 'Patterns for reusable layout architecture.', href: '#', thumbnail: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=900' },
-  { title: 'Astro island decisions', date: '2026-02-16', readingTime: '4 min', summary: 'When to hydrate and when to stay static.', href: '#', thumbnail: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900' }
+  { title: 'Astro island decisions', date: '2026-02-16', readingTime: '4 min', summary: 'When to hydrate and when to stay static.', href: '#', thumbnail: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900' },
 ];
 ---
 
 <BlowfishSiteLayout title="Term Template" nav={[{ label: 'Home', href: '/' }, { label: 'Tags', href: '/theme/terms' }]}> 
   <BlowfishBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Tags', href: '/theme/terms' }, { label: tag }]} />
   <header>
-    <h1>Tag: {tag}</h1>
-    <p class="bf-muted">Term template parity target (`_default/term.html`).</p>
+    <h1 class="m-0 text-3xl font-bold">Tag: {tag}</h1>
+    <p class="mt-2 text-neutral-500 dark:text-neutral-400">Term template parity target (`_default/term.html`).</p>
   </header>
 
-  <section class="bf-term-list">
+  <section class="mt-4 grid gap-4">
     {posts.map((post) => <BlowfishArticleLinkSimple {...post} />)}
   </section>
   <BlowfishPagination prevHref="#" nextHref="#" />
 </BlowfishSiteLayout>
-
-<style>
-  .bf-term-list { margin-top: 1rem; display: grid; gap: 1rem; }
-</style>

@@ -1,6 +1,8 @@
 ---
+import { t } from '../../lib/i18n';
+
 export interface Props { words: number; }
 const { words } = Astro.props;
 ---
 
-<span>{words} words</span>
+<span>{t('article.word_count', { Count: words })}</span>

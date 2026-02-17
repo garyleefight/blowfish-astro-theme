@@ -1,33 +1,36 @@
 ---
+import BlowfishIcon from './BlowfishIcon.astro';
 import { pickString } from '../lib/props';
+import { t } from '../lib/i18n';
 
 export interface Props {
   text?: string;
   label?: string;
   href?: string;
   url?: string;
+  icon?: string;
 }
 
 const props = Astro.props as Record<string, unknown>;
-const text = pickString(props, ['text', 'label'], 'keyword');
+const text = pickString(props, ['text', 'label'], t('keyword.default_text'));
 const href = pickString(props, ['href', 'url']);
+const icon = pickString(props, ['icon']);
 ---
 
-{href ? (
-  <a class="bf-keyword" href={href}>{text}</a>
-) : (
-  <span class="bf-keyword">{text}</span>
-)}
-
-<style>
-  .bf-keyword {
-    display: inline-flex;
-    border-radius: 999px;
-    padding: 0.2rem 0.55rem;
-    border: 1px solid var(--bf-border);
-    font-size: 0.8rem;
-    text-decoration: none;
-    color: var(--bf-text);
-    background: color-mix(in srgb, var(--bf-surface) 84%, black 16%);
-  }
-</style>
+<div class="flex mt-2">
+  {href ? (
+    <a href={href} class="rounded-full bg-primary-500 dark:bg-primary-400 text-neutral-50 dark:text-neutral-800 px-1.5 py-[1px] text-xs font-normal no-underline">
+      <span class="flex flex-row items-center">
+        {icon && <span class="mr-1"><BlowfishIcon name={icon} /></span>}
+        <span>{text}</span>
+      </span>
+    </a>
+  ) : (
+    <span class="rounded-full bg-primary-500 dark:bg-primary-400 text-neutral-50 dark:text-neutral-800 px-1.5 py-[1px] text-xs font-normal">
+      <span class="flex flex-row items-center">
+        {icon && <span class="mr-1"><BlowfishIcon name={icon} /></span>}
+        <span>{text}</span>
+      </span>
+    </span>
+  )}
+</div>

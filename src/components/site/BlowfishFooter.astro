@@ -1,32 +1,59 @@
 ---
-export interface Props {
-  copyright?: string;
+import BlowfishIcon from '../BlowfishIcon.astro';
+import { t } from '../../lib/i18n';
+
+interface FooterMenuItem {
+  name?: string;
+  url: string;
+  title?: string;
+  pre?: string;
 }
 
-const { copyright = `Copyright ${new Date().getFullYear()}` } = Astro.props;
+export interface Props {
+  copyright?: string;
+  footerMenu?: FooterMenuItem[];
+  showThemeAttribution?: boolean;
+}
+
+const {
+  copyright = `&copy; ${new Date().getFullYear()}`,
+  footerMenu = [],
+  showThemeAttribution = true,
+} = Astro.props;
+
+const onlyIcon = footerMenu.length > 0 && footerMenu.every((item) => !item.name);
 ---
 
-<footer class="bf-site-footer">
-  <div class="bf-site-footer-inner">
-    <p>{copyright}</p>
+<footer id="site-footer" class="py-10 print:hidden">
+  {footerMenu.length > 0 && (
+    <nav class:list={[
+      'flex flex-row pb-4 text-base font-medium text-neutral-500 dark:text-neutral-400',
+      onlyIcon && 'overflow-x-auto py-2',
+    ]}>
+      <ul class:list={['flex list-none', onlyIcon ? 'flex-row' : 'flex-col sm:flex-row']}>
+        {footerMenu.map((item) => (
+          <li class:list={['flex mb-1 text-end sm:mb-0 sm:me-7 sm:last:me-0', onlyIcon && 'me-4']}>
+            <a class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2 flex items-center" href={item.url} title={item.title}>
+              {item.pre && (
+                <span class={item.name ? 'mr-1' : undefined}>
+                  <BlowfishIcon name={item.pre} />
+                </span>
+              )}
+              {item.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )}
+
+  <div class="flex items-center justify-between">
+    <p class="text-sm text-neutral-500 dark:text-neutral-400" set:html={copyright}></p>
+    {showThemeAttribution && (
+      <p class="text-xs text-neutral-500 dark:text-neutral-400" set:html={t('footer.powered_by', {
+        Hugo: '<a class="hover:underline hover:decoration-primary-400 hover:text-primary-500" href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a>',
+        Theme: '<a class="hover:underline hover:decoration-primary-400 hover:text-primary-500" href="https://blowfish.page/" target="_blank" rel="noopener noreferrer">Blowfish</a>',
+      })}></p>
+    )}
   </div>
 </footer>
-
-<style>
-  .bf-site-footer {
-    border-top: 1px solid var(--bf-border);
-    margin-top: 2rem;
-  }
-
-  .bf-site-footer-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 1.2rem 1rem 2rem;
-    color: var(--bf-muted);
-    font-size: 0.92rem;
-  }
-
-  .bf-site-footer-inner p {
-    margin: 0;
-  }
-</style>

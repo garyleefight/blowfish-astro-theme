@@ -1,47 +1,24 @@
 ---
-import { pickString } from '../lib/props';
+import fs from 'node:fs';
+import path from 'node:path';
 
 export interface Props {
   name?: string;
-  icon?: string;
-  iconName?: string;
-  size?: string;
   class?: string;
-  title?: string;
 }
 
-const props = Astro.props as Record<string, unknown>;
-const name = pickString(props, ['name', 'icon', 'iconName']);
-const size = pickString(props, ['size'], '1em');
-const className = pickString(props, ['class']);
-const title = pickString(props, ['title'], name);
-const src = `/blowfish-icons/${name}.svg`;
+const { name, class: className } = Astro.props;
+
+let svgContent = '';
+
+if (name) {
+  const iconPath = path.resolve(process.cwd(), 'public', 'blowfish-icons', `${name}.svg`);
+  if (fs.existsSync(iconPath)) {
+    svgContent = fs.readFileSync(iconPath, 'utf8');
+  }
+}
 ---
 
-{name ? (
-  <span class:list={['bf-icon', className || undefined]} title={title} aria-hidden="true" style={`width:${size};height:${size};`}>
-    <img src={src} alt="" loading="lazy" decoding="async" />
-  </span>
+{svgContent ? (
+  <span class:list={['relative block icon', className]} set:html={svgContent} />
 ) : null}
-
-<style>
-  .bf-icon {
-    display: inline-flex;
-    width: 1em;
-    height: 1em;
-    line-height: 1;
-    vertical-align: text-bottom;
-  }
-
-  .bf-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-    filter: invert(82%) sepia(8%) saturate(490%) hue-rotate(177deg) brightness(88%) contrast(88%);
-  }
-
-  :global(html[data-theme='light']) .bf-icon img {
-    filter: invert(29%) sepia(15%) saturate(496%) hue-rotate(177deg) brightness(91%) contrast(90%);
-  }
-</style>

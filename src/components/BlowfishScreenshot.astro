@@ -1,5 +1,6 @@
 ---
 import { pickString } from '../lib/props';
+import { t } from '../lib/i18n';
 
 export interface Props {
   src?: string;
@@ -11,17 +12,11 @@ export interface Props {
 
 const props = Astro.props as Record<string, unknown>;
 const src = pickString(props, ['src', 'url', 'image']);
-const alt = pickString(props, ['alt', 'caption'], 'screenshot');
+const alt = pickString(props, ['alt', 'caption'], t('components.screenshot_alt'));
 const caption = pickString(props, ['caption']);
 ---
 
-<figure class="bf-card bf-screenshot">
-  <img src={src} alt={alt} loading="lazy" />
+<figure>
+  <img class="my-0 rounded-md" src={src} alt={alt} loading="lazy" />
   {caption && <figcaption>{caption}</figcaption>}
 </figure>
-
-<style>
-  .bf-screenshot { margin: 0; overflow: hidden; }
-  .bf-screenshot img { width: 100%; display: block; object-fit: cover; }
-  .bf-screenshot figcaption { padding: 0.5rem 0.75rem; color: var(--bf-muted); font-size: 0.82rem; }
-</style>

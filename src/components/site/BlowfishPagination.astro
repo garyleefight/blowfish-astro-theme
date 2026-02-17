@@ -1,34 +1,76 @@
 ---
+import { t } from '../../lib/i18n';
+
 export interface Props {
+  totalPages?: number;
+  currentPage?: number;
+  baseUrl?: string;
   prevHref?: string;
   nextHref?: string;
 }
 
-const { prevHref, nextHref } = Astro.props;
+const { totalPages = 1, currentPage = 1, baseUrl = '', prevHref, nextHref } = Astro.props;
+
+const pageHref = (page: number) => (page <= 1 ? `${baseUrl || '/'}` : `${baseUrl.replace(/\/$/, '')}/page/${page}/`);
+const computedPrevHref = prevHref ?? (currentPage > 1 ? pageHref(currentPage - 1) : undefined);
+const computedNextHref = nextHref ?? (currentPage < totalPages ? pageHref(currentPage + 1) : undefined);
+const hasNumberedPages = totalPages > 1;
+const shouldRender = hasNumberedPages || Boolean(computedPrevHref) || Boolean(computedNextHref);
+
+const pages: Array<number | 'ellipsis'> = [];
+let ellipsed = false;
+
+if (hasNumberedPages) {
+  for (let page = 1; page <= totalPages; page += 1) {
+    const right = totalPages - page;
+    const showNumber =
+      page <= 1 ||
+      right === 0 ||
+      (page > currentPage - 3 && page < currentPage + 3);
+
+    if (showNumber) {
+      ellipsed = false;
+      pages.push(page);
+    } else if (!ellipsed) {
+      ellipsed = true;
+      pages.push('ellipsis');
+    }
+  }
+}
 ---
 
-{(prevHref || nextHref) && (
-  <nav class="bf-pagination" aria-label="Pagination">
-    <div>{prevHref ? <a href={prevHref}>Previous</a> : <span />}</div>
-    <div>{nextHref ? <a href={nextHref}>Next</a> : <span />}</div>
-  </nav>
+{shouldRender && (
+  <ul class="flex flex-row mt-8 justify-center" aria-label={t('pagination.label')}>
+  {computedPrevHref && (
+    <li>
+      <a href={computedPrevHref} class="mx-1 block min-w-[1.8rem] rounded text-center hover:bg-primary-600 hover:text-neutral" rel="prev">&larr;</a>
+    </li>
+  )}
+
+  {pages.map((page) =>
+    page === 'ellipsis' ? (
+      <li class="page-item">
+        <span class="page-link" aria-hidden="true">&hellip;</span>
+      </li>
+    ) : (
+      <li>
+        <a
+          href={pageHref(page)}
+          class:list={[
+            'mx-1 block min-w-[1.8rem] rounded text-center hover:bg-primary-600 hover:text-neutral',
+            page === currentPage && 'bg-primary-200 dark:bg-primary-400 dark:text-neutral-800',
+          ]}
+        >
+          {page}
+        </a>
+      </li>
+    )
+  )}
+
+  {computedNextHref && (
+    <li>
+      <a href={computedNextHref} class="mx-1 block min-w-[1.8rem] rounded text-center hover:bg-primary-600 hover:text-neutral" rel="next">&rarr;</a>
+    </li>
+  )}
+  </ul>
 )}
-
-<style>
-  .bf-pagination {
-    margin-top: 1.2rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.8rem;
-  }
-
-  .bf-pagination div:last-child {
-    text-align: right;
-  }
-
-  .bf-pagination a {
-    color: var(--bf-primary);
-    text-decoration: none;
-    font-weight: 600;
-  }
-</style>

@@ -1,60 +1,312 @@
-:root {
-  --bf-bg: #0f1115;
-  --bf-surface: #171a20;
-  --bf-border: #2f3540;
-  --bf-text: #e8edf5;
-  --bf-muted: #aab4c2;
-  --bf-primary: #4ca5ff;
-  --bf-success: #35b77a;
-  --bf-warning: #f0b429;
-  --bf-danger: #e25b5b;
-  --bf-radius: 12px;
-  --bf-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
-  --bf-max: 920px;
+/*! Blowfish Astro | MIT License | Ported from github.com/nunocoracao/blowfish */
+
+@config "../../tailwind.config.js";
+
+@import url("/blowfish-lib/lite-youtube-embed/lite-yt-embed.css");
+@import "tailwindcss";
+@import "./schemes/blowfish.css";
+@import "./components/chroma.css" layer(utilities);
+@import "./components/tabs.css" layer(utilities);
+@import "./components/zen-mode.css";
+@import "./components/a11y.css";
+@import "./components/admonition.css" layer(components);
+@import "./components/gallery.css";
+@import "./components/carousel.css";
+
+html:not(.dark) {
+  color-scheme: light;
 }
 
-html[data-theme='light'] {
-  --bf-bg: #f3f5f9;
-  --bf-surface: #ffffff;
-  --bf-border: #d6dde8;
-  --bf-text: #162236;
-  --bf-muted: #4d5d73;
-  --bf-primary: #1e72d7;
-  --bf-success: #1f8a57;
-  --bf-warning: #af7800;
-  --bf-danger: #ba2e2e;
-  --bf-shadow: 0 10px 22px rgba(15, 23, 42, 0.09);
+html.dark {
+  color-scheme: dark;
 }
 
-* {
-  box-sizing: border-box;
+body a,
+body button {
+  @apply transition-colors;
 }
 
-body {
-  margin: 0;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
-  background: radial-gradient(circle at top right, #1c2230 0%, var(--bf-bg) 40%);
-  color: var(--bf-text);
-  line-height: 1.6;
+button,
+[role="button"] {
+  cursor: pointer;
 }
 
-.bf-shell {
-  max-width: var(--bf-max);
-  margin: 0 auto;
-  padding: 1.25rem;
+/* Scale SVG icons to text size */
+.icon svg {
+  @apply h-[1em] w-[1em];
 }
 
-.bf-card {
-  background: color-mix(in srgb, var(--bf-surface) 85%, black 15%);
-  border: 1px solid var(--bf-border);
-  border-radius: var(--bf-radius);
-  box-shadow: var(--bf-shadow);
+/* Scale SVG logos to appropriate size */
+.logo svg {
+  @apply h-[5rem] w-[5rem];
 }
 
-.bf-muted {
-  color: var(--bf-muted);
+/* Search */
+#search-query::-webkit-search-cancel-button,
+#search-query::-webkit-search-decoration,
+#search-query::-webkit-search-results-button,
+#search-query::-webkit-search-results-decoration {
+  @apply hidden;
 }
 
-.bf-stack > * + * {
-  margin-top: 1rem;
+/* RTL support */
+.prose blockquote {
+  @apply rtl:pr-4 rtl:border-l-0 rtl:border-r-4;
+}
+
+.prose ul > li,
+.prose ol > li {
+  @apply rtl:pl-0 rtl:pr-2 rtl:mr-7;
+}
+
+.prose ol > li:before,
+.prose ul > li:before {
+  @apply rtl:left-auto rtl:right-1;
+}
+
+.prose thead td:first-child,
+.prose thead th:first-child {
+  @apply rtl:pr-0;
+}
+
+.prose thead td:last-child,
+.prose thead th:last-child {
+  @apply rtl:pl-0;
+}
+
+/* Adjust first child within prose */
+.prose div.min-w-0.max-w-prose > *:first-child {
+  @apply mt-3;
+}
+
+/* Table of Contents */
+#TOCView {
+  max-height: calc(100vh - 150px);
+  min-height: 0;
+  overflow-x: hidden;
+}
+
+.toc ul,
+.toc li {
+  @apply px-0 leading-snug list-none;
+}
+
+.toc ul ul {
+  @apply ltr:pl-4 rtl:pr-4;
+}
+
+.toc a {
+  @apply font-normal text-neutral-700 dark:text-neutral-300;
+}
+
+.toc ul > li {
+  @apply rtl:mr-0;
+}
+
+/* Code Copy */
+.highlight {
+  @apply relative z-0;
+}
+
+.highlight-wrapper:hover > .copy-button {
+  @apply visible;
+}
+
+.copy-button {
+  @apply absolute top-0 right-0 z-10 invisible w-20 py-1 font-mono text-sm cursor-pointer
+  opacity-90 bg-neutral-200 whitespace-nowrap rounded-bl-md rounded-tr-md text-neutral-700
+  dark:bg-neutral-600 dark:text-neutral-200 overflow-hidden truncate;
+}
+
+.copy-button:hover,
+.copy-button:focus,
+.copy-button:active,
+.copy-button:active:hover {
+  @apply bg-primary-100 dark:bg-primary-600;
+}
+
+.copy-textarea {
+  @apply absolute opacity-5 -z-10;
+}
+
+/* Fix long KaTeX equations on mobile */
+.katex-display {
+  overflow: auto hidden;
+}
+
+/* Fix katex overflow */
+.katex-display {
+  padding: 1em;
+  width: calc(100% - 1em);
+}
+
+/* Fix long tables breaking out of article on mobile */
+table {
+  display: block;
+  overflow: auto;
+}
+
+/* Fix long inline code sections */
+code {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Fix long URLs breaking out of article bounds */
+a {
+  word-break: break-word;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.prose-invert .highlight pre > code {
+  background-color: unset;
+}
+
+pre {
+  text-align: left;
+}
+
+.single_hero_round {
+  max-height: 50vh;
+  object-fit: cover;
+}
+
+.single_hero_background {
+  width: calc(100% + 1px);
+  z-index: -10;
+}
+
+.hero_gradient {
+  width: 100%;
+  height: 100%;
+}
+
+.thumbnail_card {
+  min-width: 300px;
+  height: 200px;
+}
+
+.thumbnail_card_related {
+  height: 150px;
+}
+
+.thumbnail {
+  width: 300px;
+  min-height: 180px;
+}
+
+@media (max-width: 852px) {
+  .thumbnail {
+    width: 100%;
+  }
+}
+
+.thumbnail-shadow {
+  box-shadow: 5px 5px 20px 1px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 852px) {
+  .width-patch {
+    width: 80vw;
+  }
+}
+@media (min-width: 853px) {
+  .width-patch {
+    width: 65ch;
+  }
+}
+
+.anchor {
+  display: block;
+  position: relative;
+  top: -150px;
+  height: 0px;
+  visibility: hidden;
+}
+
+/* Offset scroll position to avoid header overlap */
+[id^="fn"],
+[id^="fnref"] {
+  scroll-margin-top: 145px;
+}
+
+#main-content {
+  scroll-margin-top: -125px;
+}
+
+@media (min-width: 640px) {
+  .article {
+    flex-wrap: wrap;
+  }
+}
+
+@media (min-width: 853px) {
+  .article {
+    flex-wrap: nowrap;
+  }
+}
+
+.medium-zoom-image--opened {
+  z-index: 100;
+}
+
+@layer utilities {
+  .bf-border-color {
+    @apply border-neutral-300 dark:border-neutral-700;
+  }
+
+  .bf-border-color-hover {
+    @apply hover:border-primary-600 dark:hover:border-primary-400;
+  }
+
+  .bf-icon-color-hover {
+    @apply hover:text-primary-600 dark:hover:text-primary-400;
+  }
+
+  .bf-scrollbar {
+    @apply scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 dark:scrollbar-track-neutral-800 dark:scrollbar-thumb-neutral-600;
+  }
+}
+
+/* Prevent body scroll when mobile menu is open */
+body:has(#mobile-menu-toggle:checked) {
+  overflow: hidden;
+}
+
+@media (min-width: 853px) {
+  body:has(#mobile-menu-toggle:checked) {
+    overflow: visible;
+  }
+}
+
+#bmc-wbtn {
+  z-index: 50 !important;
+}
+
+.nested-menu {
+  position: relative;
+}
+
+.menuhide {
+  position: absolute;
+  z-index: 1000;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    visibility 0.3s,
+    opacity 0.3s ease-in-out;
+}
+
+.nested-menu:hover .menuhide,
+.nested-menu:focus-within .menuhide {
+  opacity: 1;
+  visibility: visible;
+}
+
+.active {
+  text-decoration-line: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 4px;
 }

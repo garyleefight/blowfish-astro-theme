@@ -11,8 +11,6 @@ const props = Astro.props as Record<string, unknown>;
 const text = pickString(props, ['text', 'content', 'lead']);
 ---
 
-<p class="bf-lead">{text}<slot /></p>
-
-<style>
-  .bf-lead { font-size: 1.15rem; line-height: 1.75; color: color-mix(in srgb, var(--bf-text) 92%, white 8%); }
-</style>
+<div class="lead text-neutral-500 dark:text-neutral-400 !mb-9 text-xl">
+  {text}<slot />
+</div>

@@ -1,4 +1,6 @@
 ---
+import { t } from '../../lib/i18n';
+
 export interface Props {
   date?: string;
   updated?: string;
@@ -7,21 +9,20 @@ export interface Props {
 }
 
 const { date, updated, readingTime, wordCount } = Astro.props;
+const hasUpdated = Boolean(updated);
+const hasWordCount = typeof wordCount === 'number';
+const hasReadingTime = Boolean(readingTime);
 ---
 
-<div class="bf-article-meta-basic">
+<div class="flex flex-row flex-wrap items-center">
   {date && <span>{date}</span>}
-  {updated && <span>Updated {updated}</span>}
-  {readingTime && <span>{readingTime}</span>}
-  {typeof wordCount === 'number' && <span>{wordCount} words</span>}
-</div>
+  {date && (hasUpdated || hasWordCount || hasReadingTime) && <span class="px-2 text-primary-500">&middot;</span>}
 
-<style>
-  .bf-article-meta-basic {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    color: var(--bf-muted);
-    font-size: 0.86rem;
-  }
-</style>
+  {hasUpdated && <span>{t('article.date_updated', { Date: updated! })}</span>}
+  {hasUpdated && (hasWordCount || hasReadingTime) && <span class="px-2 text-primary-500">&middot;</span>}
+
+  {hasWordCount && <span>{t('article.word_count', { Count: wordCount! })}</span>}
+  {hasWordCount && hasReadingTime && <span class="px-2 text-primary-500">&middot;</span>}
+
+  {hasReadingTime && <span>{readingTime}</span>}
+</div>

@@ -1,0 +1,270 @@
+---
+import BlowfishIcon from '../../BlowfishIcon.astro';
+import { t } from '../../../lib/i18n';
+
+export interface Props {
+  prefix?: string;
+  showDisableBlur?: boolean;
+  showDisableImages?: boolean;
+}
+
+const {
+  prefix = '',
+  showDisableBlur = true,
+  showDisableImages = true,
+} = Astro.props;
+
+const toggles: Array<{ id: string; label: string }> = [];
+if (showDisableBlur) {
+  toggles.push({ id: `${prefix}disable-blur`, label: t('a11y.disable_blur') });
+}
+if (showDisableImages) {
+  toggles.push({ id: `${prefix}disable-images`, label: t('a11y.disable_images') });
+}
+toggles.push({ id: `${prefix}underline-links`, label: t('a11y.show_link_underline') });
+toggles.push({ id: `${prefix}zen-mode`, label: t('article.zen_mode_title.enable') });
+---
+
+<div class="flex items-center">
+  <button
+    id={`${prefix}a11y-toggle`}
+    aria-label={t('a11y.open_panel')}
+    aria-expanded="false"
+    type="button"
+    class="text-base text-neutral-700 hover:text-primary-600 dark:text-neutral-200 dark:hover:text-primary-400"
+    role="button"
+    aria-pressed="false"
+  >
+    <BlowfishIcon name="a11y" />
+  </button>
+
+  <div id={`${prefix}a11y-overlay`} class="fixed inset-0 hidden" style="z-index:9999;"></div>
+
+  <div
+    id={`${prefix}a11y-panel`}
+    role="dialog"
+    aria-labelledby={`${prefix}a11y-panel-title`}
+    class="a11y-panel-enter fixed hidden p-6 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 rounded-lg shadow-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700"
+    style="min-width: 20rem; z-index:9999;"
+  >
+    <div class="flex items-center justify-between mb-6">
+      <h3 id={`${prefix}a11y-panel-title`} class="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
+        {t('a11y.title')}
+      </h3>
+      <button
+        id={`${prefix}a11y-close`}
+        class="text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200"
+        aria-label={t('a11y.close_panel')}
+        type="button"
+      >
+        <BlowfishIcon name="xmark" />
+      </button>
+    </div>
+
+    <div class="space-y-5">
+      {toggles.map((toggle) => (
+        <div class="flex items-center justify-between">
+          <label for={toggle.id} class="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+            {toggle.label}
+          </label>
+          <div class="ios-toggle">
+            <input type="checkbox" id={toggle.id} />
+          </div>
+        </div>
+      ))}
+
+      <div class="flex items-center justify-between">
+        <label for={`${prefix}font-size-select`} class="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+          {t('a11y.font_size')}
+        </label>
+        <select
+          id={`${prefix}font-size-select`}
+          class="border rounded-lg px-3 py-1.5 pr-8 text-neutral-900 text-sm dark:bg-neutral-700 dark:text-neutral-200 focus:ring-primary-500 focus:border-primary-500"
+        >
+          {['default', '12px', '14px', '16px', '18px', '20px', '22px', '24px'].map((size) => (
+            <option value={size}>{size}</option>
+          ))}
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    const a11yGlobal = window.BlowfishA11yPanel;
+    if (a11yGlobal?.init) {
+      a11yGlobal.init();
+      return;
+    }
+
+    const FEATURES = {
+      disableBlur: {
+        default: false,
+        apply: (enabled) => {
+          document.querySelectorAll('script[data-blur-id]').forEach((script) => {
+            const targetId = script.getAttribute('data-blur-id');
+            const scrollDivisor = Number(script.getAttribute('data-scroll-divisor') || 300);
+            if (typeof window.setBackgroundBlur === 'function') {
+              window.setBackgroundBlur(targetId, scrollDivisor, enabled, targetId === 'menu-blur');
+            }
+          });
+        },
+      },
+      disableImages: {
+        default: false,
+        apply: (enabled) => {
+          document.querySelectorAll('#background-image, #background-image-main').forEach((image) => {
+            image.style.display = enabled ? 'none' : '';
+          });
+        },
+      },
+      fontSize: {
+        default: 'default',
+        apply: (size) => {
+          document.documentElement.style.fontSize = size === 'default' ? '' : size;
+        },
+      },
+      underlineLinks: {
+        default: false,
+        apply: (enabled) => {
+          const existing = document.getElementById('a11y-underline-links');
+          if (enabled && !existing) {
+            const style = document.createElement('style');
+            style.id = 'a11y-underline-links';
+            style.textContent = `
+              a { text-decoration: underline !important; }
+              .group-hover-card-title { text-decoration: underline !important; }
+              .group-hover-card:hover .group-hover-card-title { text-decoration: underline !important; }`;
+            document.head.appendChild(style);
+          } else if (!enabled && existing) {
+            existing.remove();
+          }
+        },
+      },
+      zenMode: {
+        default: false,
+        apply: (enabled) => {
+          const body = document.body;
+          if (!body) return;
+          const active =
+            body.classList.contains('zen-mode-enable') ||
+            document.documentElement.classList.contains('bf-zen-mode');
+          if (enabled === active) return;
+          const button = document.getElementById('zen-mode-button');
+          if (button && typeof window._toggleZenMode === 'function') {
+            window._toggleZenMode(button, { scrollToHeader: false });
+          } else {
+            body.classList.toggle('zen-mode-enable', enabled);
+            document.documentElement.classList.toggle('bf-zen-mode', enabled);
+          }
+        },
+      },
+    };
+
+    let settings = null;
+
+    const getSettings = () => {
+      if (settings) return settings;
+      const defaults = Object.fromEntries(
+        Object.entries(FEATURES).map(([key, config]) => [key, config.default]),
+      );
+      try {
+        const saved = localStorage.getItem('a11ySettings');
+        settings = { ...defaults, ...JSON.parse(saved || '{}') };
+      } catch {
+        settings = defaults;
+      }
+      return settings;
+    };
+
+    const updateSetting = (key, value) => {
+      const current = getSettings();
+      current[key] = value;
+      try {
+        localStorage.setItem('a11ySettings', JSON.stringify(current));
+      } catch {}
+      FEATURES[key]?.apply(value);
+    };
+
+    const toElementId = (key) => key.replace(/([A-Z])/g, '-$1').toLowerCase();
+
+    const initPanel = (panelId) => {
+      const prefix = panelId.replace('a11y-panel', '');
+      const current = getSettings();
+
+      Object.entries(FEATURES).forEach(([key]) => {
+        const elementId = `${prefix}${toElementId(key)}`;
+        const element =
+          document.getElementById(elementId) ||
+          document.getElementById(`${elementId}-select`);
+        if (!element) return;
+
+        if (element.tagName === 'INPUT') {
+          element.checked = Boolean(current[key]);
+          element.onchange = (event) => updateSetting(key, event.target.checked);
+          return;
+        }
+        if (element.tagName === 'SELECT') {
+          element.value = current[key];
+          element.onchange = (event) => updateSetting(key, event.target.value);
+        }
+      });
+
+      const togglePanel = () => {
+        const panel = document.getElementById(panelId);
+        const overlay = document.getElementById(`${prefix}a11y-overlay`);
+        const toggle = document.getElementById(`${prefix}a11y-toggle`);
+        if (!panel || !overlay) return;
+
+        const isHidden = overlay.classList.contains('hidden');
+        overlay.classList.toggle('hidden');
+        panel.classList.toggle('hidden');
+
+        if (toggle) {
+          toggle.setAttribute('aria-pressed', String(isHidden));
+          toggle.setAttribute('aria-expanded', String(isHidden));
+        }
+      };
+
+      const toggle = document.getElementById(`${prefix}a11y-toggle`);
+      const close = document.getElementById(`${prefix}a11y-close`);
+      const overlay = document.getElementById(`${prefix}a11y-overlay`);
+      if (toggle) toggle.onclick = togglePanel;
+      if (close) close.onclick = togglePanel;
+      if (overlay) {
+        overlay.onclick = (event) => {
+          if (event.target === overlay) togglePanel();
+        };
+      }
+    };
+
+    const applyAll = () => {
+      const current = getSettings();
+      Object.entries(current).forEach(([key, value]) => FEATURES[key]?.apply(value));
+    };
+
+    const init = () => {
+      applyAll();
+      document.querySelectorAll('[id$="a11y-panel"]').forEach((panel) => {
+        initPanel(panel.id);
+      });
+    };
+
+    if (getSettings().disableImages) {
+      new MutationObserver(() => {
+        document.querySelectorAll('#background-image, #background-image-main').forEach((image) => {
+          image.style.display = 'none';
+        });
+      }).observe(document, { childList: true, subtree: true });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+
+    window.BlowfishA11yPanel = { getSettings, updateSetting, init };
+  })();
+</script>

@@ -1,4 +1,5 @@
 ---
+import { t } from '../../lib/i18n';
 import BlowfishHomeRecent from './BlowfishHomeRecent.astro';
 import type { BlowfishHomepageConfig, BlowfishRecentArticle } from '../../types/homepage';
 
@@ -12,21 +13,30 @@ const { config, articles = [], contentHtml = '' } = Astro.props;
 const image = config.homepageImage || config.image || '';
 ---
 
-<article class="bf-home-card-layout">
-  <div class="bf-home-card-text">
-    <header>
-      <h1>{config.title || 'Homepage Title'}</h1>
-    </header>
-    <section>
-      {contentHtml ? <div set:html={contentHtml} /> : config.description ? <p>{config.description}</p> : <slot />}
-    </section>
-  </div>
-  {image && (
-    <div class="bf-home-card-image-wrap">
-      <img src={image} alt={config.imageAlt || config.title || 'Homepage image'} class="bf-home-card-image" />
+<div class="relative pb-32 pt-16">
+  <div aria-hidden="true" class="absolute inset-x-0 top-0 h-48 bg-gradient-to-b"></div>
+  <div class="relative">
+    <div class="lg:mx-auto lg:grid lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-2 lg:gap-24 lg:px-8">
+      <div class="mx-auto max-w-xl px-4 sm:px-6 lg:mx-0 lg:max-w-none lg:px-0 lg:py-16">
+        <article class="max-w-full prose dark:prose-invert">
+          {config.title && (
+            <header>
+              <h1>{config.title}</h1>
+            </header>
+          )}
+          <section class="w-full">{contentHtml ? <div set:html={contentHtml} /> : config.description ? <p>{config.description}</p> : <slot />}</section>
+        </article>
+      </div>
+      {image && (
+        <div class="mx-auto mt-6 max-w-xl px-4 sm:mt-16 sm:px-6 lg:mx-0 lg:mt-0 lg:max-w-none lg:px-0 lg:py-16">
+          <div class="-me-48 w-full md:-me-16 lg:relative lg:m-0 lg:h-full lg:px-0">
+            <img class="w-full rounded-xl object-cover shadow-xl lg:absolute lg:h-full lg:w-auto lg:max-w-none" src={image} alt={config.imageAlt || config.title || t('components.homepage_image_alt')} />
+          </div>
+        </div>
+      )}
     </div>
-  )}
-</article>
+  </div>
+</div>
 
 {config.showRecent && (
   <BlowfishHomeRecent
@@ -34,43 +44,6 @@ const image = config.homepageImage || config.image || '';
     limit={config.recentLimit || 4}
     cardView={Boolean(config.cardView)}
     showMoreLink={config.showMoreLink}
+    heading={t('shortcode.recent_articles')}
   />
 )}
-
-<style>
-  .bf-home-card-layout {
-    display: grid;
-    gap: 1.5rem;
-    align-items: center;
-    grid-template-columns: 1fr;
-  }
-
-  .bf-home-card-text h1 {
-    margin: 0;
-    font-size: clamp(1.8rem, 3vw, 2.4rem);
-    font-weight: 800;
-  }
-
-  .bf-home-card-text section {
-    margin-top: 0.7rem;
-    color: color-mix(in srgb, var(--bf-text) 90%, white 10%);
-  }
-
-  .bf-home-card-image-wrap {
-    width: 100%;
-  }
-
-  .bf-home-card-image {
-    width: 100%;
-    border-radius: 0.9rem;
-    box-shadow: var(--bf-shadow);
-    object-fit: cover;
-  }
-
-  @media (min-width: 1040px) {
-    .bf-home-card-layout {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: 2rem;
-    }
-  }
-</style>

@@ -1,220 +1,317 @@
 ---
 import BlowfishBaseLayout from '../layouts/BlowfishBaseLayout.astro';
+import BlowfishRuntime from '../components/site/BlowfishRuntime.astro';
+import BlowfishDocItem from '../components/docs/BlowfishDocItem.astro';
+import BlowfishAccordion from '../components/BlowfishAccordion.astro';
+import BlowfishAccordionItem from '../components/BlowfishAccordionItem.astro';
+import BlowfishAlert from '../components/BlowfishAlert.astro';
+import BlowfishArticle from '../components/BlowfishArticle.astro';
 import BlowfishBadge from '../components/BlowfishBadge.astro';
-import '../styles/theme.css';
+import BlowfishButton from '../components/BlowfishButton.astro';
+import BlowfishCarousel from '../components/BlowfishCarousel.astro';
+import BlowfishChart from '../components/BlowfishChart.astro';
+import BlowfishCodeberg from '../components/BlowfishCodeberg.astro';
+import BlowfishCodeImporter from '../components/BlowfishCodeImporter.astro';
+import BlowfishFigure from '../components/BlowfishFigure.astro';
+import BlowfishForgejo from '../components/BlowfishForgejo.astro';
+import BlowfishGallery from '../components/BlowfishGallery.astro';
+import BlowfishGist from '../components/BlowfishGist.astro';
+import BlowfishGitea from '../components/BlowfishGitea.astro';
+import BlowfishGitHubCard from '../components/BlowfishGitHubCard.astro';
+import BlowfishGitLab from '../components/BlowfishGitLab.astro';
+import BlowfishHuggingFace from '../components/BlowfishHuggingFace.astro';
+import BlowfishIcon from '../components/BlowfishIcon.astro';
+import BlowfishKaTeX from '../components/BlowfishKaTeX.astro';
+import BlowfishKeyword from '../components/BlowfishKeyword.astro';
+import BlowfishKeywordList from '../components/BlowfishKeywordList.astro';
+import BlowfishLTR from '../components/BlowfishLTR.astro';
+import BlowfishLead from '../components/BlowfishLead.astro';
+import BlowfishList from '../components/BlowfishList.astro';
+import BlowfishMdImporter from '../components/BlowfishMdImporter.astro';
+import BlowfishMermaid from '../components/BlowfishMermaid.astro';
+import BlowfishRTL from '../components/BlowfishRTL.astro';
+import BlowfishScreenshot from '../components/BlowfishScreenshot.astro';
+import BlowfishSwatches from '../components/BlowfishSwatches.astro';
+import BlowfishTab from '../components/BlowfishTab.astro';
+import BlowfishTabs from '../components/BlowfishTabs.astro';
+import BlowfishTimeline from '../components/BlowfishTimeline.astro';
+import BlowfishTimelineItem from '../components/BlowfishTimelineItem.astro';
+import BlowfishTypeIt from '../components/BlowfishTypeIt.astro';
+import BlowfishVideo from '../components/BlowfishVideo.astro';
+import BlowfishYouTubeLite from '../components/BlowfishYouTubeLite.astro';
 
-const demoPages = [
-  { title: 'Homepage Layout', href: '/homepage-layout', description: 'Profile, page, hero, background, card, custom layouts.' },
-  { title: 'Hero + Author Partials', href: '/theme/hero', description: 'Mappings for `hero/*` and `author*` partials.' },
-  { title: 'List Template', href: '/theme/list', description: '`_default/list.html` parity demo.' },
-  { title: 'Single Template', href: '/theme/single', description: '`_default/single.html` with meta/toc/series/related.' },
-  { title: 'Term Template', href: '/theme/term', description: '`_default/term.html` parity demo.' },
-  { title: 'Terms Template', href: '/theme/terms', description: '`_default/terms.html` parity demo.' },
-  { title: 'Search Template', href: '/search', description: 'Fuse.js client search + static index endpoint.' },
-  { title: '404 Template', href: '/404.html', description: '`layouts/404.html` parity page.' }
+const galleryImages = [
+  { src: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80', alt: 'Mountain lake', caption: 'Gallery image 1' },
+  { src: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=1200&q=80', alt: 'Forest', caption: 'Gallery image 2' },
+  { src: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=1200&q=80', alt: 'Canyon', caption: 'Gallery image 3' },
 ];
 
-const categories = [
-  {
-    title: 'Shortcodes',
-    items: [
-      'BlowfishAccordion', 'BlowfishAccordionItem', 'BlowfishAlert', 'BlowfishArticle', 'BlowfishBadge',
-      'BlowfishButton', 'BlowfishCarousel', 'BlowfishChart', 'BlowfishCodeberg', 'BlowfishCodeImporter',
-      'BlowfishFigure', 'BlowfishForgejo', 'BlowfishGallery', 'BlowfishGist', 'BlowfishGitHubCard',
-      'BlowfishGitea', 'BlowfishGitLab', 'BlowfishHuggingFace', 'BlowfishIcon', 'BlowfishKaTeX',
-      'BlowfishKeyword', 'BlowfishKeywordList', 'BlowfishLead', 'BlowfishList', 'BlowfishLTR',
-      'BlowfishMdImporter', 'BlowfishMermaid', 'BlowfishRTL', 'BlowfishScreenshot', 'BlowfishSwatches',
-      'BlowfishTabs', 'BlowfishTab', 'BlowfishTimeline', 'BlowfishTimelineItem', 'BlowfishTypeIt',
-      'BlowfishVideo', 'BlowfishYouTubeLite', 'BlowfishCard', 'BlowfishBlockquote'
-    ]
-  },
-  {
-    title: 'Homepage + Hero',
-    items: [
-      'BlowfishHomepage',
-      'BlowfishHomeProfile', 'BlowfishHomePage', 'BlowfishHomeHero', 'BlowfishHomeBackground',
-      'BlowfishHomeCard', 'BlowfishHomeCustom', 'BlowfishHomeRecent',
-      'BlowfishHeroBasic', 'BlowfishHeroBackground', 'BlowfishHeroBig', 'BlowfishHeroThumbAndBackground'
-    ]
-  },
-  {
-    title: 'Article + Meta Partials',
-    items: [
-      'BlowfishArticleLinkSimple', 'BlowfishArticleLinkCard', 'BlowfishArticleLinkCardRelated',
-      'BlowfishArticleMetaBasic', 'BlowfishArticleMetaTaxonomy',
-      'BlowfishAuthor', 'BlowfishAuthorLinks', 'BlowfishAuthorExtra',
-      'BlowfishToc', 'BlowfishRelated', 'BlowfishSeries', 'BlowfishSharingLinks',
-      'BlowfishMetaDate', 'BlowfishMetaDateUpdated', 'BlowfishMetaReadingTime', 'BlowfishMetaWordCount',
-      'BlowfishMetaEdit', 'BlowfishMetaViews', 'BlowfishMetaLikes', 'BlowfishMetaLikesButton', 'BlowfishMetaZenMode'
-    ]
-  },
-  {
-    title: 'Site Partials + Runtime',
-    items: [
-      'BlowfishHead', 'BlowfishSchema', 'BlowfishAnalytics',
-      'BlowfishHeader', 'BlowfishFooter', 'BlowfishBreadcrumbs', 'BlowfishPagination',
-      'BlowfishAppearanceToggle', 'BlowfishRuntime', 'BlowfishScrollTop',
-      'BlowfishSiteLayout'
-    ]
-  }
+const listItems = [
+  { title: 'Mapped Hugo shortcodes', summary: 'All shortcode components have Astro equivalents.' },
+  { title: 'Tailwind parity', summary: 'Blowfish utility classes and tokens are preserved.' },
+  { title: 'Runtime parity hooks', summary: 'Tabs, chart, mermaid, typeit, and blur hooks are wired.' },
 ];
 
-const totalComponents = categories.reduce((acc, category) => acc + category.items.length, 0);
+const code = {
+  accordion: String.raw`<BlowfishAccordion mode="collapse">\n  <BlowfishAccordionItem title="Item A" open>...</BlowfishAccordionItem>\n  <BlowfishAccordionItem title="Item B">...</BlowfishAccordionItem>\n</BlowfishAccordion>`,
+  accordionItem: String.raw`<BlowfishAccordionItem title="Item" open>\n  Content\n</BlowfishAccordionItem>`,
+  alert: String.raw`<BlowfishAlert>Heads up message</BlowfishAlert>`,
+  article: String.raw`<BlowfishArticle\n  title="Sample article"\n  summary="Optional summary"\n  date="2026-02-17"\n  link="/theme/single"\n/>`,
+  badge: String.raw`<BlowfishBadge>Stable</BlowfishBadge>`,
+  button: String.raw`<BlowfishButton href="/theme/list">Read more</BlowfishButton>`,
+  carousel: String.raw`<BlowfishCarousel images={[{ src, alt, caption }]} />`,
+  chart: String.raw`<BlowfishChart type="bar" labels='["A","B","C"]' data='[2,7,4]' />`,
+  codeberg: String.raw`<BlowfishCodeberg repo="Codeberg/Community" />`,
+  codeImporter: String.raw`<BlowfishCodeImporter\n  url="https://raw.githubusercontent.com/nunocoracao/blowfish/main/layouts/shortcodes/alert.html"\n  lang="html"\n  startLine={1}\n  endLine={20}\n/>`,
+  figure: String.raw`<BlowfishFigure src="/image.jpg" alt="Example" caption="Figure caption" />`,
+  forgejo: String.raw`<BlowfishForgejo repo="forgejo/forgejo" host="codeberg.org" />`,
+  gallery: String.raw`<BlowfishGallery images={[{ src, alt, caption }]} columns={3} />`,
+  gist: String.raw`<BlowfishGist id="aa5a315d61ae9438b18d" user="octocat" />`,
+  gitea: String.raw`<BlowfishGitea repo="gitea/act_runner" owner="gitea" host="gitea.com" />`,
+  github: String.raw`<BlowfishGitHubCard repo="nunocoracao/blowfish" />`,
+  gitlab: String.raw`<BlowfishGitLab repo="gitlab-org/gitlab" />`,
+  huggingface: String.raw`<BlowfishHuggingFace model="distilbert-base-uncased" />`,
+  icon: String.raw`<BlowfishIcon name="moon" />`,
+  katex: String.raw`<BlowfishKaTeX equation="E = mc^2" display />`,
+  keyword: String.raw`<BlowfishKeyword text="astro" href="/theme/term" />`,
+  keywordList: String.raw`<BlowfishKeywordList items={[{ text: 'astro' }, { text: 'blowfish' }]} />`,
+  lead: String.raw`<BlowfishLead>Lead paragraph text.</BlowfishLead>`,
+  list: String.raw`<BlowfishList items={[{ title: 'Item', summary: 'Description' }]} />`,
+  ltr: String.raw`<BlowfishLTR><p>Left-to-right content</p></BlowfishLTR>`,
+  mdImporter: String.raw`<BlowfishMdImporter source="https://raw.githubusercontent.com/nunocoracao/blowfish/main/README.md" />`,
+  mermaid: String.raw`<BlowfishMermaid code={'graph TD; A[Start] --> B[Done];'} />`,
+  rtl: String.raw`<BlowfishRTL><p>Right-to-left content</p></BlowfishRTL>`,
+  screenshot: String.raw`<BlowfishScreenshot src="/image.jpg" alt="Screenshot" caption="Screenshot caption" />`,
+  swatches: String.raw`<BlowfishSwatches items={[{ name: 'primary-500', color: 'rgb(59,130,246)' }]} />`,
+  tab: String.raw`<BlowfishTab name="Overview" active>Panel content</BlowfishTab>`,
+  tabs: String.raw`<BlowfishTabs defaultTab="Overview">\n  <BlowfishTab name="Overview" active>...</BlowfishTab>\n  <BlowfishTab name="Setup">...</BlowfishTab>\n</BlowfishTabs>`,
+  timeline: String.raw`<BlowfishTimeline title="Milestones">\n  <BlowfishTimelineItem title="Start" date="Day 1">...</BlowfishTimelineItem>\n</BlowfishTimeline>`,
+  timelineItem: String.raw`<BlowfishTimelineItem title="Release" date="2026-02-17">Shipped.</BlowfishTimelineItem>`,
+  typeit: String.raw`<BlowfishTypeIt text="Typed text effect" speed={50} />`,
+  video: String.raw`<BlowfishVideo src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" controls />`,
+  youtubeLite: String.raw`<BlowfishYouTubeLite id="SgXhGb-7QbU" title="Demo video" />`,
+};
 ---
 
-<BlowfishBaseLayout title="Blowfish Astro Rewrite Docs" description="Single entrypoint for rewrite demos and component catalog">
-  <header class="docs-hero bf-card">
-    <h1>Blowfish Astro Rewrite</h1>
-    <p class="bf-muted">Documentation-style entrypoint for all rewritten components and template demos.</p>
-    <div class="docs-badges">
-      <BlowfishBadge text="Static Build" color="success" />
-      <BlowfishBadge text="Parity Rewrite" color="primary" />
-      <BlowfishBadge text={`${totalComponents} Components Cataloged`} color="warning" />
+<BlowfishBaseLayout title="Blowfish Component Documentation" description="Usage docs and live effects for every migrated Blowfish shortcode component">
+  <header class="rounded-xl border border-neutral-300 bg-neutral-50/70 p-5 shadow-sm dark:border-neutral-700 dark:bg-neutral-800/60">
+    <h1 class="m-0 text-3xl font-bold">Blowfish Component Documentation</h1>
+    <p class="mt-2 text-neutral-500 dark:text-neutral-300">This replaces the old demo hub. Every migrated shortcode component below includes what it does, how to use it, and a live effect preview.</p>
+    <div class="mt-4 flex flex-wrap gap-2">
+      <a class="rounded border border-primary-500 px-3 py-1 no-underline text-primary-600 hover:text-primary-500 dark:text-primary-400" href="#content-ui">Content + UI</a>
+      <a class="rounded border border-primary-500 px-3 py-1 no-underline text-primary-600 hover:text-primary-500 dark:text-primary-400" href="#interactive">Interactive</a>
+      <a class="rounded border border-primary-500 px-3 py-1 no-underline text-primary-600 hover:text-primary-500 dark:text-primary-400" href="#media">Media</a>
+      <a class="rounded border border-primary-500 px-3 py-1 no-underline text-primary-600 hover:text-primary-500 dark:text-primary-400" href="#remote">Remote Data</a>
+      <a class="rounded border border-primary-500 px-3 py-1 no-underline text-primary-600 hover:text-primary-500 dark:text-primary-400" href="#utilities">Utilities</a>
     </div>
-    <p class="docs-links">
-      <a href="/search">Search Docs</a>
-      <a href="/search-index.json">Search Index JSON</a>
-      <a href="/robots.txt">Robots</a>
-    </p>
   </header>
 
-  <section class="docs-section bf-card">
-    <h2>Demo Routes</h2>
-    <div class="docs-grid">
-      {demoPages.map((page) => (
-        <a class="docs-demo-card" href={page.href}>
-          <h3>{page.title}</h3>
-          <p>{page.description}</p>
-          <code>{page.href}</code>
-        </a>
-      ))}
+  <section id="content-ui" class="mt-5 space-y-4">
+    <h2 class="m-0 text-2xl font-semibold">Content + UI</h2>
+
+    <BlowfishDocItem id="alert" title="BlowfishAlert" effect="Renders an inline alert card for highlighted messages." usage={code.alert}>
+      <BlowfishAlert>This is a parity-style alert block.</BlowfishAlert>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="badge" title="BlowfishBadge" effect="Renders a compact outlined badge token." usage={code.badge}>
+      <BlowfishBadge>Stable</BlowfishBadge>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="button" title="BlowfishButton" effect="Renders the primary Blowfish call-to-action button style." usage={code.button}>
+      <BlowfishButton href="/theme/list">Read more</BlowfishButton>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="lead" title="BlowfishLead" effect="Applies lead-text typography to intro copy." usage={code.lead}>
+      <BlowfishLead>This sentence is rendered with lead emphasis styling.</BlowfishLead>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="icon" title="BlowfishIcon" effect="Renders inline SVG icons from the Blowfish icon set." usage={code.icon}>
+      <div class="flex items-center gap-3 text-2xl">
+        <BlowfishIcon name="moon" />
+        <BlowfishIcon name="sun" />
+        <BlowfishIcon name="search" />
+      </div>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="keyword" title="BlowfishKeyword" effect="Displays a single keyword pill with optional icon and link." usage={code.keyword}>
+      <BlowfishKeyword text="astro" href="/theme/term" icon="tag" />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="keyword-list" title="BlowfishKeywordList" effect="Displays a wrapped list of keyword pills." usage={code.keywordList}>
+      <BlowfishKeywordList items={[{ text: 'astro' }, { text: 'blowfish' }, { text: 'theme' }, { text: 'parity' }]} />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="list" title="BlowfishList" effect="Renders a simple list/card feed from item objects." usage={code.list}>
+      <BlowfishList items={listItems} />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="article" title="BlowfishArticle" effect="Renders a compact article card with title, date, and summary." usage={code.article}>
+      <BlowfishArticle title="Sample article" summary="Optional summary" date="2026-02-17" link="/theme/single" />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="ltr" title="BlowfishLTR" effect="Forces left-to-right direction for enclosed content." usage={code.ltr}>
+      <BlowfishLTR>
+        <p>LTR block: text and punctuation flow left-to-right.</p>
+      </BlowfishLTR>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="rtl" title="BlowfishRTL" effect="Forces right-to-left direction for enclosed content." usage={code.rtl}>
+      <BlowfishRTL>
+        <p>RTL block: text flow direction is reversed.</p>
+      </BlowfishRTL>
+    </BlowfishDocItem>
+  </section>
+
+  <section id="interactive" class="mt-8 space-y-4">
+    <h2 class="m-0 text-2xl font-semibold">Interactive</h2>
+
+    <BlowfishDocItem id="accordion" title="BlowfishAccordion" effect="Container that manages accordion behavior (collapse/expand mode)." usage={code.accordion}>
+      <BlowfishAccordion mode="collapse">
+        <BlowfishAccordionItem title="Item A" open>First panel content.</BlowfishAccordionItem>
+        <BlowfishAccordionItem title="Item B">Second panel content.</BlowfishAccordionItem>
+      </BlowfishAccordion>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="accordion-item" title="BlowfishAccordionItem" effect="Single disclosure item, usually nested in BlowfishAccordion." usage={code.accordionItem}>
+      <BlowfishAccordion>
+        <BlowfishAccordionItem title="Standalone item" open>Accordion item content.</BlowfishAccordionItem>
+      </BlowfishAccordion>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="tabs" title="BlowfishTabs" effect="Creates tab navigation and controls active panel selection." usage={code.tabs}>
+      <BlowfishTabs defaultTab="Overview">
+        <BlowfishTab name="Overview" active>Overview tab content.</BlowfishTab>
+        <BlowfishTab name="Setup">Setup tab content.</BlowfishTab>
+      </BlowfishTabs>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="tab" title="BlowfishTab" effect="Defines one tab panel inside BlowfishTabs." usage={code.tab}>
+      <BlowfishTabs defaultTab="Overview">
+        <BlowfishTab name="Overview" active>This panel comes from BlowfishTab.</BlowfishTab>
+      </BlowfishTabs>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="timeline" title="BlowfishTimeline" effect="Creates a vertical milestone timeline." usage={code.timeline}>
+      <BlowfishTimeline title="Release timeline">
+        <BlowfishTimelineItem title="Design" date="Day 1">Initial design pass.</BlowfishTimelineItem>
+        <BlowfishTimelineItem title="Build" date="Day 2">Implementation and polish.</BlowfishTimelineItem>
+      </BlowfishTimeline>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="timeline-item" title="BlowfishTimelineItem" effect="One event block inside BlowfishTimeline." usage={code.timelineItem}>
+      <BlowfishTimeline>
+        <BlowfishTimelineItem title="Release" date="2026-02-17">Shipped.</BlowfishTimelineItem>
+      </BlowfishTimeline>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="typeit" title="BlowfishTypeIt" effect="Animates typed text using the TypeIt runtime integration." usage={code.typeit}>
+      <BlowfishTypeIt text="Typed text effect" speed={50} />
+    </BlowfishDocItem>
+  </section>
+
+  <section id="media" class="mt-8 space-y-4">
+    <h2 class="m-0 text-2xl font-semibold">Media</h2>
+
+    <BlowfishDocItem id="figure" title="BlowfishFigure" effect="Renders an image figure with optional caption." usage={code.figure}>
+      <BlowfishFigure src={galleryImages[0].src} alt="Figure sample" caption="Figure caption" />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="screenshot" title="BlowfishScreenshot" effect="Shortcut for screenshot-like image presentation." usage={code.screenshot}>
+      <BlowfishScreenshot src={galleryImages[1].src} alt="Screenshot sample" caption="Screenshot caption" />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="gallery" title="BlowfishGallery" effect="Responsive image gallery with packery runtime behavior." usage={code.gallery}>
+      <BlowfishGallery images={galleryImages} columns={3} />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="carousel" title="BlowfishCarousel" effect="Horizontal snap carousel for sequential images." usage={code.carousel}>
+      <BlowfishCarousel images={galleryImages} />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="video" title="BlowfishVideo" effect="Native HTML5 video wrapper with caption support." usage={code.video}>
+      <BlowfishVideo src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" controls />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="youtube-lite" title="BlowfishYouTubeLite" effect="Lightweight YouTube embed with deferred player load." usage={code.youtubeLite}>
+      <BlowfishYouTubeLite id="SgXhGb-7QbU" title="Demo video" />
+    </BlowfishDocItem>
+  </section>
+
+  <section id="remote" class="mt-8 space-y-4">
+    <h2 class="m-0 text-2xl font-semibold">Remote Data + External Integrations</h2>
+
+    <BlowfishDocItem id="github-card" title="github shortcode / BlowfishGitHubCard" effect="Fetches and renders repository metadata from the GitHub API." usage={code.github}>
+      <BlowfishGitHubCard repo="nunocoracao/blowfish" />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="gitlab" title="BlowfishGitLab" effect="Fetches and renders repository metadata from GitLab API." usage={code.gitlab}>
+      <BlowfishGitLab repo="gitlab-org/gitlab" />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="codeberg" title="BlowfishCodeberg" effect="Fetches and renders repository metadata from Codeberg API." usage={code.codeberg}>
+      <BlowfishCodeberg repo="Codeberg/Community" />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="forgejo" title="BlowfishForgejo" effect="Fetches and renders repository metadata from Forgejo-compatible API." usage={code.forgejo}>
+      <BlowfishForgejo repo="forgejo/forgejo" host="codeberg.org" />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="gitea" title="BlowfishGitea" effect="Fetches and renders repository metadata from Gitea API." usage={code.gitea}>
+      <BlowfishGitea repo="gitea/act_runner" owner="gitea" host="gitea.com" />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="huggingface" title="BlowfishHuggingFace" effect="Fetches and renders model/dataset/space metadata from Hugging Face API." usage={code.huggingface}>
+      <BlowfishHuggingFace model="distilbert-base-uncased" />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="gist" title="BlowfishGist" effect="Renders a link card for a target GitHub Gist." usage={code.gist}>
+      <BlowfishGist id="aa5a315d61ae9438b18d" user="octocat" />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="code-importer" title="BlowfishCodeImporter" effect="Fetches remote source text and shows optional line range selection." usage={code.codeImporter}>
+      <BlowfishCodeImporter
+        url="https://raw.githubusercontent.com/nunocoracao/blowfish/main/layouts/shortcodes/alert.html"
+        lang="html"
+        startLine={1}
+        endLine={20}
+      />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="md-importer" title="BlowfishMdImporter" effect="Fetches remote markdown and renders it through markdown pipeline." usage={code.mdImporter}>
+      <BlowfishMdImporter source="https://raw.githubusercontent.com/nunocoracao/blowfish/main/README.md" />
+    </BlowfishDocItem>
+  </section>
+
+  <section id="utilities" class="mt-8 space-y-4">
+    <h2 class="m-0 text-2xl font-semibold">Utilities</h2>
+
+    <BlowfishDocItem id="katex" title="BlowfishKaTeX" effect="Displays math expressions (inline or display style)." usage={code.katex}>
+      <BlowfishKaTeX equation="E = mc^2" display={true} />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="mermaid" title="BlowfishMermaid" effect="Renders mermaid diagram definitions into SVG diagrams." usage={code.mermaid}>
+      <BlowfishMermaid code={'graph TD; Start --> Build; Build --> Ship;'} />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="chart" title="BlowfishChart" effect="Renders charts via Chart.js runtime." usage={code.chart}>
+      <BlowfishChart type="bar" labels='["A","B","C"]' data='[2,7,4]' title="Sample chart" />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="swatches" title="BlowfishSwatches" effect="Shows named color samples in a responsive grid." usage={code.swatches}>
+      <BlowfishSwatches items={[{ name: 'primary-500', color: 'rgb(59,130,246)' }, { name: 'neutral-800', color: 'rgb(38,38,38)' }]} />
+    </BlowfishDocItem>
+  </section>
+
+  <section class="mt-8 rounded-xl border border-neutral-300 bg-neutral-50/70 p-5 shadow-sm dark:border-neutral-700 dark:bg-neutral-800/60">
+    <h2 class="m-0 text-2xl font-semibold">Notes</h2>
+    <p class="mt-2 text-neutral-500 dark:text-neutral-300">These examples focus on shortcode components. For full template-level usage, see the parity routes:</p>
+    <div class="mt-3 flex flex-wrap gap-2">
+      <a class="rounded border border-primary-500 px-3 py-1 no-underline text-primary-600 hover:text-primary-500 dark:text-primary-400" href="/theme/list">/theme/list</a>
+      <a class="rounded border border-primary-500 px-3 py-1 no-underline text-primary-600 hover:text-primary-500 dark:text-primary-400" href="/theme/single">/theme/single</a>
+      <a class="rounded border border-primary-500 px-3 py-1 no-underline text-primary-600 hover:text-primary-500 dark:text-primary-400" href="/theme/hero">/theme/hero</a>
+      <a class="rounded border border-primary-500 px-3 py-1 no-underline text-primary-600 hover:text-primary-500 dark:text-primary-400" href="/search">/search</a>
     </div>
   </section>
 
-  <section class="docs-section bf-card">
-    <h2>Component Catalog</h2>
-    {categories.map((category) => (
-      <article class="docs-catalog-block">
-        <h3>{category.title}</h3>
-        <p class="bf-muted">{category.items.length} components</p>
-        <div class="docs-tags">
-          {category.items.map((item) => (
-            <code>{item}</code>
-          ))}
-        </div>
-      </article>
-    ))}
-  </section>
-
-  <section class="docs-section bf-card">
-    <h2>Rewrite Tracking</h2>
-    <p>Use these files for continuity and parity status:</p>
-    <ul>
-      <li><code>docs/PARITY_TRACKER.md</code></li>
-      <li><code>CODEX_CONTEXT.md</code></li>
-      <li><code>REWRITE_CONFIG.json</code></li>
-    </ul>
-  </section>
+  <BlowfishRuntime />
 </BlowfishBaseLayout>
-
-<style>
-  .docs-hero,
-  .docs-section {
-    padding: 1rem;
-  }
-
-  .docs-hero h1,
-  .docs-section h2 {
-    margin: 0;
-  }
-
-  .docs-badges {
-    margin-top: 0.7rem;
-    display: flex;
-    gap: 0.45rem;
-    flex-wrap: wrap;
-  }
-
-  .docs-links {
-    margin: 0.8rem 0 0;
-    display: flex;
-    gap: 0.7rem;
-    flex-wrap: wrap;
-  }
-
-  .docs-links a {
-    color: var(--bf-primary);
-    text-decoration: none;
-  }
-
-  .docs-grid {
-    margin-top: 0.8rem;
-    display: grid;
-    gap: 0.75rem;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .docs-demo-card {
-    display: grid;
-    gap: 0.35rem;
-    text-decoration: none;
-    color: inherit;
-    border: 1px solid var(--bf-border);
-    border-radius: 0.75rem;
-    padding: 0.75rem;
-    background: color-mix(in srgb, var(--bf-surface) 85%, black 15%);
-  }
-
-  .docs-demo-card h3 {
-    margin: 0;
-    font-size: 1rem;
-  }
-
-  .docs-demo-card p {
-    margin: 0;
-    color: var(--bf-muted);
-    font-size: 0.92rem;
-  }
-
-  .docs-demo-card code {
-    font-size: 0.8rem;
-    color: var(--bf-primary);
-  }
-
-  .docs-catalog-block {
-    margin-top: 0.9rem;
-    padding-top: 0.9rem;
-    border-top: 1px solid color-mix(in srgb, var(--bf-border) 70%, transparent);
-  }
-
-  .docs-catalog-block h3,
-  .docs-catalog-block p {
-    margin: 0;
-  }
-
-  .docs-tags {
-    margin-top: 0.6rem;
-    display: flex;
-    gap: 0.4rem;
-    flex-wrap: wrap;
-  }
-
-  .docs-tags code {
-    border: 1px solid var(--bf-border);
-    border-radius: 999px;
-    padding: 0.15rem 0.5rem;
-    font-size: 0.78rem;
-    background: color-mix(in srgb, var(--bf-surface) 85%, black 15%);
-  }
-
-  ul {
-    margin: 0.6rem 0 0;
-    padding-left: 1rem;
-  }
-
-  @media (max-width: 760px) {
-    .docs-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>

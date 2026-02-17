@@ -1,40 +1,5 @@
----
-import { pickString } from '../lib/props';
-
-export interface Props {
-  text?: string;
-  label?: string;
-  content?: string;
-  color?: 'primary' | 'success' | 'warning' | 'danger' | 'neutral';
-  variant?: 'primary' | 'success' | 'warning' | 'danger' | 'neutral';
-}
-
-const props = Astro.props as Record<string, unknown>;
-const text = pickString(props, ['text', 'label', 'content']);
-const color = pickString(props, ['color', 'variant'], 'neutral') as Props['color'];
-
-const styleMap = {
-  primary: 'var(--bf-primary)',
-  success: 'var(--bf-success)',
-  warning: 'var(--bf-warning)',
-  danger: 'var(--bf-danger)',
-  neutral: 'var(--bf-muted)'
-};
-
-const selected = color && color in styleMap ? color : 'neutral';
----
-
-<span class="bf-badge" style={`--bf-badge-color: ${styleMap[selected]};`}>{text}</span>
-
-<style>
-  .bf-badge {
-    display: inline-block;
-    font-size: 0.75rem;
-    letter-spacing: 0.02em;
-    border: 1px solid color-mix(in srgb, var(--bf-badge-color) 40%, black 60%);
-    color: var(--bf-badge-color);
-    border-radius: 999px;
-    padding: 0.2rem 0.6rem;
-    background: color-mix(in srgb, var(--bf-badge-color) 12%, transparent);
-  }
-</style>
+<span class="flex cursor-pointer">
+  <span class="rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">
+    <slot />
+  </span>
+</span>

@@ -13,8 +13,12 @@
       "requirement": "Update implemented/partial/todo status for touched features."
     },
     {
-      "path": "CODEX_CONTEXT.md",
-      "requirement": "Update session context, completed slices, and next steps."
+      "path": "AI_CONTEXT.md",
+      "requirement": "Update completion snapshot, next steps, and resume commands."
+    },
+    {
+      "path": "CLAUDE.md",
+      "requirement": "Keep process rules and continuation requirements in sync with current workflow."
     },
     {
       "path": "src/pages/index.astro",

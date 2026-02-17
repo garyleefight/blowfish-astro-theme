@@ -1,28 +1,47 @@
 ---
+import BlowfishRepoCard from './BlowfishRepoCard.astro';
 import { pickString } from '../lib/props';
+import { fetchJsonSafe } from '../lib/remote';
+
+interface GitLabResponse {
+  name_with_namespace?: string;
+  web_url?: string;
+  description?: string | null;
+  star_count?: number;
+  forks_count?: number;
+}
 
 export interface Props {
   repo?: string;
   repository?: string;
   owner?: string;
   user?: string;
+  projectID?: string;
+  baseURL?: string;
   host?: string;
 }
 
 const props = Astro.props as Record<string, unknown>;
 const repo = pickString(props, ['repo', 'repository']);
 const owner = pickString(props, ['owner', 'user']);
-const host = pickString(props, ['host'], 'gitlab.com');
+const projectID = pickString(props, ['projectID']);
+const host = pickString(props, ['host'], pickString(props, ['baseURL'], 'https://gitlab.com/'));
+const hostWithProtocol = host.startsWith('http://') || host.startsWith('https://') ? host : `https://${host}`;
+const normalizedHost = hostWithProtocol.endsWith('/') ? hostWithProtocol.slice(0, -1) : hostWithProtocol;
 const path = owner ? `${owner}/${repo}` : repo;
-const href = `https://${host}/${path}`;
+const projectRef = projectID || path;
+
+const apiUrl = projectRef ? `${normalizedHost}/api/v4/projects/${encodeURIComponent(projectRef)}` : '';
+const fallbackHref = path ? `${normalizedHost}/${path}` : normalizedHost;
+const data = apiUrl ? await fetchJsonSafe<GitLabResponse>(apiUrl) : null;
 ---
 
-<a class="bf-card bf-repo-card" href={href} target="_blank" rel="noopener noreferrer">
-  <strong>GitLab</strong>
-  <span>{path}</span>
-</a>
-
-<style>
-  .bf-repo-card { display: grid; gap: 0.2rem; padding: 0.8rem 1rem; text-decoration: none; color: inherit; }
-  .bf-repo-card span { color: var(--bf-muted); }
-</style>
+<BlowfishRepoCard
+  href={data?.web_url || fallbackHref}
+  icon="gitlab"
+  title="GitLab"
+  fullName={data?.name_with_namespace || path || 'GitLab'}
+  description={data?.description || undefined}
+  stars={typeof data?.star_count === 'number' ? data.star_count : undefined}
+  forks={typeof data?.forks_count === 'number' ? data.forks_count : undefined}
+/>

@@ -1,4 +1,5 @@
 ---
+import { t } from '../../lib/i18n';
 import type { BlowfishHomepageConfig, BlowfishRecentArticle } from '../../types/homepage';
 import BlowfishHomeRecent from './BlowfishHomeRecent.astro';
 
@@ -12,20 +13,27 @@ const { config, articles = [], contentHtml = '' } = Astro.props;
 const avatar = config.homepageImage || config.image;
 ---
 
-<article class="bf-home-profile">
-  <header>
-    {avatar && <img class="bf-home-avatar" src={avatar} alt={config.imageAlt || config.title || 'Author'} />}
-    <h1>{config.title || 'Author Name'}</h1>
-    {config.subtitle && <h2>{config.subtitle}</h2>}
+<article
+  class:list={[
+    !config.showRecent && 'h-full',
+    'flex flex-col items-center justify-center text-center',
+  ]}
+>
+  <header class="relative mb-3 flex flex-col items-center px-1 py-1">
+    {avatar && <img class="mb-2 h-36 w-36 rounded-full object-cover" src={avatar} alt={config.imageAlt || config.title || t('components.author_image_alt')} />}
+    <h1 class="text-4xl font-extrabold">{config.title || t('author.default_name')}</h1>
+    {config.subtitle && <h2 class="text-xl text-neutral-500 dark:text-neutral-400">{config.subtitle}</h2>}
     {config.links && config.links.length > 0 && (
-      <div class="bf-home-profile-links">
+      <div class="mt-1 flex flex-wrap text-2xl">
         {config.links.map((link) => (
-          <a href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>
+          <a class="px-1 text-primary-700 hover:text-primary-500 dark:text-primary-300 dark:hover:text-primary-400" href={link.href} target="_blank" rel="noopener noreferrer">
+            {link.label}
+          </a>
         ))}
       </div>
     )}
   </header>
-  <section class="bf-home-prose">
+  <section class="prose w-full dark:prose-invert">
     {contentHtml ? <div set:html={contentHtml} /> : config.description ? <p>{config.description}</p> : <slot />}
   </section>
 </article>
@@ -36,55 +44,6 @@ const avatar = config.homepageImage || config.image;
     limit={config.recentLimit || 4}
     cardView={Boolean(config.cardView)}
     showMoreLink={config.showMoreLink}
+    heading={t('shortcode.recent_articles')}
   />
 )}
-
-<style>
-  .bf-home-profile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .bf-home-avatar {
-    width: 9rem;
-    height: 9rem;
-    border-radius: 999px;
-    object-fit: cover;
-    margin: 0 auto 0.7rem;
-  }
-
-  .bf-home-profile h1 {
-    margin: 0;
-    font-size: clamp(1.9rem, 3vw, 2.3rem);
-    font-weight: 800;
-  }
-
-  .bf-home-profile h2 {
-    margin: 0.2rem 0 0;
-    color: var(--bf-muted);
-    font-weight: 500;
-    font-size: 1.18rem;
-  }
-
-  .bf-home-profile-links {
-    margin-top: 0.8rem;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.6rem;
-  }
-
-  .bf-home-profile-links a {
-    text-decoration: none;
-    color: var(--bf-primary);
-    font-weight: 600;
-  }
-
-  .bf-home-prose {
-    margin-top: 1rem;
-    max-width: 760px;
-    color: color-mix(in srgb, var(--bf-text) 92%, white 8%);
-  }
-</style>

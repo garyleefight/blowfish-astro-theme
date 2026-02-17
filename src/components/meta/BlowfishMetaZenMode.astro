@@ -1,37 +1,80 @@
-<button id="bf-zen-toggle" class="bf-meta-icon" type="button" title="Toggle Zen Mode">
-  <img src="/blowfish-icons/expand.svg" alt="" />
-</button>
+---
+import BlowfishIcon from '../BlowfishIcon.astro';
+import { t } from '../../lib/i18n';
+
+const zenEnableTitle = t('article.zen_mode_title.enable');
+const zenDisableTitle = t('article.zen_mode_title.disable');
+---
+
+<span class="mb-[2px]">
+  <span
+    id="zen-mode-button"
+    class="text-lg hover:text-primary-500"
+    title={zenEnableTitle}
+    data-title-i18n-disable={zenEnableTitle}
+    data-title-i18n-enable={zenDisableTitle}
+  >
+    <span class="inline-block align-text-bottom"><BlowfishIcon name="expand" /></span>
+  </span>
+</span>
 
 <script is:inline>
-  const btn = document.getElementById('bf-zen-toggle');
-  btn?.addEventListener('click', () => {
-    document.documentElement.classList.toggle('bf-zen-mode');
+  function _toggleZenMode(zenModeButton, options = { scrollToHeader: true }) {
+    const body = document.querySelector('body');
+    const footer = document.querySelector('#site-footer, footer');
+    const tocRight = document.querySelector('.toc-right');
+    const tocInside = document.querySelector('.toc-inside');
+    const articleContent = document.querySelector('.article-content');
+    const header = document.querySelector('#single_header');
+    if (!body) return;
+
+    body.classList.toggle('zen-mode-enable');
+    document.documentElement.classList.toggle('bf-zen-mode', body.classList.contains('zen-mode-enable'));
+
+    if (tocRight) tocRight.classList.toggle('lg:block');
+    if (tocInside) tocInside.classList.toggle('lg:hidden');
+    if (articleContent) {
+      articleContent.classList.toggle('max-w-fit');
+      articleContent.classList.toggle('max-w-prose');
+    }
+    if (header) {
+      header.classList.toggle('max-w-full');
+      header.classList.toggle('max-w-prose');
+    }
+    if (footer) {
+      footer.classList.toggle('max-w-full');
+      footer.classList.toggle('max-w-prose');
+    }
+
+    const titleI18nDisable = zenModeButton.getAttribute('data-title-i18n-disable');
+    const titleI18nEnable = zenModeButton.getAttribute('data-title-i18n-enable');
+    if (body.classList.contains('zen-mode-enable')) {
+      zenModeButton.setAttribute('title', titleI18nEnable || '');
+      if (options.scrollToHeader && header) {
+        window.scrollTo(window.scrollX, header.getBoundingClientRect().top - 90);
+      }
+    } else {
+      zenModeButton.setAttribute('title', titleI18nDisable || '');
+      if (options.scrollToHeader) {
+        document.querySelector('body')?.scrollIntoView();
+      }
+    }
+  }
+
+  function _registerZenModeButtonClick(zenModeButton) {
+    zenModeButton.addEventListener('click', function (event) {
+      event.preventDefault();
+      _toggleZenMode(zenModeButton);
+    });
+  }
+
+  window._toggleZenMode = _toggleZenMode;
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const zenModeButton = document.getElementById('zen-mode-button');
+    if (zenModeButton && !zenModeButton.dataset.bfZenBound) {
+      zenModeButton.dataset.bfZenBound = 'true';
+      _registerZenModeButtonClick(zenModeButton);
+    }
   });
 </script>
-
-<style>
-  .bf-meta-icon {
-    color: var(--bf-muted);
-    border: 0;
-    background: transparent;
-    cursor: pointer;
-    font-size: 1rem;
-    width: 1rem;
-    height: 1rem;
-    padding: 0;
-  }
-
-  .bf-meta-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    filter: invert(82%) sepia(8%) saturate(490%) hue-rotate(177deg) brightness(88%) contrast(88%);
-  }
-
-  :global(html[data-theme='light']) .bf-meta-icon img {
-    filter: invert(29%) sepia(15%) saturate(496%) hue-rotate(177deg) brightness(91%) contrast(90%);
-  }
-
-  :global(html.bf-zen-mode .bf-site-header), :global(html.bf-zen-mode .bf-site-footer) { display: none; }
-  :global(html.bf-zen-mode .bf-site-main) { max-width: 850px; }
-</style>

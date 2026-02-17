@@ -18,21 +18,15 @@ const subtitle = pickString(props, ['subtitle', 'description']);
 ---
 
 {href ? (
-  <a href={href} class="bf-card bf-card-link">
-    {title && <h4>{title}</h4>}
-    {subtitle && <p>{subtitle}</p>}
+  <a href={href} class="block rounded-xl border border-neutral-300 bg-neutral-50/70 p-4 text-inherit no-underline shadow-sm dark:border-neutral-700 dark:bg-neutral-800/60">
+    {title && <h4 class="m-0 text-lg font-semibold">{title}</h4>}
+    {subtitle && <p class="mt-2 text-neutral-500 dark:text-neutral-400">{subtitle}</p>}
     <slot />
   </a>
 ) : (
-  <section class="bf-card bf-card-link">
-    {title && <h4>{title}</h4>}
-    {subtitle && <p>{subtitle}</p>}
+  <section class="block rounded-xl border border-neutral-300 bg-neutral-50/70 p-4 text-inherit shadow-sm dark:border-neutral-700 dark:bg-neutral-800/60">
+    {title && <h4 class="m-0 text-lg font-semibold">{title}</h4>}
+    {subtitle && <p class="mt-2 text-neutral-500 dark:text-neutral-400">{subtitle}</p>}
     <slot />
   </section>
 )}
-
-<style>
-  .bf-card-link { display: block; padding: 1rem; text-decoration: none; color: inherit; }
-  .bf-card-link h4 { margin: 0; }
-  .bf-card-link p { margin: 0.4rem 0 0; color: var(--bf-muted); }
-</style>

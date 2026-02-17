@@ -1,5 +1,7 @@
 ---
+import BlowfishIcon from './BlowfishIcon.astro';
 import { pickString } from '../lib/props';
+import { t } from '../lib/i18n';
 
 export interface Props {
   title?: string;
@@ -7,15 +9,26 @@ export interface Props {
   label?: string;
   date?: string;
   time?: string;
+  icon?: string;
 }
 
 const props = Astro.props as Record<string, unknown>;
-const title = pickString(props, ['title', 'name', 'label'], 'Event');
+const title = pickString(props, ['title', 'name', 'label'], t('components.default_timeline_title'));
 const date = pickString(props, ['date', 'time']);
+const icon = pickString(props, ['icon'], 'check');
 ---
 
 <li>
-  <strong>{title}</strong>
-  {date && <span class="bf-muted"> - {date}</span>}
-  <div><slot /></div>
+  <div class="flex">
+    <div class="mt-5 h-8 min-w-[30px] rounded-full bg-primary-500 text-2xl text-neutral-50 ltr:-ml-12 rtl:-mr-[79px] dark:bg-primary-300 dark:text-neutral-700 flex items-center justify-center">
+      <BlowfishIcon name={icon} />
+    </div>
+    <div class="mb-10 ms-6 block flex-1 rounded-lg p-6 shadow-2xl break-words">
+      <div class="flex items-center justify-between gap-2">
+        <h2 class="mt-0 mb-0 text-xl font-semibold">{title}</h2>
+        {date && <p class="m-0 text-sm text-neutral-500 dark:text-neutral-400">{date}</p>}
+      </div>
+      <div class="mt-4"><slot /></div>
+    </div>
+  </div>
 </li>

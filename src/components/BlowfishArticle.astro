@@ -1,5 +1,6 @@
 ---
 import { pickString } from '../lib/props';
+import { t } from '../lib/i18n';
 
 export interface Props {
   title?: string;
@@ -14,22 +15,15 @@ export interface Props {
 }
 
 const props = Astro.props as Record<string, unknown>;
-const title = pickString(props, ['title', 'heading'], 'Article');
+const title = pickString(props, ['title', 'heading'], t('components.default_article_title'));
 const summary = pickString(props, ['summary', 'description']);
 const date = pickString(props, ['date', 'publishedAt']);
 const link = pickString(props, ['link', 'href', 'url'], '#');
 ---
 
-<article class="bf-card bf-article">
-  <h3><a href={link}>{title}</a></h3>
-  {date && <p class="bf-muted">{date}</p>}
-  {summary && <p>{summary}</p>}
+<article class="rounded-md border border-neutral-200 p-4 shadow-sm dark:border-neutral-700">
+  <h3 class="m-0 text-lg font-semibold"><a class="text-neutral-900 no-underline hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400" href={link}>{title}</a></h3>
+  {date && <p class="mt-2 mb-0 text-sm text-neutral-500 dark:text-neutral-400">{date}</p>}
+  {summary && <p class="mt-2 mb-0 text-neutral-700 dark:text-neutral-300">{summary}</p>}
   <slot />
 </article>
-
-<style>
-  .bf-article { padding: 1rem; }
-  .bf-article h3 { margin: 0; }
-  .bf-article h3 a { color: var(--bf-text); text-decoration: none; }
-  .bf-article p { margin: 0.4rem 0 0; }
-</style>

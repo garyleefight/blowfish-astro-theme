@@ -12,19 +12,17 @@ export interface Props {
 const { items = [] } = Astro.props;
 ---
 
-<section class="bf-list-shortcode">
+<section class="space-y-10 w-full mt-10 mb-10">
   {items.map((item) => (
-    <article class="bf-card">
-      <h4>{item.href ? <a href={item.href}>{item.title}</a> : item.title}</h4>
-      {item.summary && <p>{item.summary}</p>}
+    <article class="rounded-xl border border-neutral-300 bg-neutral-50/70 p-4 shadow-sm dark:border-neutral-700 dark:bg-neutral-800/60">
+      <h4 class="m-0 text-lg font-semibold">
+        {item.href ? (
+          <a class="text-neutral-900 no-underline hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400" href={item.href}>{item.title}</a>
+        ) : (
+          item.title
+        )}
+      </h4>
+      {item.summary && <p class="mt-2 text-neutral-500 dark:text-neutral-400">{item.summary}</p>}
     </article>
   ))}
 </section>
-
-<style>
-  .bf-list-shortcode { display: grid; gap: 0.7rem; }
-  .bf-list-shortcode article { padding: 0.8rem 1rem; }
-  .bf-list-shortcode h4 { margin: 0; }
-  .bf-list-shortcode p { margin: 0.45rem 0 0; color: var(--bf-muted); }
-  .bf-list-shortcode a { color: var(--bf-text); text-decoration: none; }
-</style>

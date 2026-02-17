@@ -1,9 +1,10 @@
 ---
 import BlowfishAnalytics from '../../components/site/BlowfishAnalytics.astro';
-import BlowfishHead from '../../components/site/BlowfishHead.astro';
+import BlowfishHead, { type AuthorLink, type Verification } from '../../components/site/BlowfishHead.astro';
 import BlowfishFooter from '../../components/site/BlowfishFooter.astro';
-import BlowfishHeader from '../../components/site/BlowfishHeader.astro';
+import BlowfishHeader, { type MenuItem, type TranslationItem } from '../../components/site/BlowfishHeader.astro';
 import BlowfishRuntime from '../../components/site/BlowfishRuntime.astro';
+import BlowfishSearch from '../../components/site/BlowfishSearch.astro';
 import BlowfishSchema from '../../components/site/BlowfishSchema.astro';
 import BlowfishScrollTop from '../../components/site/BlowfishScrollTop.astro';
 import '../../styles/theme.css';
@@ -15,10 +16,42 @@ export interface Props {
   image?: string;
   siteTitle?: string;
   nav?: { label: string; href: string }[];
+  mainMenu?: MenuItem[];
+  subnavMenu?: MenuItem[];
+  translations?: TranslationItem[];
+  currentLanguage?: string;
+  footerMenu?: { name?: string; url: string; title?: string; pre?: string }[];
+  headerLayout?: 'basic' | 'fixed' | 'fixed-fill' | 'fixed-fill-blur' | 'fixed-gradient';
   analyticsProvider?: 'ga' | 'fathom' | 'umami' | 'seline';
   analyticsId?: string;
   analyticsHost?: string;
   noindex?: boolean;
+  defaultAppearance?: 'light' | 'dark';
+  autoSwitchAppearance?: boolean;
+  disableTextInHeader?: boolean;
+  logo?: string;
+  secondaryLogo?: string;
+  enableSearch?: boolean;
+  enableAppearanceToggle?: boolean;
+  enableA11y?: boolean;
+  showDisableBlurA11y?: boolean;
+  showDisableImagesA11y?: boolean;
+  keywords?: string[];
+  authorName?: string;
+  authorLinks?: AuthorLink[];
+  verification?: Verification;
+  colorScheme?: string;
+  languageCode?: string;
+  locale?: string;
+  robots?: string;
+  publishedTime?: string;
+  defaultSocialImage?: string;
+  alternativeOutputFormats?: Array<{
+    rel: string;
+    type: string;
+    href: string;
+    title?: string;
+  }>;
 }
 
 const {
@@ -28,15 +61,52 @@ const {
   image,
   siteTitle = 'Blowfish Astro Theme',
   nav = [],
+  mainMenu,
+  subnavMenu = [],
+  translations = [],
+  currentLanguage = 'EN',
+  footerMenu = [],
+  headerLayout = 'basic',
   analyticsProvider,
   analyticsId,
   analyticsHost,
-  noindex = false
+  noindex = false,
+  defaultAppearance = 'light',
+  autoSwitchAppearance = true,
+  disableTextInHeader = false,
+  logo,
+  secondaryLogo,
+  enableSearch = true,
+  enableAppearanceToggle = false,
+  enableA11y = false,
+  showDisableBlurA11y = true,
+  showDisableImagesA11y = true,
+  keywords = [],
+  authorName,
+  authorLinks = [],
+  verification,
+  colorScheme = 'blowfish',
+  languageCode = 'en',
+  locale = 'en_US',
+  robots,
+  publishedTime,
+  defaultSocialImage,
+  alternativeOutputFormats = [],
 } = Astro.props;
+
+const resolvedMainMenu = mainMenu ?? nav.map((item) => ({ name: item.label, url: item.href }));
+const isHome = Astro.url.pathname === '/';
 ---
 
 <!doctype html>
-<html lang="en">
+<html
+  lang={languageCode}
+  class="scroll-smooth"
+  data-default-appearance={defaultAppearance}
+  data-auto-appearance={String(autoSwitchAppearance)}
+  data-logo-light={logo}
+  data-logo-dark={secondaryLogo}
+>
   <head>
     <BlowfishHead
       title={title}
@@ -44,25 +114,48 @@ const {
       canonicalUrl={canonicalUrl}
       image={image}
       noindex={noindex}
+      siteTitle={siteTitle}
+      isHome={isHome}
+      keywords={keywords}
+      authorName={authorName}
+      authorLinks={authorLinks}
+      verification={verification}
+      colorScheme={colorScheme}
+      languageCode={languageCode}
+      locale={locale}
+      robots={robots}
+      publishedTime={publishedTime}
+      defaultSocialImage={defaultSocialImage}
+      alternativeOutputFormats={alternativeOutputFormats}
     />
     <BlowfishSchema title={title} description={description} canonicalUrl={canonicalUrl} image={image} />
     <BlowfishAnalytics provider={analyticsProvider} id={analyticsId} host={analyticsHost} />
   </head>
-  <body>
-    <BlowfishHeader title={siteTitle} nav={nav} />
-    <main class="bf-site-main">
-      <slot />
-    </main>
-    <BlowfishFooter />
+  <body class="flex flex-col h-screen m-auto leading-7 max-w-7xl px-6 sm:px-14 md:px-24 lg:px-32 text-lg bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral">
+    <div id="the-top"></div>
+    <BlowfishHeader
+      layout={headerLayout}
+      siteTitle={siteTitle}
+      logo={logo}
+      disableTextInHeader={disableTextInHeader}
+      mainMenu={resolvedMainMenu}
+      subnavMenu={subnavMenu}
+      translations={translations}
+      currentLanguage={currentLanguage}
+      enableA11y={enableA11y}
+      enableSearch={enableSearch}
+      enableAppearanceToggle={enableAppearanceToggle}
+      showDisableBlurA11y={showDisableBlurA11y}
+      showDisableImagesA11y={showDisableImagesA11y}
+    />
+    {enableSearch && <BlowfishSearch />}
+    <div class="relative flex flex-col grow">
+      <main id="main-content" class="grow">
+        <slot />
+      </main>
+      <BlowfishScrollTop />
+      <BlowfishFooter footerMenu={footerMenu} />
+    </div>
     <BlowfishRuntime />
-    <BlowfishScrollTop />
   </body>
 </html>
-
-<style>
-  .bf-site-main {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 1.25rem 1rem;
-  }
-</style>

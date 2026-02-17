@@ -11,26 +11,11 @@ export interface Props {
 const { items = [] } = Astro.props;
 ---
 
-<div class="bf-swatches">
+<div class="grid gap-2 [grid-template-columns:repeat(auto-fill,minmax(180px,1fr))]">
   {items.map((item) => (
-    <div class="bf-swatch">
-      <span class="bf-swatch-chip" style={`background:${item.color};`} />
-      <code>{item.name}</code>
+    <div class="flex items-center gap-2 rounded-lg border border-neutral-200 bg-neutral-100/60 p-2 dark:border-neutral-700 dark:bg-neutral-800/70">
+      <span class="h-7 w-7 rounded-md border border-white/30" style={`background:${item.color};`} />
+      <code class="text-xs">{item.name}</code>
     </div>
   ))}
 </div>
-
-<style>
-  .bf-swatches { display: grid; gap: 0.55rem; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
-  .bf-swatch {
-    border: 1px solid var(--bf-border);
-    border-radius: 0.55rem;
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: color-mix(in srgb, var(--bf-surface) 84%, black 16%);
-  }
-  .bf-swatch-chip { width: 1.8rem; height: 1.8rem; border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.35); }
-  .bf-swatch code { font-size: 0.8rem; }
-</style>

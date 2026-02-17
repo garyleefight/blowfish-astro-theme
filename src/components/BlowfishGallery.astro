@@ -1,5 +1,6 @@
 ---
 import { pickArray, pickNumber, pickString } from '../lib/props';
+import { t } from '../lib/i18n';
 
 interface GalleryItem {
   src?: string;
@@ -26,55 +27,24 @@ const normalizedImages = images.map((image) => {
   const record = image as Record<string, unknown>;
   return {
     src: pickString(record, ['src', 'image', 'url']),
-    alt: pickString(record, ['alt', 'title', 'caption'], 'image'),
+    alt: pickString(record, ['alt', 'title', 'caption'], t('components.image_alt')),
     caption: pickString(record, ['caption', 'text', 'title'])
   };
 });
+
+const columnsClass =
+  normalizedColumns === 2
+    ? 'md:grid-cols-2'
+    : normalizedColumns === 4
+      ? 'md:grid-cols-4'
+      : 'md:grid-cols-3';
 ---
 
-<section class="bf-gallery" style={`--bf-gallery-cols: ${normalizedColumns};`}>
+<div class:list={['gallery grid grid-cols-1 gap-3 sm:grid-cols-2', columnsClass]}>
   {normalizedImages.map((image) => (
-    <figure class="bf-card">
-      <img src={image.src} alt={image.alt} loading="lazy" />
-      {image.caption && <figcaption>{image.caption}</figcaption>}
+    <figure class="m-0 overflow-hidden rounded-md border border-neutral-200 shadow-sm dark:border-neutral-700">
+      <img src={image.src} alt={image.alt} loading="lazy" class="mt-0 mb-0 block aspect-[4/3] w-full object-cover" />
+      {image.caption && <figcaption class="px-3 py-2 text-sm text-neutral-600 dark:text-neutral-400">{image.caption}</figcaption>}
     </figure>
   ))}
-</section>
-
-<style>
-  .bf-gallery {
-    display: grid;
-    gap: 0.8rem;
-    grid-template-columns: repeat(var(--bf-gallery-cols), minmax(0, 1fr));
-  }
-
-  .bf-gallery figure {
-    margin: 0;
-    overflow: hidden;
-  }
-
-  .bf-gallery img {
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-    display: block;
-  }
-
-  .bf-gallery figcaption {
-    padding: 0.4rem 0.7rem 0.6rem;
-    font-size: 0.8rem;
-    color: var(--bf-muted);
-  }
-
-  @media (max-width: 920px) {
-    .bf-gallery {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (max-width: 560px) {
-    .bf-gallery {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
+</div>

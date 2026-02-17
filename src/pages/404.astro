@@ -1,18 +1,12 @@
 ---
 import BlowfishSiteLayout from '../layouts/site/BlowfishSiteLayout.astro';
+import { t } from '../lib/i18n';
 ---
 
-<BlowfishSiteLayout title="404" nav={[{ label: 'Home', href: '/' }, { label: 'Theme List', href: '/theme/list' }]}> 
-  <section class="bf-card bf-not-found">
-    <h1>404</h1>
-    <p class="bf-muted">Page not found.</p>
-    <a href="/">Return home</a>
+<BlowfishSiteLayout title={t('error.404_title')} nav={[{ label: t('nav.home'), href: '/' }, { label: t('nav.theme_list'), href: '/theme/list' }]}> 
+  <section class="rounded-xl border border-neutral-300 bg-neutral-50/70 px-4 py-12 text-center shadow-sm dark:border-neutral-700 dark:bg-neutral-800/60">
+    <h1 class="m-0 text-4xl font-extrabold">{t('error.404_title')}</h1>
+    <p class="mt-6 text-neutral-500 dark:text-neutral-400">{t('error.404_error')}</p>
+    <p class="mt-2 text-neutral-500 dark:text-neutral-400">{t('error.404_description')}</p>
   </section>
 </BlowfishSiteLayout>
-
-<style>
-  .bf-not-found { padding: 2rem 1rem; text-align: center; }
-  .bf-not-found h1 { margin: 0; font-size: 2.4rem; }
-  .bf-not-found p { margin: 0.6rem 0; }
-  .bf-not-found a { color: var(--bf-primary); text-decoration: none; }
-</style>

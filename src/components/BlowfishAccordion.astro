@@ -1,22 +1,44 @@
 ---
-import { pickString } from '../lib/props';
+import { pickBoolean, pickString } from '../lib/props';
 
 export interface Props {
   title?: string;
   heading?: string;
   label?: string;
+  mode?: 'collapse' | 'expand';
+  separated?: boolean;
 }
 
 const props = Astro.props as Record<string, unknown>;
 const title = pickString(props, ['title', 'heading', 'label']);
+const mode = pickString(props, ['mode'], 'collapse');
+const separated = pickBoolean(props, ['separated'], false);
+const rootClass = separated
+  ? 'space-y-2'
+  : 'overflow-hidden rounded-lg border border-neutral-200 dark:border-neutral-700';
 ---
 
-<section class="bf-card bf-accordion">
-  {title && <h3>{title}</h3>}
+<div class={rootClass} data-accordion={mode} data-accordion-separated={String(separated)}>
+  {title && <h3 class="mb-3 text-base font-semibold text-neutral-900 dark:text-neutral-100">{title}</h3>}
   <slot />
-</section>
+</div>
 
-<style>
-  .bf-accordion { padding: 0.8rem 1rem; }
-  .bf-accordion h3 { margin: 0 0 0.6rem; font-size: 1rem; }
-</style>
+{mode === 'collapse' && (
+  <script is:inline>
+    (() => {
+      document.querySelectorAll('[data-accordion="collapse"]').forEach((root) => {
+        if ((root as HTMLElement).dataset.bfAccordionBound === 'true') return;
+        (root as HTMLElement).dataset.bfAccordionBound = 'true';
+        const items = root.querySelectorAll('details[data-accordion-item]');
+        items.forEach((item) => {
+          item.addEventListener('toggle', () => {
+            if (!item.open) return;
+            items.forEach((other) => {
+              if (other !== item) other.removeAttribute('open');
+            });
+          });
+        });
+      });
+    })();
+  </script>
+)}

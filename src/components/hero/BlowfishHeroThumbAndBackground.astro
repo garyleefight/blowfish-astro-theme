@@ -12,27 +12,16 @@ export interface Props {
 const { backgroundImage, featureImage, backgroundImagePosition, featureImagePosition, blur = false } = Astro.props;
 ---
 
-<BlowfishHeroBackground image={backgroundImage} imagePosition={backgroundImagePosition} blur={blur} addHeaderSpace={false} />
-
 {featureImage && (
-  <div class="bf-hero-thumb-wrap">
+  <div class="h-36 overflow-hidden rounded-md md:h-56 lg:h-72 nozoom">
     <img
       src={featureImage}
       alt=""
       role="presentation"
-      class="bf-hero-thumb"
+      class="h-full w-full object-cover nozoom"
       style={featureImagePosition ? `object-position:${featureImagePosition};` : undefined}
     />
   </div>
 )}
 
-<style>
-  .bf-hero-thumb-wrap {
-    overflow: hidden;
-    border-radius: 0.6rem;
-    height: 9rem;
-  }
-  @media (min-width: 768px) { .bf-hero-thumb-wrap { height: 14rem; } }
-  @media (min-width: 1024px) { .bf-hero-thumb-wrap { height: 18rem; } }
-  .bf-hero-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
-</style>
+<BlowfishHeroBackground image={backgroundImage} imagePosition={backgroundImagePosition} blur={blur} addHeaderSpace={false} />

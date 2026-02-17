@@ -1,6 +1,8 @@
 ---
+import { t } from '../../lib/i18n';
+
 export interface Props { minutes: number; }
 const { minutes } = Astro.props;
 ---
 
-<span title="reading time">{minutes} min read</span>
+<span title={t('article.reading_time_title')}>{t('article.reading_time', { Count: minutes })}</span>
