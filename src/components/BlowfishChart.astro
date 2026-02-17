@@ -2,31 +2,43 @@
 import { pickString } from '../lib/props';
 
 export interface Props {
-  config?: string;
-  options?: string;
-  chart?: string;
+  config?: string | Record<string, unknown>;
+  options?: string | Record<string, unknown>;
+  chart?: string | Record<string, unknown>;
   type?: 'bar' | 'line' | 'pie' | 'doughnut' | 'radar' | 'polarArea';
   chartType?: 'bar' | 'line' | 'pie' | 'doughnut' | 'radar' | 'polarArea';
-  labels?: string;
-  xLabels?: string;
-  data?: string;
-  series?: string;
+  labels?: string | string[];
+  xLabels?: string | string[];
+  data?: string | number[];
+  series?: string | number[];
   title?: string;
   heading?: string;
 }
 
 const props = Astro.props as Record<string, unknown>;
-const config = pickString(props, ['config', 'options', 'chart']);
+const pickValue = (keys: string[]) => {
+  for (const key of keys) {
+    const value = props[key];
+    if (value !== undefined && value !== null && value !== '') return value;
+  }
+  return undefined;
+};
+const toJsonAttr = (value: unknown, fallback: string) => {
+  if (value === undefined || value === null || value === '') return fallback;
+  if (typeof value === 'string') return value;
+  return JSON.stringify(value);
+};
+const config = toJsonAttr(pickValue(['config', 'options', 'chart']), '');
 const type = pickString(props, ['type', 'chartType'], 'bar');
-const labels = pickString(props, ['labels', 'xLabels'], '[]');
-const data = pickString(props, ['data', 'series'], '[]');
+const labels = toJsonAttr(pickValue(['labels', 'xLabels']), '[]');
+const data = toJsonAttr(pickValue(['data', 'series']), '[]');
 const title = pickString(props, ['title', 'heading']);
 ---
 
 <div
-  class="min-h-[260px] rounded-md border border-neutral-200 p-4 shadow-sm dark:border-neutral-700"
+  class="relative min-h-[260px] rounded-md border border-neutral-200 p-4 shadow-sm dark:border-neutral-700"
   data-bf-chart
-  data-config={config}
+  data-config={config || undefined}
   data-type={type}
   data-labels={labels}
   data-data={data}

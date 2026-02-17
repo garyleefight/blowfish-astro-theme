@@ -109,6 +109,8 @@ const en = {
     homepage_image_alt: 'Homepage image',
     author_image_alt: 'Author',
     chart_series_label: 'Series',
+    chart_render_error: 'Unable to render chart',
+    katex_render_error: 'Unable to render equation',
   },
   keyword: {
     default_text: 'keyword',

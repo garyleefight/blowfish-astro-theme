@@ -3,6 +3,7 @@
 @config "../../tailwind.config.js";
 
 @import url("/blowfish-lib/lite-youtube-embed/lite-yt-embed.css");
+@import url("/blowfish-lib/katex/katex.min.css");
 @import "tailwindcss";
 @import "./schemes/blowfish.css";
 @import "./components/chroma.css" layer(utilities);

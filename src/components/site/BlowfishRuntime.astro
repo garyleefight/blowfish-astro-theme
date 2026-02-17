@@ -3,17 +3,33 @@ import { t } from '../../lib/i18n';
 
 const runtimeTabLabel = t('components.default_tab_title');
 const runtimeChartSeriesLabel = t('components.chart_series_label');
+const runtimeChartErrorLabel = t('components.chart_render_error');
+const runtimeKaTeXErrorLabel = t('components.katex_render_error');
 ---
 
 <script is:inline src="/blowfish-lib/packery/packery.pkgd.min.js"></script>
 <script is:inline src="/blowfish-lib/mermaid/mermaid.min.js"></script>
 <script is:inline src="/blowfish-lib/chart/chart.min.js"></script>
+<link rel="stylesheet" href="/blowfish-lib/katex/katex.min.css" />
+<script is:inline src="/blowfish-lib/katex/katex.min.js"></script>
+<script is:inline src="/blowfish-lib/katex/auto-render.min.js"></script>
 <script is:inline src="/blowfish-lib/typeit/typeit.umd.js"></script>
 <script is:inline src="/blowfish-lib/lite-youtube-embed/lite-yt-embed.js"></script>
 
-<script is:inline>
-  const TAB_FALLBACK = {JSON.stringify(runtimeTabLabel)};
-  const CHART_SERIES_LABEL = {JSON.stringify(runtimeChartSeriesLabel)};
+<script
+  is:inline
+  define:vars={{
+    runtimeTabLabel,
+    runtimeChartSeriesLabel,
+    runtimeChartErrorLabel,
+    runtimeKaTeXErrorLabel,
+  }}
+>
+  const TAB_FALLBACK = runtimeTabLabel;
+  const CHART_SERIES_LABEL = runtimeChartSeriesLabel;
+  const CHART_ERROR_LABEL = runtimeChartErrorLabel;
+  const KATEX_ERROR_LABEL = runtimeKaTeXErrorLabel;
+  let katexRetryCount = 0;
   const TAB_BUTTON_BASE =
     'tab__button px-3 py-2 text-sm font-semibold border-b-2 border-transparent rounded-t-md hover:bg-neutral-200 dark:hover:bg-neutral-700';
   const TAB_BUTTON_ACTIVE = 'tab--active border-primary-500 dark:border-primary-400';
@@ -196,19 +212,118 @@ const runtimeChartSeriesLabel = t('components.chart_series_label');
 
   window.setBackgroundBlur = setBackgroundBlur;
 
+  const runKaTeX = () => {
+    if (!window.katex || typeof window.katex.render !== 'function') {
+      if (katexRetryCount < 20) {
+        katexRetryCount += 1;
+        window.setTimeout(runKaTeX, 100);
+      }
+      return;
+    }
+
+    document.querySelectorAll('[data-bf-katex]').forEach((el) => {
+      if (el.getAttribute('data-rendered') === 'true') return;
+      const equation = el.getAttribute('data-equation') || el.textContent || '';
+      const displayMode = el.getAttribute('data-display') === 'true';
+      if (!equation.trim()) return;
+
+      try {
+        window.katex.render(equation, el, {
+          displayMode,
+          throwOnError: false,
+          strict: 'warn'
+        });
+        el.setAttribute('data-rendered', 'true');
+      } catch {
+        el.textContent = `${KATEX_ERROR_LABEL}: ${equation}`;
+      }
+    });
+  };
+
+  const getChartCtor = () => {
+    if (typeof window.Chart === 'function') return window.Chart;
+    if (window.Chart && typeof window.Chart.Chart === 'function') return window.Chart.Chart;
+    return null;
+  };
+
+  const parseJson = (rawValue, fallback) => {
+    if (!rawValue) return fallback;
+    try {
+      return JSON.parse(rawValue);
+    } catch {
+      return fallback;
+    }
+  };
+
+  const parseChartLabels = (rawValue) => {
+    const parsed = parseJson(rawValue, null);
+    if (Array.isArray(parsed)) return parsed.map((value) => String(value));
+    if (typeof rawValue === 'string' && rawValue.includes(',')) {
+      return rawValue
+        .split(',')
+        .map((value) => value.trim())
+        .filter(Boolean);
+    }
+    return [];
+  };
+
+  const parseChartData = (rawValue) => {
+    const parsed = parseJson(rawValue, null);
+    if (Array.isArray(parsed)) {
+      return parsed
+        .map((value) => Number(value))
+        .filter((value) => Number.isFinite(value));
+    }
+    if (typeof rawValue === 'string' && rawValue.includes(',')) {
+      return rawValue
+        .split(',')
+        .map((value) => Number(value.trim()))
+        .filter((value) => Number.isFinite(value));
+    }
+    return [];
+  };
+
+  const setChartError = (el, details = '') => {
+    const previousError = el.querySelector('[data-bf-chart-error]');
+    if (previousError) previousError.remove();
+
+    const message = document.createElement('p');
+    message.setAttribute('data-bf-chart-error', 'true');
+    message.className = 'mt-2 text-sm text-red-600 dark:text-red-400';
+    message.textContent = details ? `${CHART_ERROR_LABEL} (${details})` : CHART_ERROR_LABEL;
+    el.appendChild(message);
+  };
+
   const runCharts = () => {
-    if (!window.Chart) return;
+    const ChartCtor = getChartCtor();
+    if (!ChartCtor) return;
+
     document.querySelectorAll('[data-bf-chart]').forEach((el) => {
       if (el.getAttribute('data-rendered') === 'true') return;
+
+      const existingCanvas = el.querySelector('canvas');
+      if (existingCanvas) existingCanvas.remove();
+      const previousError = el.querySelector('[data-bf-chart-error]');
+      if (previousError) previousError.remove();
+
       const configRaw = el.getAttribute('data-config');
       const canvas = document.createElement('canvas');
+      canvas.className = 'block';
+      canvas.style.width = '100%';
+      canvas.style.height = '220px';
       el.appendChild(canvas);
+      const context = canvas.getContext('2d');
+      if (!context) {
+        setChartError(el, 'canvas');
+        return;
+      }
+
       let rendered = false;
 
       if (configRaw) {
         try {
           const config = JSON.parse(configRaw);
-          new window.Chart(canvas.getContext('2d'), config);
+          new ChartCtor(context, config);
           rendered = true;
         } catch {
           // fall back to data-* format if JSON parse fails
@@ -217,24 +332,46 @@ const runtimeChartSeriesLabel = t('components.chart_series_label');
 
       if (!rendered) {
         const type = el.getAttribute('data-type') || 'bar';
-        const labels = JSON.parse(el.getAttribute('data-labels') || '[]');
-        const data = JSON.parse(el.getAttribute('data-data') || '[]');
-        new window.Chart(canvas.getContext('2d'), {
-          type,
-          data: {
-            labels,
-            datasets: [{ label: CHART_SERIES_LABEL, data }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false
-          }
-        });
+        const labels = parseChartLabels(el.getAttribute('data-labels') || '[]');
+        const data = parseChartData(el.getAttribute('data-data') || '[]');
+
+        if (!labels.length || !data.length) {
+          setChartError(el, 'data');
+          return;
+        }
+
+        try {
+          new ChartCtor(context, {
+            type,
+            data: {
+              labels,
+              datasets: [
+                {
+                  label: CHART_SERIES_LABEL,
+                  data,
+                  backgroundColor: 'rgba(14, 116, 144, 0.45)',
+                  borderColor: 'rgba(14, 116, 144, 1)',
+                  borderWidth: 2
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false
+            }
+          });
+          rendered = true;
+        } catch {
+          setChartError(el);
+          return;
+        }
       }
 
-      canvas.style.width = '100%';
-      canvas.style.height = '220px';
-      el.setAttribute('data-rendered', 'true');
+      if (rendered) {
+        el.setAttribute('data-rendered', 'true');
+      } else {
+        setChartError(el);
+      }
     });
   };
 
@@ -256,13 +393,25 @@ const runtimeChartSeriesLabel = t('components.chart_series_label');
     });
   };
 
+  const safeRun = (fn) => {
+    try {
+      const output = fn();
+      if (output && typeof output.then === 'function') {
+        output.catch(() => {});
+      }
+    } catch {
+      // keep other runtime hooks running
+    }
+  };
+
   const runAll = () => {
-    initBackgroundBlur();
-    runTabs();
-    runGallery();
-    runMermaid();
-    runCharts();
-    runTypeIt();
+    safeRun(runKaTeX);
+    safeRun(initBackgroundBlur);
+    safeRun(runTabs);
+    safeRun(runGallery);
+    safeRun(runMermaid);
+    safeRun(runCharts);
+    safeRun(runTypeIt);
   };
 
   if (document.readyState === 'loading') {
@@ -270,4 +419,7 @@ const runtimeChartSeriesLabel = t('components.chart_series_label');
   } else {
     runAll();
   }
+
+  window.addEventListener('load', runAll);
+  document.addEventListener('astro:page-load', runAll);
 </script>

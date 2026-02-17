@@ -218,6 +218,8 @@ const code = {
   metaLikesButton: String.raw`<BlowfishMetaLikesButton />`,
   analytics: String.raw`<BlowfishAnalytics provider="umami" id="website-id" host="analytics.example.com" />`,
 };
+
+const katexEquation = String.raw`\int_0^\infty e^{-x^2}\,dx=\frac{\sqrt{\pi}}{2}`;
 ---
 
 <BlowfishBaseLayout title="Blowfish Component Documentation" description="Detailed component docs with prop references and live effects">
@@ -303,7 +305,7 @@ const code = {
           <BlowfishIcon name="sun" />
           <BlowfishIcon name="search" />
         </div>
-        <BlowfishKaTeX equation="E = mc^2" display={true} />
+        <BlowfishKaTeX equation={katexEquation} display={true} />
         <BlowfishMermaid code={'graph TD; Start --> Build; Build --> Ship;'} />
         <BlowfishChart type="bar" labels='["A","B","C"]' data='[2,7,4]' title="Sample chart" />
         <BlowfishSwatches items={[{ name: 'primary-500', color: 'rgb(59,130,246)' }, { name: 'neutral-800', color: 'rgb(38,38,38)' }]} />

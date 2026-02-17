@@ -1,5 +1,6 @@
 ---
 import { pickBoolean, pickString } from '../lib/props';
+import { renderKatex } from '../lib/katex';
 
 export interface Props {
   equation?: string;
@@ -12,10 +13,27 @@ export interface Props {
 const props = Astro.props as Record<string, unknown>;
 const equation = pickString(props, ['equation', 'expr', 'formula']);
 const display = pickBoolean(props, ['display', 'block'], false);
+const rendered = renderKatex(equation, display);
 ---
 
 {display ? (
-  <div class="rounded-md border border-neutral-200 px-4 py-3 font-mono shadow-sm dark:border-neutral-700">{equation}</div>
+  <div
+    class="bf-katex my-2 overflow-x-auto"
+    data-bf-katex
+    data-display="true"
+    data-equation={equation}
+    data-rendered={rendered ? 'true' : undefined}
+  >
+    {rendered ? <Fragment set:html={rendered} /> : equation}
+  </div>
 ) : (
-  <span class="font-mono">{equation}</span>
+  <span
+    class="bf-katex"
+    data-bf-katex
+    data-display="false"
+    data-equation={equation}
+    data-rendered={rendered ? 'true' : undefined}
+  >
+    {rendered ? <Fragment set:html={rendered} /> : equation}
+  </span>
 )}
