@@ -1,0 +1,10 @@
+---
+export interface Props {
+  emoji: string;
+  label?: string;
+}
+
+const { emoji, label = 'emoji' } = Astro.props;
+---
+
+<span role="img" aria-label={label}>{emoji}</span>

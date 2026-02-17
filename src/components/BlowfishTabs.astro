@@ -1,0 +1,16 @@
+---
+export interface Props {
+  defaultTab?: string;
+}
+
+const { defaultTab } = Astro.props;
+---
+
+<section class="bf-card bf-tabs" data-default-tab={defaultTab}>
+  <slot />
+</section>
+
+<style>
+  .bf-tabs { padding: 0.8rem 1rem; }
+  .bf-tabs :global(.bf-tab[data-active='false']) { display: none; }
+</style>

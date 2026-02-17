@@ -1,0 +1,19 @@
+---
+export interface Props {
+  id: string;
+  file?: string;
+  user?: string;
+}
+
+const { id, file, user } = Astro.props;
+const gistUrl = `https://gist.github.com/${user ? `${user}/` : ''}${id}${file ? `?file=${encodeURIComponent(file)}` : ''}`;
+---
+
+<div class="bf-card bf-gist">
+  <p><strong>Gist</strong></p>
+  <a href={gistUrl} target="_blank" rel="noopener noreferrer">{gistUrl}</a>
+</div>
+
+<style>
+  .bf-gist { padding: 0.8rem 1rem; }
+</style>

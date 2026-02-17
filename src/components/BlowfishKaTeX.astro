@@ -1,0 +1,19 @@
+---
+export interface Props {
+  equation: string;
+  display?: boolean;
+}
+
+const { equation, display = false } = Astro.props;
+---
+
+{display ? (
+  <div class="bf-card bf-katex">{equation}</div>
+) : (
+  <span class="bf-katex-inline">{equation}</span>
+)}
+
+<style>
+  .bf-katex { padding: 0.8rem 1rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .bf-katex-inline { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+</style>

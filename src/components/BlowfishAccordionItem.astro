@@ -1,0 +1,19 @@
+---
+export interface Props {
+  title: string;
+  open?: boolean;
+}
+
+const { title, open = false } = Astro.props;
+---
+
+<details class="bf-accordion-item" open={open}>
+  <summary>{title}</summary>
+  <div class="bf-accordion-content"><slot /></div>
+</details>
+
+<style>
+  .bf-accordion-item + .bf-accordion-item { margin-top: 0.5rem; }
+  .bf-accordion-item summary { cursor: pointer; font-weight: 600; }
+  .bf-accordion-content { margin-top: 0.4rem; color: var(--bf-muted); }
+</style>

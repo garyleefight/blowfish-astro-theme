@@ -1,0 +1,18 @@
+---
+export interface Props {
+  title?: string;
+}
+
+const { title } = Astro.props;
+---
+
+<section class="bf-card bf-timeline">
+  {title && <h3>{title}</h3>}
+  <ol><slot /></ol>
+</section>
+
+<style>
+  .bf-timeline { padding: 0.9rem 1rem; }
+  .bf-timeline h3 { margin: 0 0 0.7rem; }
+  .bf-timeline ol { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.6rem; }
+</style>

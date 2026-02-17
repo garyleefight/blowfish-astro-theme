@@ -1,0 +1,13 @@
+---
+export interface Props {
+  code: string;
+}
+
+const { code } = Astro.props;
+---
+
+<pre class="bf-card bf-mermaid"><code class="language-mermaid">{code}</code></pre>
+
+<style>
+  .bf-mermaid { padding: 0.8rem 1rem; overflow: auto; }
+</style>

@@ -1,0 +1,11 @@
+---
+export interface Props {
+  content?: string;
+}
+
+const { content } = Astro.props;
+---
+
+<div class="bf-markdown">
+  {content ? <Fragment set:html={content} /> : <slot />}
+</div>

@@ -1,0 +1,15 @@
+---
+export interface Props {
+  text: string;
+  speed?: number;
+  loop?: boolean;
+}
+
+const { text, speed = 75, loop = false } = Astro.props;
+---
+
+<span class="bf-typeit" data-speed={speed} data-loop={loop ? 'true' : 'false'}>{text}</span>
+
+<style>
+  .bf-typeit { border-right: 1px solid var(--bf-muted); padding-right: 0.1rem; }
+</style>

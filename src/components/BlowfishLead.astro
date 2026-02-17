@@ -1,0 +1,13 @@
+---
+export interface Props {
+  text?: string;
+}
+
+const { text } = Astro.props;
+---
+
+<p class="bf-lead">{text}<slot /></p>
+
+<style>
+  .bf-lead { font-size: 1.15rem; line-height: 1.75; color: color-mix(in srgb, var(--bf-text) 92%, white 8%); }
+</style>

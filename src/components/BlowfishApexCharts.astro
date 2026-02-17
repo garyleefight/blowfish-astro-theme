@@ -1,0 +1,15 @@
+---
+export interface Props {
+  type?: string;
+  height?: number;
+  options?: string;
+  series?: string;
+}
+
+const { type = 'line', height = 320, options = '{}', series = '[]' } = Astro.props;
+---
+
+<div class="bf-card bf-code" data-bf-apex data-type={type} data-height={height} data-options={options} data-series={series}>
+  <p><strong>ApexCharts placeholder</strong> ({type})</p>
+  <p class="bf-muted">Install an ApexCharts Astro integration and hydrate this node.</p>
+</div>

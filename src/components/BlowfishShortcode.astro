@@ -1,0 +1,19 @@
+---
+export interface Props {
+  name: string;
+  params?: Record<string, unknown>;
+}
+
+const { name, params = {} } = Astro.props;
+---
+
+<div class="bf-card bf-shortcode">
+  <p><strong>Shortcode:</strong> {name}</p>
+  <pre><code>{JSON.stringify(params, null, 2)}</code></pre>
+  <slot />
+</div>
+
+<style>
+  .bf-shortcode { padding: 0.8rem 1rem; }
+  .bf-shortcode pre { margin: 0.4rem 0 0; overflow: auto; }
+</style>

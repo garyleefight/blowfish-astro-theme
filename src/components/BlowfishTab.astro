@@ -1,0 +1,12 @@
+---
+export interface Props {
+  name: string;
+  active?: boolean;
+}
+
+const { name, active = false } = Astro.props;
+---
+
+<section class="bf-tab" data-name={name} data-active={active ? 'true' : 'false'}>
+  <slot />
+</section>

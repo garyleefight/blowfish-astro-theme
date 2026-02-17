@@ -1,0 +1,19 @@
+---
+export interface Props {
+  repo: string;
+  user?: string;
+}
+
+const { repo, user } = Astro.props;
+const path = user ? `${user}/${repo}` : repo;
+const href = `https://github.com/${path}`;
+---
+
+<a class="bf-card bf-gh" href={href} target="_blank" rel="noopener noreferrer">
+  <strong>{path}</strong>
+  <span class="bf-muted">Open on GitHub</span>
+</a>
+
+<style>
+  .bf-gh { display: grid; gap: 0.2rem; padding: 0.8rem 1rem; color: inherit; text-decoration: none; }
+</style>

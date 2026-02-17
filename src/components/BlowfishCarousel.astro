@@ -1,0 +1,29 @@
+---
+interface Item {
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
+export interface Props {
+  images: Item[];
+}
+
+const { images } = Astro.props;
+---
+
+<div class="bf-carousel" role="region" aria-label="carousel">
+  {images.map((img) => (
+    <figure class="bf-card">
+      <img src={img.src} alt={img.alt} loading="lazy" />
+      {img.caption && <figcaption>{img.caption}</figcaption>}
+    </figure>
+  ))}
+</div>
+
+<style>
+  .bf-carousel { display: flex; gap: 0.8rem; overflow-x: auto; scroll-snap-type: x mandatory; }
+  .bf-carousel figure { min-width: min(540px, 90%); margin: 0; scroll-snap-align: start; }
+  .bf-carousel img { width: 100%; display: block; aspect-ratio: 16 / 9; object-fit: cover; }
+  .bf-carousel figcaption { padding: 0.4rem 0.7rem 0.6rem; color: var(--bf-muted); font-size: 0.8rem; }
+</style>

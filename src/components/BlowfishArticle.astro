@@ -1,0 +1,24 @@
+---
+export interface Props {
+  title: string;
+  summary?: string;
+  date?: string;
+  link?: string;
+}
+
+const { title, summary, date, link = '#' } = Astro.props;
+---
+
+<article class="bf-card bf-article">
+  <h3><a href={link}>{title}</a></h3>
+  {date && <p class="bf-muted">{date}</p>}
+  {summary && <p>{summary}</p>}
+  <slot />
+</article>
+
+<style>
+  .bf-article { padding: 1rem; }
+  .bf-article h3 { margin: 0; }
+  .bf-article h3 a { color: var(--bf-text); text-decoration: none; }
+  .bf-article p { margin: 0.4rem 0 0; }
+</style>

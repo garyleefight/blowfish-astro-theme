@@ -1,0 +1,14 @@
+---
+export interface Props {
+  title: string;
+  date?: string;
+}
+
+const { title, date } = Astro.props;
+---
+
+<li>
+  <strong>{title}</strong>
+  {date && <span class="bf-muted"> - {date}</span>}
+  <div><slot /></div>
+</li>

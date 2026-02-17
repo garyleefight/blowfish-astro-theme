@@ -1,0 +1,21 @@
+---
+export interface Props {
+  url?: string;
+  lang?: string;
+  title?: string;
+  startLine?: number;
+  endLine?: number;
+}
+
+const { url, lang = 'text', title, startLine, endLine } = Astro.props;
+---
+
+<section class="bf-card bf-code-importer">
+  {(title || url) && <p><strong>{title || 'Code Importer'}</strong>{url ? ` - ${url}` : ''}</p>}
+  <pre><code>[code-import placeholder] lang={lang} lines={startLine || ''}-{endLine || ''}</code></pre>
+</section>
+
+<style>
+  .bf-code-importer { padding: 0.8rem 1rem; }
+  .bf-code-importer pre { overflow: auto; margin: 0.4rem 0 0; }
+</style>

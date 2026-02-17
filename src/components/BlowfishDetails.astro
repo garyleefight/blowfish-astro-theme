@@ -1,0 +1,19 @@
+---
+export interface Props {
+  summary: string;
+  open?: boolean;
+}
+
+const { summary, open = false } = Astro.props;
+---
+
+<details class="bf-card bf-details" open={open}>
+  <summary>{summary}</summary>
+  <div><slot /></div>
+</details>
+
+<style>
+  .bf-details { padding: 0.7rem 0.9rem; }
+  .bf-details summary { cursor: pointer; font-weight: 600; }
+  .bf-details div { margin-top: 0.5rem; color: var(--bf-muted); }
+</style>

@@ -1,0 +1,11 @@
+---
+export interface Props {
+  name: string;
+  size?: string;
+  class?: string;
+}
+
+const { name, size = '1em', class: className } = Astro.props;
+---
+
+<span class={className} aria-label={name} role="img" style={`font-size: ${size};`}>[{name}]</span>
