@@ -1,233 +1,219 @@
 ---
 import BlowfishBaseLayout from '../layouts/BlowfishBaseLayout.astro';
-import BlowfishAccordion from '../components/BlowfishAccordion.astro';
-import BlowfishAccordionItem from '../components/BlowfishAccordionItem.astro';
-import BlowfishAlert from '../components/BlowfishAlert.astro';
-import BlowfishArticle from '../components/BlowfishArticle.astro';
 import BlowfishBadge from '../components/BlowfishBadge.astro';
-import BlowfishBlockquote from '../components/BlowfishBlockquote.astro';
-import BlowfishButton from '../components/BlowfishButton.astro';
-import BlowfishCard from '../components/BlowfishCard.astro';
-import BlowfishFigure from '../components/BlowfishFigure.astro';
-import BlowfishGallery from '../components/BlowfishGallery.astro';
-import BlowfishGitHubCard from '../components/BlowfishGitHubCard.astro';
-import BlowfishKaTeX from '../components/BlowfishKaTeX.astro';
-import BlowfishLead from '../components/BlowfishLead.astro';
-import BlowfishMermaid from '../components/BlowfishMermaid.astro';
-import BlowfishTab from '../components/BlowfishTab.astro';
-import BlowfishTabs from '../components/BlowfishTabs.astro';
-import BlowfishTimeline from '../components/BlowfishTimeline.astro';
-import BlowfishTimelineItem from '../components/BlowfishTimelineItem.astro';
-import BlowfishTypeIt from '../components/BlowfishTypeIt.astro';
-import BlowfishVideo from '../components/BlowfishVideo.astro';
-import BlowfishYouTubeLite from '../components/BlowfishYouTubeLite.astro';
 import '../styles/theme.css';
 
-const sampleVideo =
-  'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4';
+const demoPages = [
+  { title: 'Homepage Layout', href: '/homepage-layout', description: 'Profile, page, hero, background, card, custom layouts.' },
+  { title: 'Hero + Author Partials', href: '/theme/hero', description: 'Mappings for `hero/*` and `author*` partials.' },
+  { title: 'List Template', href: '/theme/list', description: '`_default/list.html` parity demo.' },
+  { title: 'Single Template', href: '/theme/single', description: '`_default/single.html` with meta/toc/series/related.' },
+  { title: 'Term Template', href: '/theme/term', description: '`_default/term.html` parity demo.' },
+  { title: 'Terms Template', href: '/theme/terms', description: '`_default/terms.html` parity demo.' },
+  { title: 'Search Template', href: '/search', description: 'Fuse.js client search + static index endpoint.' },
+  { title: '404 Template', href: '/404.html', description: '`layouts/404.html` parity page.' }
+];
+
+const categories = [
+  {
+    title: 'Shortcodes',
+    items: [
+      'BlowfishAccordion', 'BlowfishAccordionItem', 'BlowfishAlert', 'BlowfishArticle', 'BlowfishBadge',
+      'BlowfishButton', 'BlowfishCarousel', 'BlowfishChart', 'BlowfishCodeberg', 'BlowfishCodeImporter',
+      'BlowfishFigure', 'BlowfishForgejo', 'BlowfishGallery', 'BlowfishGist', 'BlowfishGitHubCard',
+      'BlowfishGitea', 'BlowfishGitLab', 'BlowfishHuggingFace', 'BlowfishIcon', 'BlowfishKaTeX',
+      'BlowfishKeyword', 'BlowfishKeywordList', 'BlowfishLead', 'BlowfishList', 'BlowfishLTR',
+      'BlowfishMdImporter', 'BlowfishMermaid', 'BlowfishRTL', 'BlowfishScreenshot', 'BlowfishSwatches',
+      'BlowfishTabs', 'BlowfishTab', 'BlowfishTimeline', 'BlowfishTimelineItem', 'BlowfishTypeIt',
+      'BlowfishVideo', 'BlowfishYouTubeLite', 'BlowfishCard', 'BlowfishBlockquote'
+    ]
+  },
+  {
+    title: 'Homepage + Hero',
+    items: [
+      'BlowfishHomepage',
+      'BlowfishHomeProfile', 'BlowfishHomePage', 'BlowfishHomeHero', 'BlowfishHomeBackground',
+      'BlowfishHomeCard', 'BlowfishHomeCustom', 'BlowfishHomeRecent',
+      'BlowfishHeroBasic', 'BlowfishHeroBackground', 'BlowfishHeroBig', 'BlowfishHeroThumbAndBackground'
+    ]
+  },
+  {
+    title: 'Article + Meta Partials',
+    items: [
+      'BlowfishArticleLinkSimple', 'BlowfishArticleLinkCard', 'BlowfishArticleLinkCardRelated',
+      'BlowfishArticleMetaBasic', 'BlowfishArticleMetaTaxonomy',
+      'BlowfishAuthor', 'BlowfishAuthorLinks', 'BlowfishAuthorExtra',
+      'BlowfishToc', 'BlowfishRelated', 'BlowfishSeries', 'BlowfishSharingLinks',
+      'BlowfishMetaDate', 'BlowfishMetaDateUpdated', 'BlowfishMetaReadingTime', 'BlowfishMetaWordCount',
+      'BlowfishMetaEdit', 'BlowfishMetaViews', 'BlowfishMetaLikes', 'BlowfishMetaLikesButton', 'BlowfishMetaZenMode'
+    ]
+  },
+  {
+    title: 'Site Partials + Runtime',
+    items: [
+      'BlowfishHead', 'BlowfishSchema', 'BlowfishAnalytics',
+      'BlowfishHeader', 'BlowfishFooter', 'BlowfishBreadcrumbs', 'BlowfishPagination',
+      'BlowfishAppearanceToggle', 'BlowfishRuntime', 'BlowfishScrollTop',
+      'BlowfishSiteLayout'
+    ]
+  }
+];
+
+const totalComponents = categories.reduce((acc, category) => acc + category.items.length, 0);
 ---
 
-<BlowfishBaseLayout title="Blowfish Astro Theme Docs" description="Component docs and visual examples">
+<BlowfishBaseLayout title="Blowfish Astro Rewrite Docs" description="Single entrypoint for rewrite demos and component catalog">
   <header class="docs-hero bf-card">
-    <div>
-      <h1>Blowfish Astro Theme Documentation</h1>
-      <p class="bf-muted">Visual preview + usage examples for core components.</p>
-    </div>
+    <h1>Blowfish Astro Rewrite</h1>
+    <p class="bf-muted">Documentation-style entrypoint for all rewritten components and template demos.</p>
     <div class="docs-badges">
-      <BlowfishBadge label="Static-first" variant="success" />
-      <BlowfishBadge label="Astro-native" variant="primary" />
-      <BlowfishBadge label="Blowfish-compatible" variant="warning" />
+      <BlowfishBadge text="Static Build" color="success" />
+      <BlowfishBadge text="Parity Rewrite" color="primary" />
+      <BlowfishBadge text={`${totalComponents} Components Cataloged`} color="warning" />
     </div>
-    <p><a href="/homepage-layout" class="docs-link">Open Homepage Layout Docs</a></p>
-    <p><a href="/theme/hero" class="docs-link">Open Hero/Author Parity Docs</a></p>
+    <p class="docs-links">
+      <a href="/search">Search Docs</a>
+      <a href="/search-index.json">Search Index JSON</a>
+      <a href="/robots.txt">Robots</a>
+    </p>
   </header>
 
-  <section class="docs-block bf-card">
-    <h2>Alert, Badge, Button</h2>
-    <div class="docs-demo">
-      <BlowfishAlert style="info" heading="Status" text="Theme package is active." />
-      <BlowfishButton url="https://astro.build" text="Open Astro" style="outline" target="_blank" rel="noopener noreferrer" />
+  <section class="docs-section bf-card">
+    <h2>Demo Routes</h2>
+    <div class="docs-grid">
+      {demoPages.map((page) => (
+        <a class="docs-demo-card" href={page.href}>
+          <h3>{page.title}</h3>
+          <p>{page.description}</p>
+          <code>{page.href}</code>
+        </a>
+      ))}
     </div>
-    <pre><code>{`<BlowfishBadge label="Static-first" variant="success" />
-<BlowfishAlert style="info" heading="Status" text="Theme package is active." />
-<BlowfishButton url="https://astro.build" text="Open Astro" style="outline" />`}</code></pre>
   </section>
 
-  <section class="docs-block bf-card">
-    <h2>Lead and Blockquote</h2>
-    <div class="docs-demo">
-      <BlowfishLead lead="This is a lead paragraph with stronger visual emphasis." />
-      <BlowfishBlockquote name="Sirui Li" source="Personal note">
-        Build for clarity and reuse. Themes should feel familiar and practical.
-      </BlowfishBlockquote>
-    </div>
-    <pre><code>{`<BlowfishLead lead="This is a lead paragraph." />
-<BlowfishBlockquote name="Sirui Li" source="Personal note">
-  Build for clarity and reuse.
-</BlowfishBlockquote>`}</code></pre>
+  <section class="docs-section bf-card">
+    <h2>Component Catalog</h2>
+    {categories.map((category) => (
+      <article class="docs-catalog-block">
+        <h3>{category.title}</h3>
+        <p class="bf-muted">{category.items.length} components</p>
+        <div class="docs-tags">
+          {category.items.map((item) => (
+            <code>{item}</code>
+          ))}
+        </div>
+      </article>
+    ))}
   </section>
 
-  <section class="docs-block bf-card">
-    <h2>Article and Card</h2>
-    <div class="docs-grid-2">
-      <BlowfishArticle title="Migrating Blowfish to Astro" description="How shortcode compatibility works." date="2026-02-17" href="#" />
-      <BlowfishCard title="Quickstart" description="Install package and import styles." href="#" />
-    </div>
-    <pre><code>{`<BlowfishArticle title="Migrating Blowfish to Astro" description="..." date="2026-02-17" href="#" />
-<BlowfishCard title="Quickstart" description="Install package and import styles." href="#" />`}</code></pre>
-  </section>
-
-  <section class="docs-block bf-card">
-    <h2>Accordion</h2>
-    <div class="docs-demo">
-      <BlowfishAccordion heading="FAQ">
-        <BlowfishAccordionItem title="Can I use Hugo templates directly?" open={true}>
-          No. This package recreates behavior with Astro-native components.
-        </BlowfishAccordionItem>
-        <BlowfishAccordionItem title="Is SSR required?">
-          No, static output works for Cloudflare Pages free tier.
-        </BlowfishAccordionItem>
-      </BlowfishAccordion>
-    </div>
-    <pre><code>{`<BlowfishAccordion heading="FAQ">
-  <BlowfishAccordionItem title="Can I use Hugo templates directly?" open={true}>...</BlowfishAccordionItem>
-</BlowfishAccordion>`}</code></pre>
-  </section>
-
-  <section class="docs-block bf-card">
-    <h2>Figure and Gallery</h2>
-    <div class="docs-demo">
-      <BlowfishFigure
-        src="https://images.unsplash.com/photo-1482192505345-5655af888cc4?w=1200"
-        alt="Mountain"
-        caption="Figure with card framing"
-      />
-      <BlowfishGallery
-        cols={3}
-        items={[
-          { image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=900', title: 'One' },
-          { image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=900', title: 'Two' },
-          { image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=900', title: 'Three' }
-        ]}
-      />
-    </div>
-    <pre><code>{`<BlowfishFigure src="/image.jpg" alt="Mountain" caption="Figure with card framing" />
-<BlowfishGallery cols={3} items={[{ image: '/a.jpg', title: 'One' }]} />`}</code></pre>
-  </section>
-
-  <section class="docs-block bf-card">
-    <h2>Tabs and Timeline</h2>
-    <div class="docs-demo">
-      <BlowfishTabs selected="first">
-        <BlowfishTab title="first" open={true}>Tab one content</BlowfishTab>
-        <BlowfishTab title="second">Tab two content</BlowfishTab>
-      </BlowfishTabs>
-      <BlowfishTimeline title="Project timeline">
-        <BlowfishTimelineItem name="Scaffold" time="2026-02-17">Initial package and docs.</BlowfishTimelineItem>
-        <BlowfishTimelineItem name="Parity" time="2026-02-18">Extended aliases and components.</BlowfishTimelineItem>
-      </BlowfishTimeline>
-    </div>
-    <pre><code>{`<BlowfishTabs selected="first">
-  <BlowfishTab title="first" open={true}>Tab one content</BlowfishTab>
-</BlowfishTabs>
-<BlowfishTimeline title="Project timeline">
-  <BlowfishTimelineItem name="Scaffold" time="2026-02-17">...</BlowfishTimelineItem>
-</BlowfishTimeline>`}</code></pre>
-  </section>
-
-  <section class="docs-block bf-card">
-    <h2>KaTeX, Mermaid, TypeIt</h2>
-    <div class="docs-demo">
-      <p><strong>KaTeX:</strong> <BlowfishKaTeX expr="E=mc^2" /></p>
-      <BlowfishMermaid diagram={`graph TD
-A[Astro] --> B[Theme]
-B --> C[Components]`} />
-      <p><strong>TypeIt:</strong> <BlowfishTypeIt strings={['portable', 'composable', 'static']} speed={70} loop={false} /></p>
-    </div>
-    <pre><code>{`<BlowfishKaTeX expr="E=mc^2" />
-<BlowfishMermaid diagram={
-
-graph TD
-A[Astro] --> B[Theme]
-} />
-<BlowfishTypeIt strings={['portable', 'composable']} speed={70} />`}</code></pre>
-  </section>
-
-  <section class="docs-block bf-card">
-    <h2>Video and YouTube Lite</h2>
-    <div class="docs-demo">
-      <BlowfishVideo src={sampleVideo} title="Local/hosted video" controls={true} muted={true} />
-      <BlowfishYouTubeLite url="https://www.youtube.com/watch?v=dQw4w9WgXcQ" label="YouTube Lite" />
-      <BlowfishGitHubCard owner="withastro" repository="astro" />
-    </div>
-    <pre><code>{`<BlowfishVideo src="/videos/intro.mp4" title="Local/hosted video" controls={true} />
-<BlowfishYouTubeLite url="https://www.youtube.com/watch?v=dQw4w9WgXcQ" label="YouTube Lite" />
-<BlowfishGitHubCard owner="withastro" repository="astro" />`}</code></pre>
+  <section class="docs-section bf-card">
+    <h2>Rewrite Tracking</h2>
+    <p>Use these files for continuity and parity status:</p>
+    <ul>
+      <li><code>docs/PARITY_TRACKER.md</code></li>
+      <li><code>CODEX_CONTEXT.md</code></li>
+      <li><code>REWRITE_CONFIG.json</code></li>
+    </ul>
   </section>
 </BlowfishBaseLayout>
 
 <style>
-  .docs-hero {
+  .docs-hero,
+  .docs-section {
     padding: 1rem;
-    display: grid;
-    gap: 1rem;
   }
 
-  .docs-hero h1 {
+  .docs-hero h1,
+  .docs-section h2 {
     margin: 0;
-    line-height: 1.2;
   }
 
   .docs-badges {
+    margin-top: 0.7rem;
     display: flex;
+    gap: 0.45rem;
     flex-wrap: wrap;
-    gap: 0.5rem;
   }
 
-  .docs-link {
+  .docs-links {
+    margin: 0.8rem 0 0;
+    display: flex;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+  }
+
+  .docs-links a {
     color: var(--bf-primary);
     text-decoration: none;
-    font-weight: 600;
   }
 
-  .docs-block {
-    padding: 1rem;
-  }
-
-  .docs-block h2 {
-    margin-top: 0;
-    margin-bottom: 0.8rem;
-    font-size: 1.05rem;
-  }
-
-  .docs-demo {
+  .docs-grid {
+    margin-top: 0.8rem;
     display: grid;
     gap: 0.75rem;
-  }
-
-  .docs-grid-2 {
-    display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.75rem;
   }
 
-  pre {
-    margin: 0.8rem 0 0;
-    overflow: auto;
-    background: #0d1016;
+  .docs-demo-card {
+    display: grid;
+    gap: 0.35rem;
+    text-decoration: none;
+    color: inherit;
     border: 1px solid var(--bf-border);
-    border-radius: 10px;
+    border-radius: 0.75rem;
     padding: 0.75rem;
+    background: color-mix(in srgb, var(--bf-surface) 85%, black 15%);
+  }
+
+  .docs-demo-card h3 {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .docs-demo-card p {
+    margin: 0;
+    color: var(--bf-muted);
+    font-size: 0.92rem;
+  }
+
+  .docs-demo-card code {
     font-size: 0.8rem;
-    line-height: 1.5;
+    color: var(--bf-primary);
   }
 
-  code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  .docs-catalog-block {
+    margin-top: 0.9rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid color-mix(in srgb, var(--bf-border) 70%, transparent);
   }
 
-  @media (max-width: 720px) {
-    .docs-grid-2 {
+  .docs-catalog-block h3,
+  .docs-catalog-block p {
+    margin: 0;
+  }
+
+  .docs-tags {
+    margin-top: 0.6rem;
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .docs-tags code {
+    border: 1px solid var(--bf-border);
+    border-radius: 999px;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.78rem;
+    background: color-mix(in srgb, var(--bf-surface) 85%, black 15%);
+  }
+
+  ul {
+    margin: 0.6rem 0 0;
+    padding-left: 1rem;
+  }
+
+  @media (max-width: 760px) {
+    .docs-grid {
       grid-template-columns: 1fr;
     }
   }

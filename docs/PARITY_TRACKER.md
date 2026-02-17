@@ -3,6 +3,7 @@
 Goal: reproduce official Blowfish theme behavior in Astro-native implementation.
 
 Source baseline: `/tmp/blowfish-upstream` (GitHub `nunocoracao/blowfish`).
+Process configuration: `REWRITE_CONFIG.json` (mandatory update checklist for future rewrite passes).
 
 ## Status legend
 

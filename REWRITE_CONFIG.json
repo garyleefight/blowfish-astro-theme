@@ -1,0 +1,28 @@
+{
+  "rewrite_process": {
+    "name": "blowfish-astro-full-rewrite",
+    "source_of_truth": "/tmp/blowfish-upstream",
+    "must_be_upstream_derived": true,
+    "no_speculative_scaffold": true,
+    "static_only": true,
+    "cloudflare_pages_compatible": true
+  },
+  "required_updates_each_rewrite_pass": [
+    {
+      "path": "docs/PARITY_TRACKER.md",
+      "requirement": "Update implemented/partial/todo status for touched features."
+    },
+    {
+      "path": "CODEX_CONTEXT.md",
+      "requirement": "Update session context, completed slices, and next steps."
+    },
+    {
+      "path": "src/pages/index.astro",
+      "requirement": "Keep demo entry hub updated with new demos/components."
+    }
+  ],
+  "pre_commit_checks": [
+    "npm run build",
+    "git status"
+  ]
+}

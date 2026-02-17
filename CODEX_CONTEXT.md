@@ -27,6 +27,8 @@ Goal: rewrite Hugo Blowfish theme into Astro-native package with parity tracking
 - Keep only files derived from official Blowfish repo design/features.
 - Remove speculative scaffolding if it does not map to upstream.
 - Maintain static output and Cloudflare Pages compatibility (no SSR requirements).
+- Follow `REWRITE_CONFIG.json` on every rewrite pass.
+  - Mandatory updates each pass: `docs/PARITY_TRACKER.md`, `CODEX_CONTEXT.md`, `src/pages/index.astro`.
 
 ## Key files
 
