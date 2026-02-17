@@ -1,0 +1,33 @@
+---
+import { pickArray } from '../lib/props';
+import BlowfishKeyword from './BlowfishKeyword.astro';
+
+interface KeywordItem {
+  text?: string;
+  label?: string;
+  href?: string;
+  url?: string;
+}
+
+export interface Props {
+  items?: KeywordItem[];
+  keywords?: KeywordItem[];
+}
+
+const props = Astro.props as Record<string, unknown>;
+const items = pickArray<KeywordItem>(props, ['items', 'keywords']);
+---
+
+<div class="bf-keyword-list">
+  {items.map((item) => (
+    <BlowfishKeyword text={item.text || item.label} href={item.href || item.url} />
+  ))}
+</div>
+
+<style>
+  .bf-keyword-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+</style>

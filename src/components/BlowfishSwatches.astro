@@ -1,0 +1,36 @@
+---
+interface Swatch {
+  name: string;
+  color: string;
+}
+
+export interface Props {
+  items?: Swatch[];
+}
+
+const { items = [] } = Astro.props;
+---
+
+<div class="bf-swatches">
+  {items.map((item) => (
+    <div class="bf-swatch">
+      <span class="bf-swatch-chip" style={`background:${item.color};`} />
+      <code>{item.name}</code>
+    </div>
+  ))}
+</div>
+
+<style>
+  .bf-swatches { display: grid; gap: 0.55rem; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+  .bf-swatch {
+    border: 1px solid var(--bf-border);
+    border-radius: 0.55rem;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: color-mix(in srgb, var(--bf-surface) 84%, black 16%);
+  }
+  .bf-swatch-chip { width: 1.8rem; height: 1.8rem; border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.35); }
+  .bf-swatch code { font-size: 0.8rem; }
+</style>

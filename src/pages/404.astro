@@ -1,0 +1,18 @@
+---
+import BlowfishSiteLayout from '../layouts/site/BlowfishSiteLayout.astro';
+---
+
+<BlowfishSiteLayout title="404" nav={[{ label: 'Home', href: '/' }, { label: 'Theme List', href: '/theme/list' }]}> 
+  <section class="bf-card bf-not-found">
+    <h1>404</h1>
+    <p class="bf-muted">Page not found.</p>
+    <a href="/">Return home</a>
+  </section>
+</BlowfishSiteLayout>
+
+<style>
+  .bf-not-found { padding: 2rem 1rem; text-align: center; }
+  .bf-not-found h1 { margin: 0; font-size: 2.4rem; }
+  .bf-not-found p { margin: 0.6rem 0; }
+  .bf-not-found a { color: var(--bf-primary); text-decoration: none; }
+</style>

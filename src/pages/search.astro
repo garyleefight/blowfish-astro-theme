@@ -1,0 +1,31 @@
+---
+import BlowfishSiteLayout from '../layouts/site/BlowfishSiteLayout.astro';
+---
+
+<BlowfishSiteLayout title="Search" nav={[{ label: 'Home', href: '/' }, { label: 'Theme List', href: '/theme/list' }]}> 
+  <section class="bf-card bf-search-page">
+    <h1>Search</h1>
+    <p class="bf-muted">Search template parity scaffold (`partials/search.html`).</p>
+    <form>
+      <input type="search" placeholder="Search posts..." />
+    </form>
+    <div class="bf-search-results">
+      <p class="bf-muted">No results yet. Fuse.js integration is next.</p>
+    </div>
+  </section>
+</BlowfishSiteLayout>
+
+<style>
+  .bf-search-page { padding: 1rem; }
+  .bf-search-page h1 { margin: 0; }
+  .bf-search-page form { margin-top: 0.8rem; }
+  .bf-search-page input {
+    width: min(100%, 420px);
+    border: 1px solid var(--bf-border);
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.65rem;
+    color: var(--bf-text);
+    background: color-mix(in srgb, var(--bf-surface) 84%, black 16%);
+  }
+  .bf-search-results { margin-top: 1rem; }
+</style>

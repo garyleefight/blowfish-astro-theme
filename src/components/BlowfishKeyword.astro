@@ -1,0 +1,33 @@
+---
+import { pickString } from '../lib/props';
+
+export interface Props {
+  text?: string;
+  label?: string;
+  href?: string;
+  url?: string;
+}
+
+const props = Astro.props as Record<string, unknown>;
+const text = pickString(props, ['text', 'label'], 'keyword');
+const href = pickString(props, ['href', 'url']);
+---
+
+{href ? (
+  <a class="bf-keyword" href={href}>{text}</a>
+) : (
+  <span class="bf-keyword">{text}</span>
+)}
+
+<style>
+  .bf-keyword {
+    display: inline-flex;
+    border-radius: 999px;
+    padding: 0.2rem 0.55rem;
+    border: 1px solid var(--bf-border);
+    font-size: 0.8rem;
+    text-decoration: none;
+    color: var(--bf-text);
+    background: color-mix(in srgb, var(--bf-surface) 84%, black 16%);
+  }
+</style>

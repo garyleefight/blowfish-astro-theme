@@ -1,0 +1,28 @@
+---
+import { pickString } from '../lib/props';
+
+export interface Props {
+  repo?: string;
+  repository?: string;
+  owner?: string;
+  user?: string;
+  host?: string;
+}
+
+const props = Astro.props as Record<string, unknown>;
+const repo = pickString(props, ['repo', 'repository']);
+const owner = pickString(props, ['owner', 'user']);
+const host = pickString(props, ['host'], 'codeberg.org');
+const path = owner ? `${owner}/${repo}` : repo;
+const href = `https://${host}/${path}`;
+---
+
+<a class="bf-card bf-repo-card" href={href} target="_blank" rel="noopener noreferrer">
+  <strong>Forgejo</strong>
+  <span>{path}</span>
+</a>
+
+<style>
+  .bf-repo-card { display: grid; gap: 0.2rem; padding: 0.8rem 1rem; text-decoration: none; color: inherit; }
+  .bf-repo-card span { color: var(--bf-muted); }
+</style>

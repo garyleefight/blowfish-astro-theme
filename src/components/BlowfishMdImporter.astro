@@ -1,0 +1,24 @@
+---
+import { pickString } from '../lib/props';
+
+export interface Props {
+  source?: string;
+  path?: string;
+  url?: string;
+  title?: string;
+}
+
+const props = Astro.props as Record<string, unknown>;
+const source = pickString(props, ['source', 'path', 'url']);
+const title = pickString(props, ['title'], 'Markdown Importer');
+---
+
+<section class="bf-card bf-mdimporter">
+  <p><strong>{title}</strong></p>
+  <p class="bf-muted">Placeholder for md import source: <code>{source}</code></p>
+</section>
+
+<style>
+  .bf-mdimporter { padding: 0.8rem 1rem; }
+  .bf-mdimporter p { margin: 0.3rem 0; }
+</style>

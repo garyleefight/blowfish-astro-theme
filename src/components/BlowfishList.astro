@@ -1,0 +1,30 @@
+---
+interface ListItem {
+  title: string;
+  summary?: string;
+  href?: string;
+}
+
+export interface Props {
+  items?: ListItem[];
+}
+
+const { items = [] } = Astro.props;
+---
+
+<section class="bf-list-shortcode">
+  {items.map((item) => (
+    <article class="bf-card">
+      <h4>{item.href ? <a href={item.href}>{item.title}</a> : item.title}</h4>
+      {item.summary && <p>{item.summary}</p>}
+    </article>
+  ))}
+</section>
+
+<style>
+  .bf-list-shortcode { display: grid; gap: 0.7rem; }
+  .bf-list-shortcode article { padding: 0.8rem 1rem; }
+  .bf-list-shortcode h4 { margin: 0; }
+  .bf-list-shortcode p { margin: 0.45rem 0 0; color: var(--bf-muted); }
+  .bf-list-shortcode a { color: var(--bf-text); text-decoration: none; }
+</style>

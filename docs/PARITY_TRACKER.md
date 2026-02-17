@@ -29,7 +29,7 @@ Source baseline: `/tmp/blowfish-upstream` (GitHub `nunocoracao/blowfish`).
 ## Shortcodes
 
 - DONE major shortcode surface in `src/components/*`
-- TODO add missing shortcodes from upstream:
+- DONE missing shortcode stubs/components from upstream:
   - `codeberg`, `forgejo`, `gitea`, `gitlab`, `huggingface`, `keyword`, `keywordList`, `list`, `mdimporter`, `screenshot`, `swatches`
 
 ## Core templates
@@ -37,17 +37,17 @@ Source baseline: `/tmp/blowfish-upstream` (GitHub `nunocoracao/blowfish`).
 - PARTIAL `layouts/_default/baseof.html` -> `src/layouts/site/BlowfishSiteLayout.astro`
 - PARTIAL `layouts/_default/list.html` -> `src/pages/theme/list.astro`
 - PARTIAL `layouts/_default/single.html` -> `src/pages/theme/single.astro`
-- TODO `layouts/_default/term.html`
+- PARTIAL `layouts/_default/term.html` -> `src/pages/theme/term.astro`
 - PARTIAL `layouts/_default/terms.html` -> `src/pages/theme/terms.astro`
-- TODO `layouts/404.html`
-- TODO `layouts/robots.txt`
+- PARTIAL `layouts/404.html` -> `src/pages/404.astro`
+- PARTIAL `layouts/robots.txt` -> `src/pages/robots.txt.ts`
 
 ## Site partials
 
 - PARTIAL `layouts/partials/header/*` -> `src/components/site/BlowfishHeader.astro`
 - PARTIAL `layouts/partials/footer.html` -> `src/components/site/BlowfishFooter.astro`
 - TODO `layouts/partials/head.html`
-- TODO `layouts/partials/search.html`
+- PARTIAL `layouts/partials/search.html` -> `src/pages/search.astro`
 - PARTIAL `layouts/partials/pagination.html` -> `src/components/site/BlowfishPagination.astro`
 - PARTIAL `layouts/partials/breadcrumbs.html` -> `src/components/site/BlowfishBreadcrumbs.astro`
 - TODO `layouts/partials/hero/*`

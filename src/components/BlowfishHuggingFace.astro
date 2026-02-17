@@ -1,0 +1,34 @@
+---
+import { pickString } from '../lib/props';
+
+export interface Props {
+  model?: string;
+  dataset?: string;
+  space?: string;
+  path?: string;
+  type?: 'model' | 'dataset' | 'spaces';
+}
+
+const props = Astro.props as Record<string, unknown>;
+const explicitType = pickString(props, ['type']);
+const model = pickString(props, ['model']);
+const dataset = pickString(props, ['dataset']);
+const space = pickString(props, ['space']);
+const path = pickString(props, ['path']);
+
+const resolvedType = explicitType || (dataset ? 'dataset' : space ? 'spaces' : 'model');
+const resolvedPath = path || model || dataset || space;
+const href = resolvedType === 'model'
+  ? `https://huggingface.co/${resolvedPath}`
+  : `https://huggingface.co/${resolvedType}/${resolvedPath}`;
+---
+
+<a class="bf-card bf-repo-card" href={href} target="_blank" rel="noopener noreferrer">
+  <strong>Hugging Face</strong>
+  <span>{resolvedType}: {resolvedPath}</span>
+</a>
+
+<style>
+  .bf-repo-card { display: grid; gap: 0.2rem; padding: 0.8rem 1rem; text-decoration: none; color: inherit; }
+  .bf-repo-card span { color: var(--bf-muted); }
+</style>
