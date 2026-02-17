@@ -1,0 +1,35 @@
+<button id="bf-appearance-toggle" class="bf-appearance-toggle" type="button" aria-label="Toggle appearance">
+  Theme
+</button>
+
+<script is:inline>
+  const KEY = 'bf-theme';
+  const root = document.documentElement;
+  const button = document.getElementById('bf-appearance-toggle');
+
+  const apply = (mode) => {
+    root.setAttribute('data-theme', mode);
+    if (button) button.textContent = mode === 'light' ? 'Light' : 'Dark';
+  };
+
+  const initial = localStorage.getItem(KEY) || 'dark';
+  apply(initial);
+
+  button?.addEventListener('click', () => {
+    const next = (root.getAttribute('data-theme') || 'dark') === 'dark' ? 'light' : 'dark';
+    localStorage.setItem(KEY, next);
+    apply(next);
+  });
+</script>
+
+<style>
+  .bf-appearance-toggle {
+    border: 1px solid var(--bf-border);
+    border-radius: 0.5rem;
+    background: color-mix(in srgb, var(--bf-surface) 88%, black 12%);
+    color: var(--bf-text);
+    padding: 0.35rem 0.55rem;
+    font-size: 0.82rem;
+    cursor: pointer;
+  }
+</style>

@@ -1,0 +1,174 @@
+<script is:inline src="/blowfish-lib/packery/packery.pkgd.min.js"></script>
+<script is:inline src="/blowfish-lib/mermaid/mermaid.min.js"></script>
+<script is:inline src="/blowfish-lib/chart/chart.min.js"></script>
+<script is:inline src="/blowfish-lib/typeit/typeit.umd.js"></script>
+
+<script is:inline>
+  const runTabs = () => {
+    document.querySelectorAll('.bf-tabs').forEach((container) => {
+      const tabs = Array.from(container.querySelectorAll('.bf-tab'));
+      if (!tabs.length) return;
+
+      let nav = container.querySelector('.bf-tabs-nav');
+      if (!nav) {
+        nav = document.createElement('div');
+        nav.className = 'bf-tabs-nav';
+        container.prepend(nav);
+      }
+      nav.innerHTML = '';
+
+      const defaultTab = container.getAttribute('data-default-tab');
+      let activeName = tabs.find((tab) => tab.getAttribute('data-active') === 'true')?.getAttribute('data-name');
+      if (!activeName) activeName = defaultTab || tabs[0].getAttribute('data-name');
+
+      const activate = (name) => {
+        tabs.forEach((tab) => {
+          const current = tab.getAttribute('data-name') === name;
+          tab.style.display = current ? 'block' : 'none';
+        });
+        nav.querySelectorAll('button').forEach((btn) => {
+          btn.setAttribute('data-selected', btn.getAttribute('data-name') === name ? 'true' : 'false');
+        });
+      };
+
+      tabs.forEach((tab) => {
+        const name = tab.getAttribute('data-name') || 'Tab';
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = name;
+        btn.className = 'bf-tabs-btn';
+        btn.setAttribute('data-name', name);
+        btn.addEventListener('click', () => activate(name));
+        nav.appendChild(btn);
+      });
+
+      activate(activeName || tabs[0].getAttribute('data-name'));
+    });
+  };
+
+  const runGallery = () => {
+    if (!window.Packery) return;
+    document.querySelectorAll('.bf-gallery').forEach((gallery) => {
+      if (gallery.__bfPackery) return;
+      gallery.__bfPackery = new window.Packery(gallery, {
+        itemSelector: 'figure',
+        percentPosition: true,
+        gutter: 12
+      });
+    });
+  };
+
+  const runMermaid = async () => {
+    if (!window.mermaid) return;
+    if (!window.__bfMermaidReady) {
+      window.mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      window.__bfMermaidReady = true;
+    }
+
+    const blocks = Array.from(document.querySelectorAll('.language-mermaid'));
+    for (const block of blocks) {
+      const parent = block.closest('.bf-mermaid');
+      if (!parent || parent.getAttribute('data-rendered') === 'true') continue;
+      const code = block.textContent || '';
+      const id = `bf-mermaid-${Math.random().toString(36).slice(2)}`;
+      try {
+        const rendered = await window.mermaid.render(id, code);
+        parent.innerHTML = rendered.svg;
+        parent.setAttribute('data-rendered', 'true');
+      } catch {
+        // keep original block if render fails
+      }
+    }
+  };
+
+  const runCharts = () => {
+    if (!window.Chart) return;
+    document.querySelectorAll('[data-bf-chart]').forEach((el) => {
+      if (el.getAttribute('data-rendered') === 'true') return;
+      const type = el.getAttribute('data-type') || 'bar';
+      const labels = JSON.parse(el.getAttribute('data-labels') || '[]');
+      const data = JSON.parse(el.getAttribute('data-data') || '[]');
+      const canvas = document.createElement('canvas');
+      el.appendChild(canvas);
+      new window.Chart(canvas.getContext('2d'), {
+        type,
+        data: {
+          labels,
+          datasets: [{ label: 'Series', data }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+      canvas.style.width = '100%';
+      canvas.style.height = '220px';
+      el.setAttribute('data-rendered', 'true');
+    });
+  };
+
+  const runTypeIt = () => {
+    if (!window.TypeIt) return;
+    document.querySelectorAll('.bf-typeit').forEach((el) => {
+      if (el.getAttribute('data-rendered') === 'true') return;
+      const speed = Number(el.getAttribute('data-speed') || 75);
+      const loop = el.getAttribute('data-loop') === 'true';
+      const text = el.textContent || '';
+      el.textContent = '';
+      new window.TypeIt(el, {
+        speed,
+        loop,
+        waitUntilVisible: true,
+        strings: [text]
+      }).go();
+      el.setAttribute('data-rendered', 'true');
+    });
+  };
+
+  const runAll = () => {
+    runTabs();
+    runGallery();
+    runMermaid();
+    runCharts();
+    runTypeIt();
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runAll);
+  } else {
+    runAll();
+  }
+</script>
+
+<style>
+  .bf-tabs-nav {
+    display: flex;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.7rem;
+  }
+
+  .bf-tabs-btn {
+    border: 1px solid var(--bf-border);
+    background: color-mix(in srgb, var(--bf-surface) 88%, black 12%);
+    color: var(--bf-muted);
+    padding: 0.22rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    cursor: pointer;
+  }
+
+  .bf-tabs-btn[data-selected='true'] {
+    color: var(--bf-text);
+    border-color: color-mix(in srgb, var(--bf-primary) 55%, var(--bf-border));
+  }
+
+  .bf-mermaid svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  [data-bf-chart] {
+    min-height: 260px;
+  }
+</style>

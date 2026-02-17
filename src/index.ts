@@ -44,7 +44,9 @@ export { default as BlowfishFooter } from './components/site/BlowfishFooter.astr
 export { default as BlowfishHead } from './components/site/BlowfishHead.astro';
 export { default as BlowfishHeader } from './components/site/BlowfishHeader.astro';
 export { default as BlowfishAnalytics } from './components/site/BlowfishAnalytics.astro';
+export { default as BlowfishAppearanceToggle } from './components/site/BlowfishAppearanceToggle.astro';
 export { default as BlowfishPagination } from './components/site/BlowfishPagination.astro';
+export { default as BlowfishRuntime } from './components/site/BlowfishRuntime.astro';
 export { default as BlowfishSchema } from './components/site/BlowfishSchema.astro';
 export { default as BlowfishScrollTop } from './components/site/BlowfishScrollTop.astro';
 export { default as BlowfishRTL } from './components/BlowfishRTL.astro';

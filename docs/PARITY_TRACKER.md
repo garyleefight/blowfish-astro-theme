@@ -68,7 +68,7 @@ Source baseline: `/tmp/blowfish-upstream` (GitHub `nunocoracao/blowfish`).
 ## Assets and behavior
 
 - TODO port CSS components/schemes parity
-- PARTIAL port JS behavior parity: search and scroll-to-top done; tabs, gallery, mermaid, chart, appearance toggle remaining
+- PARTIAL port JS behavior parity: search, scroll-to-top, tabs, gallery, mermaid, chart, typeit, appearance toggle implemented in `src/components/site/BlowfishRuntime.astro` and `src/components/site/BlowfishAppearanceToggle.astro`
 - PARTIAL icon parity (full upstream icon/lib/img assets copied to `public/blowfish-*`; runtime mapping still TODO)
 
 ## Current focus

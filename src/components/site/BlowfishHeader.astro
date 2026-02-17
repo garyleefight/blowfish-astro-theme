@@ -1,4 +1,6 @@
 ---
+import BlowfishAppearanceToggle from './BlowfishAppearanceToggle.astro';
+
 export interface NavItem {
   label: string;
   href: string;
@@ -8,9 +10,10 @@ export interface Props {
   title: string;
   nav?: NavItem[];
   enableSearch?: boolean;
+  enableAppearanceToggle?: boolean;
 }
 
-const { title, nav = [], enableSearch = true } = Astro.props;
+const { title, nav = [], enableSearch = true, enableAppearanceToggle = true } = Astro.props;
 ---
 
 <header class="bf-site-header">
@@ -21,11 +24,14 @@ const { title, nav = [], enableSearch = true } = Astro.props;
         <a href={item.href}>{item.label}</a>
       ))}
     </nav>
-    {enableSearch && (
-      <form class="bf-site-search" action="/search" method="get">
-        <input type="search" name="q" placeholder="Search" />
-      </form>
-    )}
+    <div class="bf-site-actions">
+      {enableSearch && (
+        <form class="bf-site-search" action="/search" method="get">
+          <input type="search" name="q" placeholder="Search" />
+        </form>
+      )}
+      {enableAppearanceToggle && <BlowfishAppearanceToggle />}
+    </div>
   </div>
 </header>
 
@@ -74,6 +80,13 @@ const { title, nav = [], enableSearch = true } = Astro.props;
     border-radius: 0.5rem;
     padding: 0.35rem 0.55rem;
     min-width: 10rem;
+  }
+
+  .bf-site-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    justify-content: flex-end;
   }
 
   @media (max-width: 760px) {
