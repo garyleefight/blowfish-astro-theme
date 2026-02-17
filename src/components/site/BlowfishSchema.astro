@@ -1,0 +1,21 @@
+---
+export interface Props {
+  title: string;
+  description?: string;
+  canonicalUrl?: string;
+  image?: string;
+}
+
+const { title, description = '', canonicalUrl, image } = Astro.props;
+
+const payload = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: title,
+  description,
+  url: canonicalUrl,
+  image
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(payload)}></script>

@@ -1,0 +1,32 @@
+<button class="bf-scroll-top" id="bf-scroll-top" type="button" aria-label="Scroll to top">↑</button>
+
+<script is:inline>
+  const btn = document.getElementById('bf-scroll-top');
+  const toggle = () => {
+    if (!btn) return;
+    btn.style.opacity = window.scrollY > 300 ? '1' : '0';
+    btn.style.pointerEvents = window.scrollY > 300 ? 'auto' : 'none';
+  };
+  window.addEventListener('scroll', toggle, { passive: true });
+  toggle();
+  btn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+</script>
+
+<style>
+  .bf-scroll-top {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 999px;
+    border: 1px solid var(--bf-border);
+    background: color-mix(in srgb, var(--bf-surface) 86%, black 14%);
+    color: var(--bf-text);
+    box-shadow: var(--bf-shadow);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 160ms ease;
+    z-index: 45;
+  }
+</style>

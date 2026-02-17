@@ -46,16 +46,16 @@ Source baseline: `/tmp/blowfish-upstream` (GitHub `nunocoracao/blowfish`).
 
 - PARTIAL `layouts/partials/header/*` -> `src/components/site/BlowfishHeader.astro`
 - PARTIAL `layouts/partials/footer.html` -> `src/components/site/BlowfishFooter.astro`
-- TODO `layouts/partials/head.html`
-- PARTIAL `layouts/partials/search.html` -> `src/pages/search.astro`
+- PARTIAL `layouts/partials/head.html` -> `src/components/site/BlowfishHead.astro`
+- PARTIAL `layouts/partials/search.html` -> `src/pages/search.astro` + `src/pages/search-index.json.ts`
 - PARTIAL `layouts/partials/pagination.html` -> `src/components/site/BlowfishPagination.astro`
 - PARTIAL `layouts/partials/breadcrumbs.html` -> `src/components/site/BlowfishBreadcrumbs.astro`
 - TODO `layouts/partials/hero/*`
 - TODO `layouts/partials/author*.html`
-- TODO `layouts/partials/toc.html`
-- TODO `layouts/partials/schema.html`
-- TODO `layouts/partials/related.html`
-- TODO analytics partials
+- PARTIAL `layouts/partials/toc.html` -> `src/components/article/BlowfishToc.astro`
+- PARTIAL `layouts/partials/schema.html` -> `src/components/site/BlowfishSchema.astro`
+- PARTIAL `layouts/partials/related.html` -> `src/components/article/BlowfishRelated.astro`
+- PARTIAL analytics partials -> `src/components/site/BlowfishAnalytics.astro`
 
 ## Article rendering
 
@@ -68,7 +68,7 @@ Source baseline: `/tmp/blowfish-upstream` (GitHub `nunocoracao/blowfish`).
 ## Assets and behavior
 
 - TODO port CSS components/schemes parity
-- TODO port JS behavior parity: search, tabs, gallery, mermaid, chart, scroll-to-top, appearance toggle
+- PARTIAL port JS behavior parity: search and scroll-to-top done; tabs, gallery, mermaid, chart, appearance toggle remaining
 - PARTIAL icon parity (full upstream icon/lib/img assets copied to `public/blowfish-*`; runtime mapping still TODO)
 
 ## Current focus

@@ -1,0 +1,15 @@
+---
+export interface Props {
+  provider?: 'ga' | 'fathom' | 'umami' | 'seline';
+  id?: string;
+  host?: string;
+}
+
+const { provider, id, host } = Astro.props;
+---
+
+{provider && id && (
+  <script is:inline>
+    {`window.__BLOWFISH_ANALYTICS__ = ${JSON.stringify({ provider, id, host })};`}
+  </script>
+)}

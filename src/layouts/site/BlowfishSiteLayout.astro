@@ -1,23 +1,51 @@
 ---
+import BlowfishAnalytics from '../../components/site/BlowfishAnalytics.astro';
+import BlowfishHead from '../../components/site/BlowfishHead.astro';
 import BlowfishFooter from '../../components/site/BlowfishFooter.astro';
 import BlowfishHeader from '../../components/site/BlowfishHeader.astro';
+import BlowfishSchema from '../../components/site/BlowfishSchema.astro';
+import BlowfishScrollTop from '../../components/site/BlowfishScrollTop.astro';
 import '../../styles/theme.css';
 
 export interface Props {
   title?: string;
+  description?: string;
+  canonicalUrl?: string;
+  image?: string;
   siteTitle?: string;
   nav?: { label: string; href: string }[];
+  analyticsProvider?: 'ga' | 'fathom' | 'umami' | 'seline';
+  analyticsId?: string;
+  analyticsHost?: string;
+  noindex?: boolean;
 }
 
-const { title = 'Blowfish Theme', siteTitle = 'Blowfish Astro Theme', nav = [] } = Astro.props;
+const {
+  title = 'Blowfish Theme',
+  description = '',
+  canonicalUrl,
+  image,
+  siteTitle = 'Blowfish Astro Theme',
+  nav = [],
+  analyticsProvider,
+  analyticsId,
+  analyticsHost,
+  noindex = false
+} = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title}</title>
+    <BlowfishHead
+      title={title}
+      description={description}
+      canonicalUrl={canonicalUrl}
+      image={image}
+      noindex={noindex}
+    />
+    <BlowfishSchema title={title} description={description} canonicalUrl={canonicalUrl} image={image} />
+    <BlowfishAnalytics provider={analyticsProvider} id={analyticsId} host={analyticsHost} />
   </head>
   <body>
     <BlowfishHeader title={siteTitle} nav={nav} />
@@ -25,6 +53,7 @@ const { title = 'Blowfish Theme', siteTitle = 'Blowfish Astro Theme', nav = [] }
       <slot />
     </main>
     <BlowfishFooter />
+    <BlowfishScrollTop />
   </body>
 </html>
 
