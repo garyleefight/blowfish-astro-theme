@@ -1,6 +1,15 @@
 ---
+import BlowfishIcon from '../BlowfishIcon.astro';
+
 export interface Props { count?: number; }
 const { count } = Astro.props;
 ---
 
-<span>{typeof count === 'number' ? count : 'loading'} ♥</span>
+<span class="bf-meta-count">
+  {typeof count === 'number' ? count : 'loading'}
+  <BlowfishIcon name="heart" size="0.9rem" />
+</span>
+
+<style>
+  .bf-meta-count { display: inline-flex; align-items: center; gap: 0.25rem; }
+</style>

@@ -7,12 +7,41 @@ export interface Props {
   iconName?: string;
   size?: string;
   class?: string;
+  title?: string;
 }
 
 const props = Astro.props as Record<string, unknown>;
 const name = pickString(props, ['name', 'icon', 'iconName']);
 const size = pickString(props, ['size'], '1em');
 const className = pickString(props, ['class']);
+const title = pickString(props, ['title'], name);
+const src = `/blowfish-icons/${name}.svg`;
 ---
 
-<span class={className || undefined} aria-label={name} role="img" style={`font-size: ${size};`}>[{name}]</span>
+{name ? (
+  <span class:list={['bf-icon', className || undefined]} title={title} aria-hidden="true" style={`width:${size};height:${size};`}>
+    <img src={src} alt="" loading="lazy" decoding="async" />
+  </span>
+) : null}
+
+<style>
+  .bf-icon {
+    display: inline-flex;
+    width: 1em;
+    height: 1em;
+    line-height: 1;
+    vertical-align: text-bottom;
+  }
+
+  .bf-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    filter: invert(82%) sepia(8%) saturate(490%) hue-rotate(177deg) brightness(88%) contrast(88%);
+  }
+
+  :global(html[data-theme='light']) .bf-icon img {
+    filter: invert(29%) sepia(15%) saturate(496%) hue-rotate(177deg) brightness(91%) contrast(90%);
+  }
+</style>

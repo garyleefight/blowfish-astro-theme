@@ -20,6 +20,7 @@ Goal: rewrite Hugo Blowfish theme into Astro-native package with parity tracking
   - hero partials (`hero/basic`, `hero/background`, `hero/big`, `hero/thumbAndBackground`)
   - author partials (`author-links`, `author-extra`)
   - meta partial components (`meta/date`, `meta/date-updated`, `meta/reading-time`, `meta/word-count`, `meta/edit`, `meta/views`, `meta/likes`, `meta/likes_button`, `meta/zen-mode`)
+  - icon runtime mapping through official assets (`/public/blowfish-icons/*`) via `src/components/BlowfishIcon.astro`
 
 ## Important conventions
 

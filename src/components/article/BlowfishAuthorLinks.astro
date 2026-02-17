@@ -1,4 +1,6 @@
 ---
+import BlowfishIcon from '../BlowfishIcon.astro';
+
 interface LinkItem {
   name: string;
   href: string;
@@ -15,7 +17,7 @@ const { links = [] } = Astro.props;
   <div class="bf-author-links">
     {links.map((link) => (
       <a href={link.href} target="_blank" rel="me noopener noreferrer" aria-label={link.name} title={link.name}>
-        {link.name}
+        <BlowfishIcon name={link.name} size="1rem" />
       </a>
     ))}
   </div>
@@ -33,6 +35,11 @@ const { links = [] } = Astro.props;
     color: var(--bf-muted);
     text-decoration: none;
     font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
   }
 
   .bf-author-links a:hover {
