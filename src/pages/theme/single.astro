@@ -1,7 +1,20 @@
 ---
+import BlowfishArticleMetaBasic from '../../components/article/BlowfishArticleMetaBasic.astro';
+import BlowfishArticleMetaTaxonomy from '../../components/article/BlowfishArticleMetaTaxonomy.astro';
+import BlowfishAuthor from '../../components/article/BlowfishAuthor.astro';
 import BlowfishBreadcrumbs from '../../components/site/BlowfishBreadcrumbs.astro';
 import BlowfishPagination from '../../components/site/BlowfishPagination.astro';
+import BlowfishRelated from '../../components/article/BlowfishRelated.astro';
+import BlowfishSeries from '../../components/article/BlowfishSeries.astro';
+import BlowfishSharingLinks from '../../components/article/BlowfishSharingLinks.astro';
 import BlowfishSiteLayout from '../../layouts/site/BlowfishSiteLayout.astro';
+import BlowfishToc from '../../components/article/BlowfishToc.astro';
+
+const related = [
+  { title: 'Related post 1', href: '#', summary: 'Deeper dive on template parity.', date: '2026-02-14', thumbnail: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=900' },
+  { title: 'Related post 2', href: '#', summary: 'Extending shortcodes in Astro.', date: '2026-02-13', thumbnail: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900' },
+  { title: 'Related post 3', href: '#', summary: 'Search and metadata parity.', date: '2026-02-12', thumbnail: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=900' }
+];
 ---
 
 <BlowfishSiteLayout title="Single Template" nav={[{ label: 'Home', href: '/' }, { label: 'Theme List', href: '/theme/list' }]}> 
@@ -9,19 +22,55 @@ import BlowfishSiteLayout from '../../layouts/site/BlowfishSiteLayout.astro';
   <article class="bf-single bf-card">
     <header>
       <h1>Single Post Template</h1>
-      <p class="bf-muted">2026-02-17 · 5 min read · 1200 words</p>
+      <BlowfishArticleMetaBasic date="2026-02-17" updated="2026-02-18" readingTime="5 min" wordCount={1200} />
+      <BlowfishArticleMetaTaxonomy
+        categories={[{ label: 'Engineering', href: '#' }]}
+        tags={[{ label: 'astro', href: '/theme/term' }, { label: 'theme', href: '#' }]}
+      />
     </header>
-    <section class="bf-prose">
-      <p>This is the single template parity target (`_default/single.html`).</p>
-      <p>Next passes will add full meta, sharing, toc, related posts, and taxonomy blocks.</p>
-    </section>
+
+    <div class="bf-single-grid">
+      <section class="bf-prose">
+        <h2 id="intro">Introduction</h2>
+        <p>This page now uses article partial components to better match Blowfish single template structure.</p>
+        <h2 id="approach">Approach</h2>
+        <p>We split metadata, taxonomy, toc, sharing, related items, and series into reusable parts.</p>
+      </section>
+      <div>
+        <BlowfishToc items={[{ id: 'intro', label: 'Introduction' }, { id: 'approach', label: 'Approach' }]} />
+      </div>
+    </div>
+
+    <BlowfishSeries
+      name="Theme Parity"
+      items={[
+        { title: 'Part 1: Homepage', href: '/homepage-layout' },
+        { title: 'Part 2: Templates', href: '/theme/single', current: true },
+        { title: 'Part 3: Runtime', href: '#' }
+      ]}
+    />
+
+    <BlowfishSharingLinks url="https://example.com/theme/single" title="Single Post Template" />
+    <BlowfishAuthor name="Sirui Li" headline="Tech lead | Staff software engineer" image="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=600" />
   </article>
+
+  <BlowfishRelated items={related} />
   <BlowfishPagination prevHref="#" nextHref="#" />
 </BlowfishSiteLayout>
 
 <style>
   .bf-single { padding: 1rem; }
   .bf-single h1 { margin: 0; }
-  .bf-single header p { margin: 0.5rem 0 0; }
-  .bf-prose { margin-top: 0.85rem; }
+  .bf-single-grid {
+    margin-top: 0.85rem;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 260px);
+  }
+
+  .bf-prose p { color: color-mix(in srgb, var(--bf-text) 90%, white 10%); }
+
+  @media (max-width: 900px) {
+    .bf-single-grid { grid-template-columns: 1fr; }
+  }
 </style>

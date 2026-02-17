@@ -1,0 +1,34 @@
+---
+interface SeriesItem {
+  title: string;
+  href: string;
+  current?: boolean;
+}
+
+export interface Props {
+  name: string;
+  items?: SeriesItem[];
+}
+
+const { name, items = [] } = Astro.props;
+---
+
+{items.length > 0 && (
+  <section class="bf-card bf-series">
+    <h3>Series: {name}</h3>
+    <ol>
+      {items.map((item) => (
+        <li>
+          {item.current ? <strong>{item.title}</strong> : <a href={item.href}>{item.title}</a>}
+        </li>
+      ))}
+    </ol>
+  </section>
+)}
+
+<style>
+  .bf-series { margin-top: 1rem; padding: 0.8rem 0.95rem; }
+  .bf-series h3 { margin: 0 0 0.55rem; font-size: 1rem; }
+  .bf-series ol { margin: 0; padding-left: 1rem; display: grid; gap: 0.35rem; }
+  .bf-series a { color: var(--bf-primary); text-decoration: none; }
+</style>

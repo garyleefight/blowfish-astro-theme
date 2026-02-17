@@ -1,12 +1,13 @@
 ---
+import BlowfishArticleLinkSimple from '../../components/article/BlowfishArticleLinkSimple.astro';
 import BlowfishBreadcrumbs from '../../components/site/BlowfishBreadcrumbs.astro';
 import BlowfishPagination from '../../components/site/BlowfishPagination.astro';
 import BlowfishSiteLayout from '../../layouts/site/BlowfishSiteLayout.astro';
 
 const tag = 'astro';
 const posts = [
-  { title: 'Astro layout composition guide', date: '2026-02-17', summary: 'Patterns for reusable layout architecture.', href: '#' },
-  { title: 'Astro island decisions', date: '2026-02-16', summary: 'When to hydrate and when to stay static.', href: '#' }
+  { title: 'Astro layout composition guide', date: '2026-02-17', readingTime: '5 min', summary: 'Patterns for reusable layout architecture.', href: '#', thumbnail: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=900' },
+  { title: 'Astro island decisions', date: '2026-02-16', readingTime: '4 min', summary: 'When to hydrate and when to stay static.', href: '#', thumbnail: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900' }
 ];
 ---
 
@@ -18,21 +19,11 @@ const posts = [
   </header>
 
   <section class="bf-term-list">
-    {posts.map((post) => (
-      <article class="bf-card">
-        <h2><a href={post.href}>{post.title}</a></h2>
-        <p class="bf-muted">{post.date}</p>
-        <p>{post.summary}</p>
-      </article>
-    ))}
+    {posts.map((post) => <BlowfishArticleLinkSimple {...post} />)}
   </section>
   <BlowfishPagination prevHref="#" nextHref="#" />
 </BlowfishSiteLayout>
 
 <style>
-  .bf-term-list { margin-top: 1rem; display: grid; gap: 0.8rem; }
-  .bf-term-list article { padding: 0.9rem 1rem; }
-  .bf-term-list h2 { margin: 0; font-size: 1.08rem; }
-  .bf-term-list a { color: var(--bf-text); text-decoration: none; }
-  .bf-term-list p { margin: 0.45rem 0 0; }
+  .bf-term-list { margin-top: 1rem; display: grid; gap: 1rem; }
 </style>

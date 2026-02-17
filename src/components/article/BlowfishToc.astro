@@ -1,0 +1,30 @@
+---
+interface TocItem {
+  id: string;
+  label: string;
+}
+
+export interface Props {
+  items?: TocItem[];
+}
+
+const { items = [] } = Astro.props;
+---
+
+{items.length > 0 && (
+  <aside class="bf-card bf-toc">
+    <h3>Table of contents</h3>
+    <ol>
+      {items.map((item) => (
+        <li><a href={`#${item.id}`}>{item.label}</a></li>
+      ))}
+    </ol>
+  </aside>
+)}
+
+<style>
+  .bf-toc { padding: 0.8rem 0.95rem; }
+  .bf-toc h3 { margin: 0 0 0.45rem; font-size: 0.96rem; }
+  .bf-toc ol { margin: 0; padding-left: 1rem; display: grid; gap: 0.35rem; }
+  .bf-toc a { color: var(--bf-muted); text-decoration: none; font-size: 0.9rem; }
+</style>

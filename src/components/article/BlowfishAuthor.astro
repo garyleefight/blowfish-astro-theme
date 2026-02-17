@@ -1,0 +1,38 @@
+---
+export interface Props {
+  name: string;
+  headline?: string;
+  image?: string;
+}
+
+const { name, headline, image } = Astro.props;
+---
+
+<section class="bf-card bf-author">
+  {image && <img src={image} alt={name} />}
+  <div>
+    <h3>{name}</h3>
+    {headline && <p>{headline}</p>}
+  </div>
+</section>
+
+<style>
+  .bf-author {
+    margin-top: 1.2rem;
+    padding: 0.8rem 0.9rem;
+    display: grid;
+    gap: 0.7rem;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+  }
+
+  .bf-author img {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 999px;
+    object-fit: cover;
+  }
+
+  .bf-author h3 { margin: 0; font-size: 1rem; }
+  .bf-author p { margin: 0.25rem 0 0; color: var(--bf-muted); }
+</style>

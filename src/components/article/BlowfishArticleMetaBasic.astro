@@ -1,0 +1,27 @@
+---
+export interface Props {
+  date?: string;
+  updated?: string;
+  readingTime?: string;
+  wordCount?: number;
+}
+
+const { date, updated, readingTime, wordCount } = Astro.props;
+---
+
+<div class="bf-article-meta-basic">
+  {date && <span>{date}</span>}
+  {updated && <span>Updated {updated}</span>}
+  {readingTime && <span>{readingTime}</span>}
+  {typeof wordCount === 'number' && <span>{wordCount} words</span>}
+</div>
+
+<style>
+  .bf-article-meta-basic {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    color: var(--bf-muted);
+    font-size: 0.86rem;
+  }
+</style>

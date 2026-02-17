@@ -1,0 +1,45 @@
+---
+import BlowfishArticleLinkCardRelated from './BlowfishArticleLinkCardRelated.astro';
+
+interface RelatedItem {
+  title: string;
+  href: string;
+  summary?: string;
+  date?: string;
+  readingTime?: string;
+  thumbnail?: string;
+}
+
+export interface Props {
+  items?: RelatedItem[];
+}
+
+const { items = [] } = Astro.props;
+---
+
+{items.length > 0 && (
+  <section class="bf-related">
+    <h3>Related</h3>
+    <div class="bf-related-grid">
+      {items.map((item) => <BlowfishArticleLinkCardRelated {...item} />)}
+    </div>
+  </section>
+)}
+
+<style>
+  .bf-related { margin-top: 1.4rem; }
+  .bf-related h3 { margin: 0 0 0.65rem; }
+  .bf-related-grid {
+    display: grid;
+    gap: 0.8rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  @media (max-width: 900px) {
+    .bf-related-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 620px) {
+    .bf-related-grid { grid-template-columns: 1fr; }
+  }
+</style>

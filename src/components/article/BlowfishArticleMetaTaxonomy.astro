@@ -1,0 +1,45 @@
+---
+interface TaxonomyItem {
+  label: string;
+  href?: string;
+}
+
+export interface Props {
+  tags?: TaxonomyItem[];
+  categories?: TaxonomyItem[];
+}
+
+const { tags = [], categories = [] } = Astro.props;
+---
+
+{(tags.length > 0 || categories.length > 0) && (
+  <div class="bf-article-taxonomy">
+    {categories.length > 0 && (
+      <p>
+        <strong>Categories:</strong>
+        {categories.map((item) => (
+          <Fragment>
+            {' '}
+            {item.href ? <a href={item.href}>{item.label}</a> : item.label}
+          </Fragment>
+        ))}
+      </p>
+    )}
+    {tags.length > 0 && (
+      <p>
+        <strong>Tags:</strong>
+        {tags.map((item) => (
+          <Fragment>
+            {' '}
+            {item.href ? <a href={item.href}>{item.label}</a> : item.label}
+          </Fragment>
+        ))}
+      </p>
+    )}
+  </div>
+)}
+
+<style>
+  .bf-article-taxonomy p { margin: 0.5rem 0 0; color: var(--bf-muted); font-size: 0.9rem; }
+  .bf-article-taxonomy a { color: var(--bf-primary); text-decoration: none; }
+</style>

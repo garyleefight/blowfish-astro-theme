@@ -1,0 +1,16 @@
+---
+import BlowfishArticleLinkCard from './BlowfishArticleLinkCard.astro';
+
+export interface Props {
+  title: string;
+  href: string;
+  summary?: string;
+  date?: string;
+  readingTime?: string;
+  thumbnail?: string;
+}
+
+const props = Astro.props;
+---
+
+<BlowfishArticleLinkCard {...props} />
