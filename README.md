@@ -1,0 +1,53 @@
+# blowfish-astro-theme
+
+A standalone Astro theme repository that recreates Blowfish-style visuals and offers compatibility-focused component parameters.
+
+## Goals
+
+- Visual style close to Hugo Blowfish
+- Astro-native implementation (no Hugo runtime)
+- Static-first output for Cloudflare Pages free tier
+- Component params aligned with Blowfish docs where possible
+
+## Install
+
+```bash
+npm install @garyleefight/blowfish-astro-theme
+```
+
+## Use in Astro
+
+In your app layout/page:
+
+```astro
+---
+import '@garyleefight/blowfish-astro-theme/styles.css';
+import { BlowfishBaseLayout, BlowfishAlert, BlowfishBadge, BlowfishButton } from '@garyleefight/blowfish-astro-theme';
+---
+
+<BlowfishBaseLayout title="My Site" description="Personal site">
+  <BlowfishBadge text="New" color="primary" />
+  <BlowfishAlert type="info" title="Heads up" content="This theme is Astro-native." />
+  <BlowfishButton href="/blog" label="Read blog" variant="primary" />
+</BlowfishBaseLayout>
+```
+
+## Compatibility approach
+
+This package does not execute Hugo templates/shortcodes.
+It recreates equivalent behavior in Astro and preserves parameter names where practical.
+
+## Included components (v0.1)
+
+- `BlowfishBaseLayout`
+- `BlowfishAlert`
+- `BlowfishBadge`
+- `BlowfishButton`
+- `BlowfishFigure`
+- `BlowfishGallery`
+
+## Next steps
+
+- Add docs parity matrix with exact Blowfish shortcode mappings
+- Add article layout, taxonomy pages, and nav/footer variants
+- Publish package to npm and tag `v1.0.0`

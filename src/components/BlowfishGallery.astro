@@ -1,0 +1,61 @@
+---
+interface GalleryItem {
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
+export interface Props {
+  images: GalleryItem[];
+  columns?: 2 | 3 | 4;
+}
+
+const { images, columns = 3 } = Astro.props;
+---
+
+<section class="bf-gallery" style={`--bf-gallery-cols: ${columns};`}>
+  {images.map((image) => (
+    <figure class="bf-card">
+      <img src={image.src} alt={image.alt} loading="lazy" />
+      {image.caption && <figcaption>{image.caption}</figcaption>}
+    </figure>
+  ))}
+</section>
+
+<style>
+  .bf-gallery {
+    display: grid;
+    gap: 0.8rem;
+    grid-template-columns: repeat(var(--bf-gallery-cols), minmax(0, 1fr));
+  }
+
+  .bf-gallery figure {
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .bf-gallery img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+  }
+
+  .bf-gallery figcaption {
+    padding: 0.4rem 0.7rem 0.6rem;
+    font-size: 0.8rem;
+    color: var(--bf-muted);
+  }
+
+  @media (max-width: 920px) {
+    .bf-gallery {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 560px) {
+    .bf-gallery {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

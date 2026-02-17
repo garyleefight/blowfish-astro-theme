@@ -1,0 +1,39 @@
+---
+export interface Props {
+  type?: 'info' | 'success' | 'warning' | 'error';
+  title?: string;
+  content?: string;
+}
+
+const { type = 'info', title, content } = Astro.props;
+
+const colorMap = {
+  info: 'var(--bf-primary)',
+  success: 'var(--bf-success)',
+  warning: 'var(--bf-warning)',
+  error: 'var(--bf-danger)'
+};
+---
+
+<aside class="bf-card bf-alert" style={`--bf-alert-color: ${colorMap[type]};`}>
+  {title && <h4>{title}</h4>}
+  {content && <p>{content}</p>}
+  <slot />
+</aside>
+
+<style>
+  .bf-alert {
+    border-left: 4px solid var(--bf-alert-color);
+    padding: 0.8rem 1rem;
+  }
+
+  .bf-alert h4 {
+    margin: 0 0 0.35rem;
+    font-size: 0.95rem;
+  }
+
+  .bf-alert p {
+    margin: 0;
+    color: var(--bf-muted);
+  }
+</style>

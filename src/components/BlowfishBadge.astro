@@ -1,0 +1,31 @@
+---
+export interface Props {
+  text: string;
+  color?: 'primary' | 'success' | 'warning' | 'danger' | 'neutral';
+}
+
+const { text, color = 'neutral' } = Astro.props;
+
+const styleMap = {
+  primary: 'var(--bf-primary)',
+  success: 'var(--bf-success)',
+  warning: 'var(--bf-warning)',
+  danger: 'var(--bf-danger)',
+  neutral: 'var(--bf-muted)'
+};
+---
+
+<span class="bf-badge" style={`--bf-badge-color: ${styleMap[color]};`}>{text}</span>
+
+<style>
+  .bf-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+    border: 1px solid color-mix(in srgb, var(--bf-badge-color) 40%, black 60%);
+    color: var(--bf-badge-color);
+    border-radius: 999px;
+    padding: 0.2rem 0.6rem;
+    background: color-mix(in srgb, var(--bf-badge-color) 12%, transparent);
+  }
+</style>

@@ -1,0 +1,35 @@
+---
+export interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+  width?: number;
+  height?: number;
+}
+
+const { src, alt, caption, width, height } = Astro.props;
+---
+
+<figure class="bf-card bf-figure">
+  <img src={src} alt={alt} width={width} height={height} loading="lazy" />
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .bf-figure {
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .bf-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .bf-figure figcaption {
+    font-size: 0.82rem;
+    color: var(--bf-muted);
+    padding: 0.55rem 0.8rem;
+  }
+</style>

@@ -1,0 +1,30 @@
+---
+import BlowfishBaseLayout from '../layouts/BlowfishBaseLayout.astro';
+import BlowfishAlert from '../components/BlowfishAlert.astro';
+import BlowfishBadge from '../components/BlowfishBadge.astro';
+import BlowfishButton from '../components/BlowfishButton.astro';
+import BlowfishFigure from '../components/BlowfishFigure.astro';
+import BlowfishGallery from '../components/BlowfishGallery.astro';
+import '../styles/theme.css';
+---
+
+<BlowfishBaseLayout title="Blowfish Astro Theme" description="Preview page">
+  <BlowfishBadge text="Preview" color="success" />
+  <BlowfishAlert type="info" title="Status" content="Standalone theme repository is ready." />
+  <BlowfishButton href="https://astro.build" label="Astro" variant="primary" target="_blank" rel="noopener noreferrer" />
+
+  <BlowfishFigure
+    src="https://images.unsplash.com/photo-1482192505345-5655af888cc4?w=1200"
+    alt="Mountain"
+    caption="Figure component"
+  />
+
+  <BlowfishGallery
+    columns={3}
+    images={[
+      { src: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800', alt: 'A', caption: 'One' },
+      { src: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800', alt: 'B', caption: 'Two' },
+      { src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800', alt: 'C', caption: 'Three' }
+    ]}
+  />
+</BlowfishBaseLayout>

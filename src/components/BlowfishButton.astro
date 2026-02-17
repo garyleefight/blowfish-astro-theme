@@ -1,0 +1,48 @@
+---
+export interface Props {
+  href: string;
+  label: string;
+  variant?: 'primary' | 'outline' | 'ghost';
+  target?: string;
+  rel?: string;
+}
+
+const { href, label, variant = 'primary', target, rel } = Astro.props;
+---
+
+<a class={`bf-btn bf-btn-${variant}`} href={href} target={target} rel={rel}>
+  {label}
+</a>
+
+<style>
+  .bf-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    padding: 0.5rem 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 140ms ease, opacity 140ms ease;
+  }
+
+  .bf-btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .bf-btn-primary {
+    background: var(--bf-primary);
+    color: #0b1220;
+  }
+
+  .bf-btn-outline {
+    border: 1px solid var(--bf-primary);
+    color: var(--bf-primary);
+    background: transparent;
+  }
+
+  .bf-btn-ghost {
+    color: var(--bf-text);
+    background: transparent;
+  }
+</style>
