@@ -11,25 +11,15 @@ export interface Props {
 const { config, contentHtml = '', articles = [] } = Astro.props;
 ---
 
-<section class="bf-card bf-home-custom">
-  <h2>{config.title || 'Custom Layout'}</h2>
+<section class="bf-home-custom-layout">
   {contentHtml ? <div set:html={contentHtml} /> : <slot />}
 </section>
 
 {config.showRecent && (
   <BlowfishHomeRecent
     articles={articles}
-    limit={config.recentLimit || 5}
+    limit={config.recentLimit || 4}
     cardView={Boolean(config.cardView)}
+    showMoreLink={config.showMoreLink}
   />
 )}
-
-<style>
-  .bf-home-custom {
-    padding: 1rem;
-  }
-
-  .bf-home-custom h2 {
-    margin-top: 0;
-  }
-</style>

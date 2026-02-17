@@ -1,49 +1,136 @@
 ---
-import BlowfishArticle from '../BlowfishArticle.astro';
 import type { BlowfishRecentArticle } from '../../types/homepage';
 
 export interface Props {
   articles?: BlowfishRecentArticle[];
   limit?: number;
   cardView?: boolean;
+  showMoreLink?: string;
 }
 
-const { articles = [], limit = 5, cardView = false } = Astro.props;
+const { articles = [], limit = 5, cardView = false, showMoreLink } = Astro.props;
 const items = articles.slice(0, limit);
 ---
 
 {items.length > 0 && (
   <section class="bf-home-recent">
-    <h3>Recent Articles</h3>
+    <h2>Recent Articles</h2>
     <div class:list={["bf-home-recent-list", cardView && 'bf-home-recent-card']}>
       {items.map((article) => (
-        <BlowfishArticle
-          title={article.title}
-          description={article.summary}
-          date={article.date}
-          href={article.href}
-        />
+        <article class="bf-home-recent-item">
+          {cardView && article.thumbnail && (
+            <a href={article.href} class="bf-home-recent-thumb-wrap" aria-label={article.title}>
+              <img src={article.thumbnail} alt="" class="bf-home-recent-thumb" loading="lazy" />
+            </a>
+          )}
+          <div class="bf-home-recent-body">
+            <h3><a href={article.href}>{article.title}</a></h3>
+            {article.date && <p class="bf-home-meta">{article.date}</p>}
+            {article.summary && <p class="bf-home-summary">{article.summary}</p>}
+          </div>
+        </article>
       ))}
     </div>
+    {showMoreLink && <a class="bf-home-more" href={showMoreLink}>Show more</a>}
   </section>
 )}
 
 <style>
   .bf-home-recent {
-    margin-top: 1rem;
+    margin-top: 2rem;
   }
 
-  .bf-home-recent h3 {
-    margin: 0 0 0.65rem;
-    font-size: 1rem;
+  .bf-home-recent h2 {
+    margin: 0 0 1rem;
+    font-size: 1.35rem;
+    font-weight: 700;
   }
 
   .bf-home-recent-list {
     display: grid;
-    gap: 0.75rem;
+    gap: 1rem;
   }
 
-  .bf-home-recent-card :global(.bf-article) {
-    border-radius: 14px;
+  .bf-home-recent-item {
+    display: grid;
+    gap: 0.65rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--bf-border) 60%, transparent);
+  }
+
+  .bf-home-recent-card {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .bf-home-recent-card .bf-home-recent-item {
+    border: 1px solid var(--bf-border);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    padding: 0;
+    background: color-mix(in srgb, var(--bf-surface) 84%, black 16%);
+  }
+
+  .bf-home-recent-thumb-wrap {
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .bf-home-recent-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .bf-home-recent-body {
+    padding: 0.2rem 0;
+  }
+
+  .bf-home-recent-card .bf-home-recent-body {
+    padding: 0.8rem;
+  }
+
+  .bf-home-recent-body h3 {
+    margin: 0;
+    line-height: 1.35;
+    font-size: 1.08rem;
+  }
+
+  .bf-home-recent-body a {
+    text-decoration: none;
+    color: var(--bf-text);
+  }
+
+  .bf-home-meta {
+    margin: 0.35rem 0 0;
+    font-size: 0.88rem;
+    color: var(--bf-muted);
+  }
+
+  .bf-home-summary {
+    margin: 0.5rem 0 0;
+    color: var(--bf-muted);
+    font-size: 0.95rem;
+  }
+
+  .bf-home-more {
+    display: inline-block;
+    margin-top: 1rem;
+    color: var(--bf-primary);
+    text-decoration: none;
+  }
+
+  @media (max-width: 900px) {
+    .bf-home-recent-card {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 620px) {
+    .bf-home-recent-card {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

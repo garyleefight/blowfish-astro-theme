@@ -1,74 +1,90 @@
 ---
-import BlowfishButton from '../BlowfishButton.astro';
 import type { BlowfishHomepageConfig, BlowfishRecentArticle } from '../../types/homepage';
 import BlowfishHomeRecent from './BlowfishHomeRecent.astro';
 
 export interface Props {
   config: BlowfishHomepageConfig;
   articles?: BlowfishRecentArticle[];
+  contentHtml?: string;
 }
 
-const { config, articles = [] } = Astro.props;
+const { config, articles = [], contentHtml = '' } = Astro.props;
+const avatar = config.homepageImage || config.image;
 ---
 
-<section class="bf-card bf-home-profile">
-  {config.image && <img src={config.image} alt={config.imageAlt || config.title || 'profile'} />}
-  <h2>{config.title || 'Profile Layout'}</h2>
-  {config.subtitle && <p class="bf-muted">{config.subtitle}</p>}
-  {config.description && <p>{config.description}</p>}
-  {config.ctaHref && (
-    <BlowfishButton href={config.ctaHref} label={config.ctaLabel || 'Read more'} variant="primary" />
-  )}
-  {config.links && config.links.length > 0 && (
-    <div class="bf-home-links">
-      {config.links.map((link) => (
-        <a href={link.href}>{link.label}</a>
-      ))}
-    </div>
-  )}
-  {config.showRecent && (
-    <BlowfishHomeRecent
-      articles={articles}
-      limit={config.recentLimit || 5}
-      cardView={Boolean(config.cardView)}
-    />
-  )}
-</section>
+<article class="bf-home-profile">
+  <header>
+    {avatar && <img class="bf-home-avatar" src={avatar} alt={config.imageAlt || config.title || 'Author'} />}
+    <h1>{config.title || 'Author Name'}</h1>
+    {config.subtitle && <h2>{config.subtitle}</h2>}
+    {config.links && config.links.length > 0 && (
+      <div class="bf-home-profile-links">
+        {config.links.map((link) => (
+          <a href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>
+        ))}
+      </div>
+    )}
+  </header>
+  <section class="bf-home-prose">
+    {contentHtml ? <div set:html={contentHtml} /> : config.description ? <p>{config.description}</p> : <slot />}
+  </section>
+</article>
+
+{config.showRecent && (
+  <BlowfishHomeRecent
+    articles={articles}
+    limit={config.recentLimit || 4}
+    cardView={Boolean(config.cardView)}
+    showMoreLink={config.showMoreLink}
+  />
+)}
 
 <style>
   .bf-home-profile {
-    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
   }
 
-  .bf-home-profile img {
-    width: 128px;
-    height: 128px;
+  .bf-home-avatar {
+    width: 9rem;
+    height: 9rem;
     border-radius: 999px;
     object-fit: cover;
-    display: block;
-    margin: 0 auto 0.8rem;
-    border: 2px solid var(--bf-border);
+    margin: 0 auto 0.7rem;
+  }
+
+  .bf-home-profile h1 {
+    margin: 0;
+    font-size: clamp(1.9rem, 3vw, 2.3rem);
+    font-weight: 800;
   }
 
   .bf-home-profile h2 {
-    margin: 0;
+    margin: 0.2rem 0 0;
+    color: var(--bf-muted);
+    font-weight: 500;
+    font-size: 1.18rem;
   }
 
-  .bf-home-profile p {
-    margin: 0.45rem 0;
-  }
-
-  .bf-home-links {
-    margin-top: 0.6rem;
+  .bf-home-profile-links {
+    margin-top: 0.8rem;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
     justify-content: center;
+    gap: 0.6rem;
   }
 
-  .bf-home-links a {
-    color: var(--bf-primary);
+  .bf-home-profile-links a {
     text-decoration: none;
+    color: var(--bf-primary);
+    font-weight: 600;
+  }
+
+  .bf-home-prose {
+    margin-top: 1rem;
+    max-width: 760px;
+    color: color-mix(in srgb, var(--bf-text) 92%, white 8%);
   }
 </style>

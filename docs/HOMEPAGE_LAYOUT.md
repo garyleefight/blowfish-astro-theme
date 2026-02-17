@@ -11,6 +11,15 @@ Supported `layout` values:
 - `card`
 - `custom`
 
+Key config options aligned with Blowfish docs:
+
+- `layout`
+- `homepageImage`
+- `showRecent`
+- `showRecentItems`
+- `cardView`
+- `cardViewScreenWidth`
+
 Example:
 
 ```astro
@@ -19,15 +28,13 @@ import { BlowfishHomepage } from '@garyleefight/blowfish-astro-theme';
 
 const config = {
   layout: 'hero',
-  title: 'Build Better Themes Faster',
-  subtitle: 'Homepage layout: hero',
-  description: 'A bold introduction section with image and call-to-action.',
-  image: '/images/hero.jpg',
-  ctaLabel: 'Read Docs',
-  ctaHref: '/docs',
+  title: 'Sirui Li',
+  subtitle: 'Tech lead | Staff software engineer',
+  homepageImage: '/images/hero.jpg',
+  image: '/images/avatar.jpg',
   showRecent: true,
-  recentLimit: 3,
-  cardView: true
+  showRecentItems: 3,
+  cardView: true,
 };
 
 const recent = [
@@ -36,7 +43,9 @@ const recent = [
 ];
 ---
 
-<BlowfishHomepage config={config} articles={recent} />
+<BlowfishHomepage config={config} articles={recent}>
+  <p>Homepage content goes here.</p>
+</BlowfishHomepage>
 ```
 
-Config interfaces are exported from `src/types/homepage.ts`.
+See the visual demo at `/homepage-layout`.

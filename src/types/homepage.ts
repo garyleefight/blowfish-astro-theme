@@ -17,6 +17,7 @@ export interface BlowfishFeatureCard {
   summary?: string;
   href?: string;
   image?: string;
+  thumbnail?: string;
 }
 
 export interface BlowfishRecentArticle {
@@ -24,6 +25,7 @@ export interface BlowfishRecentArticle {
   summary?: string;
   date?: string;
   href: string;
+  thumbnail?: string;
 }
 
 export interface BlowfishHomepageConfig {
@@ -32,14 +34,17 @@ export interface BlowfishHomepageConfig {
   subtitle?: string;
   description?: string;
   image?: string;
+  homepageImage?: string;
   imageAlt?: string;
   backgroundImage?: string;
   ctaLabel?: string;
   ctaHref?: string;
   showRecent?: boolean;
+  showRecentItems?: number;
   recentLimit?: number;
   cardView?: boolean;
   cardViewScreenWidth?: boolean;
+  showMoreLink?: string;
   links?: BlowfishLink[];
   featureCards?: BlowfishFeatureCard[];
 }

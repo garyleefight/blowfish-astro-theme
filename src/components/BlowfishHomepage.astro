@@ -17,21 +17,36 @@ const { config, contentHtml = '', articles = [] } = Astro.props;
 
 const mergedConfig: BlowfishHomepageConfig = {
   ...config,
+  recentLimit: config.showRecentItems || config.recentLimit,
   cardView: Boolean(config.cardView || config.cardViewScreenWidth)
 };
 ---
 
-{mergedConfig.layout === 'profile' && <BlowfishHomeProfile config={mergedConfig} articles={articles} />}
+{mergedConfig.layout === 'profile' && (
+  <BlowfishHomeProfile config={mergedConfig} articles={articles} contentHtml={contentHtml}>
+    <slot />
+  </BlowfishHomeProfile>
+)}
 {mergedConfig.layout === 'page' && (
   <BlowfishHomePage config={mergedConfig} articles={articles} contentHtml={contentHtml}>
     <slot />
   </BlowfishHomePage>
 )}
-{mergedConfig.layout === 'hero' && <BlowfishHomeHero config={mergedConfig} articles={articles} />}
-{mergedConfig.layout === 'background' && (
-  <BlowfishHomeBackground config={mergedConfig} articles={articles} />
+{mergedConfig.layout === 'hero' && (
+  <BlowfishHomeHero config={mergedConfig} articles={articles} contentHtml={contentHtml}>
+    <slot />
+  </BlowfishHomeHero>
 )}
-{mergedConfig.layout === 'card' && <BlowfishHomeCard config={mergedConfig} articles={articles} />}
+{mergedConfig.layout === 'background' && (
+  <BlowfishHomeBackground config={mergedConfig} articles={articles} contentHtml={contentHtml}>
+    <slot />
+  </BlowfishHomeBackground>
+)}
+{mergedConfig.layout === 'card' && (
+  <BlowfishHomeCard config={mergedConfig} articles={articles} contentHtml={contentHtml}>
+    <slot />
+  </BlowfishHomeCard>
+)}
 {mergedConfig.layout === 'custom' && (
   <BlowfishHomeCustom config={mergedConfig} articles={articles} contentHtml={contentHtml}>
     <slot />

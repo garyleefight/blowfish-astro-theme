@@ -1,70 +1,76 @@
 ---
-import BlowfishCard from '../BlowfishCard.astro';
 import BlowfishHomeRecent from './BlowfishHomeRecent.astro';
 import type { BlowfishHomepageConfig, BlowfishRecentArticle } from '../../types/homepage';
 
 export interface Props {
   config: BlowfishHomepageConfig;
   articles?: BlowfishRecentArticle[];
+  contentHtml?: string;
 }
 
-const { config, articles = [] } = Astro.props;
-const cards = config.featureCards || [];
+const { config, articles = [], contentHtml = '' } = Astro.props;
+const image = config.homepageImage || config.image || '';
 ---
 
-<section class="bf-card bf-home-card">
-  <h2>{config.title || 'Card Layout'}</h2>
-  {config.subtitle && <p class="bf-muted">{config.subtitle}</p>}
-  <div class="bf-home-card-grid">
-    {cards.map((card) => (
-      <BlowfishCard title={card.title} description={card.summary} href={card.href}>
-        {card.image && <img src={card.image} alt={card.title} class="bf-home-card-image" />}
-      </BlowfishCard>
-    ))}
+<article class="bf-home-card-layout">
+  <div class="bf-home-card-text">
+    <header>
+      <h1>{config.title || 'Homepage Title'}</h1>
+    </header>
+    <section>
+      {contentHtml ? <div set:html={contentHtml} /> : config.description ? <p>{config.description}</p> : <slot />}
+    </section>
   </div>
-</section>
+  {image && (
+    <div class="bf-home-card-image-wrap">
+      <img src={image} alt={config.imageAlt || config.title || 'Homepage image'} class="bf-home-card-image" />
+    </div>
+  )}
+</article>
 
 {config.showRecent && (
   <BlowfishHomeRecent
     articles={articles}
-    limit={config.recentLimit || 5}
+    limit={config.recentLimit || 4}
     cardView={Boolean(config.cardView)}
+    showMoreLink={config.showMoreLink}
   />
 )}
 
 <style>
-  .bf-home-card {
-    padding: 1rem;
-  }
-
-  .bf-home-card h2 {
-    margin: 0;
-  }
-
-  .bf-home-card-grid {
+  .bf-home-card-layout {
     display: grid;
-    gap: 0.75rem;
+    gap: 1.5rem;
+    align-items: center;
+    grid-template-columns: 1fr;
+  }
+
+  .bf-home-card-text h1 {
+    margin: 0;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 800;
+  }
+
+  .bf-home-card-text section {
     margin-top: 0.7rem;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    color: color-mix(in srgb, var(--bf-text) 90%, white 10%);
+  }
+
+  .bf-home-card-image-wrap {
+    width: 100%;
   }
 
   .bf-home-card-image {
     width: 100%;
-    margin-top: 0.5rem;
-    border-radius: 10px;
-    aspect-ratio: 16 / 10;
+    border-radius: 0.9rem;
+    box-shadow: var(--bf-shadow);
     object-fit: cover;
   }
 
-  @media (max-width: 900px) {
-    .bf-home-card-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (max-width: 620px) {
-    .bf-home-card-grid {
-      grid-template-columns: 1fr;
+  @media (min-width: 1040px) {
+    .bf-home-card-layout {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 2rem;
     }
   }
 </style>

@@ -8,19 +8,22 @@ const recent = [
     title: 'Migrating from Hugo Blowfish to Astro',
     summary: 'How to map shortcode and homepage layout settings.',
     date: '2026-02-17',
-    href: '#'
+    href: '#',
+    thumbnail: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1000'
   },
   {
     title: 'Cloudflare Pages static deployment checklist',
     summary: 'Static output + no SSR recommendations.',
     date: '2026-02-16',
-    href: '#'
+    href: '#',
+    thumbnail: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1000'
   },
   {
     title: 'Theme package versioning strategy',
     summary: 'Reusable package workflow for multiple Astro sites.',
     date: '2026-02-15',
-    href: '#'
+    href: '#',
+    thumbnail: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1000'
   }
 ];
 
@@ -28,14 +31,9 @@ const profileConfig = {
   layout: 'profile',
   title: 'Sirui Li',
   subtitle: 'Tech lead | Staff software engineer',
-  description: 'Building practical systems with clear tradeoffs.',
-  image: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=600',
-  imageAlt: 'profile',
-  ctaLabel: 'About',
-  ctaHref: '#',
+  homepageImage: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=600',
   showRecent: true,
-  recentLimit: 2,
-  cardView: true,
+  showRecentItems: 2,
   links: [
     { label: 'GitHub', href: 'https://github.com' },
     { label: 'LinkedIn', href: 'https://linkedin.com' }
@@ -44,138 +42,99 @@ const profileConfig = {
 
 const heroConfig = {
   layout: 'hero',
-  title: 'Build Better Themes Faster',
-  subtitle: 'Homepage layout: hero',
-  description: 'A bold introduction section with image and call-to-action.',
-  image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200',
-  ctaLabel: 'Read Docs',
-  ctaHref: '/',
+  title: 'Sirui Li',
+  subtitle: 'Tech lead | Staff software engineer',
+  homepageImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1400',
+  image: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=600',
   showRecent: true,
-  recentLimit: 2
+  showRecentItems: 2,
+  links: [
+    { label: 'GitHub', href: 'https://github.com' },
+    { label: 'LinkedIn', href: 'https://linkedin.com' }
+  ]
 } as const;
 
 const backgroundConfig = {
   layout: 'background',
-  title: 'Homepage Layout Background',
-  subtitle: 'background mode',
-  description: 'Supports large hero with overlay content.',
-  backgroundImage: 'https://images.unsplash.com/photo-1518773553398-650c184e0bb3?w=1400',
-  ctaLabel: 'Get Started',
-  ctaHref: '#',
+  title: 'Sirui Li',
+  subtitle: 'Tech lead | Staff software engineer',
+  backgroundImage: 'https://images.unsplash.com/photo-1518773553398-650c184e0bb3?w=1600',
+  image: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=600',
   showRecent: true,
-  recentLimit: 2
+  showRecentItems: 2,
+  links: [
+    { label: 'GitHub', href: 'https://github.com' },
+    { label: 'LinkedIn', href: 'https://linkedin.com' }
+  ]
 } as const;
 
 const cardConfig = {
   layout: 'card',
-  title: 'Card Homepage',
-  subtitle: 'card mode with features',
+  title: 'Build Better Themes Faster',
+  homepageImage: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1300',
   showRecent: true,
-  cardViewScreenWidth: true,
-  featureCards: [
-    {
-      title: 'Shortcode Compatibility',
-      summary: 'Use Blowfish-like params in Astro components.',
-      image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=900'
-    },
-    {
-      title: 'Cloudflare Friendly',
-      summary: 'Static output by default, no SSR required.',
-      image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900'
-    },
-    {
-      title: 'Reusable Package',
-      summary: 'Install once, use across future Astro projects.',
-      image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=900'
-    }
-  ]
+  showRecentItems: 3,
+  cardView: true
 } as const;
 
 const pageConfig = {
   layout: 'page',
-  title: 'Page Layout',
-  subtitle: 'Simple page-first homepage',
+  title: 'Homepage Layout Page',
   showRecent: true,
-  recentLimit: 2
+  showRecentItems: 2
 } as const;
 
 const customConfig = {
   layout: 'custom',
-  title: 'Custom Layout',
   showRecent: true,
-  recentLimit: 2
+  showRecentItems: 2
 } as const;
+
+const prose = `<p>This is sample homepage content rendered as prose, similar to Blowfish home content sections.</p>`;
 ---
 
 <BlowfishBaseLayout title="Homepage Layout Docs" description="Blowfish homepage layout compatibility demo">
   <header class="bf-card hl-hero">
     <h1>Homepage Layout Compatibility</h1>
-    <p class="bf-muted">Replicates Blowfish homepage layout concepts in Astro.</p>
+    <p class="bf-muted">Updated to mirror Blowfish layout behavior more closely.</p>
     <a href="/" class="hl-back">Back to Components Docs</a>
   </header>
 
   <section class="bf-card hl-block">
     <h2>Profile Layout</h2>
-    <BlowfishHomepage config={profileConfig} articles={recent} />
-    <pre><code>{`<BlowfishHomepage config={{
-  layout: 'profile',
-  title: 'Sirui Li',
-  image: '/avatar.jpg',
-  showRecent: true,
-  cardView: true
-}} articles={recent} />`}</code></pre>
+    <BlowfishHomepage config={profileConfig} articles={recent} contentHtml={prose} />
   </section>
 
   <section class="bf-card hl-block">
     <h2>Hero Layout</h2>
-    <BlowfishHomepage config={heroConfig} articles={recent} />
-    <pre><code>{`<BlowfishHomepage config={{
-  layout: 'hero',
-  title: 'Build Better Themes Faster',
-  image: '/hero.jpg',
-  ctaLabel: 'Read Docs',
-  ctaHref: '/'
-}} />`}</code></pre>
+    <BlowfishHomepage config={heroConfig} articles={recent} contentHtml={prose} />
   </section>
 
   <section class="bf-card hl-block">
     <h2>Background Layout</h2>
-    <BlowfishHomepage config={backgroundConfig} articles={recent} />
-    <pre><code>{`<BlowfishHomepage config={{
-  layout: 'background',
-  backgroundImage: '/bg.jpg',
-  title: 'Background hero'
-}} />`}</code></pre>
+    <BlowfishHomepage config={backgroundConfig} articles={recent} contentHtml={prose} />
   </section>
 
   <section class="bf-card hl-block">
     <h2>Card Layout</h2>
-    <BlowfishHomepage config={cardConfig} articles={recent} />
-    <pre><code>{`<BlowfishHomepage config={{
-  layout: 'card',
-  featureCards: [{ title: 'Feature', summary: 'Details' }],
-  cardViewScreenWidth: true
-}} />`}</code></pre>
+    <BlowfishHomepage config={cardConfig} articles={recent} contentHtml={prose} />
   </section>
 
   <section class="bf-card hl-block">
     <h2>Page Layout</h2>
     <BlowfishHomepage config={pageConfig} articles={recent}>
-      <p>This block mimics the page layout style where homepage content is primary.</p>
+      <p>This block mimics the page layout where the homepage content appears first.</p>
     </BlowfishHomepage>
-    <pre><code>{`<BlowfishHomepage config={{ layout: 'page', showRecent: true }}>
-  <p>Homepage markdown/html content</p>
-</BlowfishHomepage>`}</code></pre>
   </section>
 
   <section class="bf-card hl-block">
     <h2>Custom Layout</h2>
     <BlowfishHomepage config={customConfig} articles={recent}>
-      <p>Provide your own custom HTML/MDX while keeping theme styles and recent articles.</p>
+      <article class="hl-custom-prose">
+        <h3>Custom content area</h3>
+        <p>Use your own Astro/MDX content while keeping recent article behavior.</p>
+      </article>
     </BlowfishHomepage>
-    <pre><code>{`<BlowfishHomepage config={{ layout: 'custom', showRecent: true }}>
-  <div>Any custom hero/content</div>
-</BlowfishHomepage>`}</code></pre>
   </section>
 </BlowfishBaseLayout>
 
@@ -209,13 +168,7 @@ const customConfig = {
     font-size: 1.1rem;
   }
 
-  pre {
-    margin: 0.8rem 0 0;
-    overflow: auto;
-    background: #0d1016;
-    border: 1px solid var(--bf-border);
-    border-radius: 10px;
-    padding: 0.75rem;
-    font-size: 0.8rem;
+  .hl-custom-prose {
+    max-width: 760px;
   }
 </style>

@@ -1,59 +1,121 @@
 ---
-import BlowfishButton from '../BlowfishButton.astro';
 import BlowfishHomeRecent from './BlowfishHomeRecent.astro';
 import type { BlowfishHomepageConfig, BlowfishRecentArticle } from '../../types/homepage';
 
 export interface Props {
   config: BlowfishHomepageConfig;
   articles?: BlowfishRecentArticle[];
+  contentHtml?: string;
 }
 
-const { config, articles = [] } = Astro.props;
-const bg = config.backgroundImage || config.image || '';
+const { config, articles = [], contentHtml = '' } = Astro.props;
+const bg = config.backgroundImage || config.homepageImage || config.image || '';
+const avatar = config.image || config.homepageImage;
 ---
 
-<section class="bf-home-background" style={bg ? `--bf-home-bg: url(${bg});` : undefined}>
-  <div class="bf-home-background-overlay bf-card">
-    <p class="bf-muted">{config.subtitle || 'Background Layout'}</p>
-    <h2>{config.title || 'Background hero'}</h2>
-    {config.description && <p>{config.description}</p>}
-    {config.ctaHref && <BlowfishButton href={config.ctaHref} label={config.ctaLabel || 'Explore'} />}
-  </div>
-</section>
+<article class="bf-home-background">
+  {bg && <img src={bg} alt="" class="bf-home-background-image" role="presentation" />}
+  <div class="bf-home-background-fade" />
+  <header>
+    {avatar && <img class="bf-home-background-avatar" src={avatar} alt={config.imageAlt || config.title || 'Author'} />}
+    <h1>{config.title || 'Author Name'}</h1>
+    {config.subtitle && <h2>{config.subtitle}</h2>}
+    {config.links && config.links.length > 0 && (
+      <div class="bf-home-background-links">
+        {config.links.map((link) => (
+          <a href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>
+        ))}
+      </div>
+    )}
+    <section class="bf-home-background-prose">
+      {contentHtml ? <div set:html={contentHtml} /> : config.description ? <p>{config.description}</p> : <slot />}
+    </section>
+  </header>
+</article>
 
 {config.showRecent && (
   <BlowfishHomeRecent
     articles={articles}
-    limit={config.recentLimit || 5}
+    limit={config.recentLimit || 4}
     cardView={Boolean(config.cardView)}
+    showMoreLink={config.showMoreLink}
   />
 )}
 
 <style>
   .bf-home-background {
-    min-height: 340px;
-    border-radius: 16px;
-    overflow: hidden;
-    background:
-      linear-gradient(160deg, rgba(14, 19, 29, 0.85), rgba(18, 30, 40, 0.55)),
-      var(--bf-home-bg);
-    background-size: cover;
-    background-position: center;
-    display: grid;
-    align-items: end;
-  }
-
-  .bf-home-background-overlay {
-    margin: 1rem;
+    position: relative;
+    min-height: 30rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
     padding: 1rem;
-    max-width: 620px;
+    overflow: hidden;
+    border-radius: 1rem;
   }
 
-  .bf-home-background-overlay h2 {
-    margin: 0.2rem 0 0.55rem;
+  .bf-home-background-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.88);
   }
 
-  .bf-home-background-overlay p {
+  .bf-home-background-fade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to top, rgba(15, 17, 21, 0.95), rgba(15, 17, 21, 0.5)),
+      linear-gradient(to top, rgba(255, 255, 255, 0.08), transparent 35%);
+  }
+
+  .bf-home-background header {
+    position: relative;
+    z-index: 1;
+    margin-top: 1rem;
+    color: #eef3fa;
+  }
+
+  .bf-home-background-avatar {
+    width: 9rem;
+    height: 9rem;
+    border-radius: 999px;
+    object-fit: cover;
+    margin: 0 auto 0.8rem;
+    border: 2px solid rgba(238, 243, 250, 0.7);
+  }
+
+  .bf-home-background h1 {
     margin: 0;
+    font-size: clamp(1.9rem, 3vw, 2.5rem);
+    font-weight: 800;
+  }
+
+  .bf-home-background h2 {
+    margin: 0.2rem 0 0;
+    color: rgba(238, 243, 250, 0.88);
+    font-weight: 500;
+  }
+
+  .bf-home-background-links {
+    margin-top: 0.8rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .bf-home-background-links a {
+    color: #c5defc;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .bf-home-background-prose {
+    margin-top: 1rem;
+    width: min(100%, 760px);
   }
 </style>

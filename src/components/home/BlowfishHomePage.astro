@@ -11,25 +11,32 @@ export interface Props {
 const { config, contentHtml = '', articles = [] } = Astro.props;
 ---
 
-<section class="bf-card bf-home-page">
-  <h2>{config.title || 'Page Layout'}</h2>
-  {config.subtitle && <p class="bf-muted">{config.subtitle}</p>}
-  {contentHtml ? <div set:html={contentHtml} /> : <slot />}
-  {config.showRecent && (
-    <BlowfishHomeRecent
-      articles={articles}
-      limit={config.recentLimit || 5}
-      cardView={Boolean(config.cardView)}
-    />
+<article class="bf-home-page-layout">
+  {config.title && (
+    <header>
+      <h1>{config.title}</h1>
+    </header>
   )}
-</section>
+  <section class="bf-home-page-prose">{contentHtml ? <div set:html={contentHtml} /> : <slot />}</section>
+</article>
+
+{config.showRecent && (
+  <BlowfishHomeRecent
+    articles={articles}
+    limit={config.recentLimit || 4}
+    cardView={Boolean(config.cardView)}
+    showMoreLink={config.showMoreLink}
+  />
+)}
 
 <style>
-  .bf-home-page {
-    padding: 1rem;
+  .bf-home-page-layout h1 {
+    margin: 0;
+    font-size: clamp(1.9rem, 3vw, 2.5rem);
+    font-weight: 800;
   }
 
-  .bf-home-page h2 {
-    margin-top: 0;
+  .bf-home-page-prose {
+    margin-top: 0.7rem;
   }
 </style>
