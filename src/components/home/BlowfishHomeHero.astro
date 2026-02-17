@@ -1,0 +1,64 @@
+---
+import BlowfishButton from '../BlowfishButton.astro';
+import BlowfishHomeRecent from './BlowfishHomeRecent.astro';
+import type { BlowfishHomepageConfig, BlowfishRecentArticle } from '../../types/homepage';
+
+export interface Props {
+  config: BlowfishHomepageConfig;
+  articles?: BlowfishRecentArticle[];
+}
+
+const { config, articles = [] } = Astro.props;
+---
+
+<section class="bf-card bf-home-hero">
+  <div>
+    <p class="bf-muted">{config.subtitle || 'Hero Layout'}</p>
+    <h2>{config.title || 'Hero section headline'}</h2>
+    {config.description && <p>{config.description}</p>}
+    {config.ctaHref && <BlowfishButton href={config.ctaHref} label={config.ctaLabel || 'Get started'} />}
+  </div>
+  {config.image && <img src={config.image} alt={config.imageAlt || config.title || 'hero'} />}
+</section>
+
+{config.showRecent && (
+  <BlowfishHomeRecent
+    articles={articles}
+    limit={config.recentLimit || 5}
+    cardView={Boolean(config.cardView)}
+  />
+)}
+
+<style>
+  .bf-home-hero {
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .bf-home-hero h2 {
+    margin: 0.2rem 0 0.55rem;
+    line-height: 1.2;
+    font-size: clamp(1.3rem, 2.4vw, 2rem);
+  }
+
+  .bf-home-hero p {
+    margin: 0;
+  }
+
+  .bf-home-hero img {
+    width: 100%;
+    border-radius: 14px;
+    object-fit: cover;
+    min-height: 220px;
+    max-height: 320px;
+  }
+
+  @media (max-width: 760px) {
+    .bf-home-hero {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

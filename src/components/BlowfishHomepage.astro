@@ -1,0 +1,39 @@
+---
+import BlowfishHomeBackground from './home/BlowfishHomeBackground.astro';
+import BlowfishHomeCard from './home/BlowfishHomeCard.astro';
+import BlowfishHomeCustom from './home/BlowfishHomeCustom.astro';
+import BlowfishHomeHero from './home/BlowfishHomeHero.astro';
+import BlowfishHomePage from './home/BlowfishHomePage.astro';
+import BlowfishHomeProfile from './home/BlowfishHomeProfile.astro';
+import type { BlowfishHomepageConfig, BlowfishRecentArticle } from '../types/homepage';
+
+export interface Props {
+  config: BlowfishHomepageConfig;
+  contentHtml?: string;
+  articles?: BlowfishRecentArticle[];
+}
+
+const { config, contentHtml = '', articles = [] } = Astro.props;
+
+const mergedConfig: BlowfishHomepageConfig = {
+  ...config,
+  cardView: Boolean(config.cardView || config.cardViewScreenWidth)
+};
+---
+
+{mergedConfig.layout === 'profile' && <BlowfishHomeProfile config={mergedConfig} articles={articles} />}
+{mergedConfig.layout === 'page' && (
+  <BlowfishHomePage config={mergedConfig} articles={articles} contentHtml={contentHtml}>
+    <slot />
+  </BlowfishHomePage>
+)}
+{mergedConfig.layout === 'hero' && <BlowfishHomeHero config={mergedConfig} articles={articles} />}
+{mergedConfig.layout === 'background' && (
+  <BlowfishHomeBackground config={mergedConfig} articles={articles} />
+)}
+{mergedConfig.layout === 'card' && <BlowfishHomeCard config={mergedConfig} articles={articles} />}
+{mergedConfig.layout === 'custom' && (
+  <BlowfishHomeCustom config={mergedConfig} articles={articles} contentHtml={contentHtml}>
+    <slot />
+  </BlowfishHomeCustom>
+)}

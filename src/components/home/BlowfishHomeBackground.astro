@@ -1,0 +1,59 @@
+---
+import BlowfishButton from '../BlowfishButton.astro';
+import BlowfishHomeRecent from './BlowfishHomeRecent.astro';
+import type { BlowfishHomepageConfig, BlowfishRecentArticle } from '../../types/homepage';
+
+export interface Props {
+  config: BlowfishHomepageConfig;
+  articles?: BlowfishRecentArticle[];
+}
+
+const { config, articles = [] } = Astro.props;
+const bg = config.backgroundImage || config.image || '';
+---
+
+<section class="bf-home-background" style={bg ? `--bf-home-bg: url(${bg});` : undefined}>
+  <div class="bf-home-background-overlay bf-card">
+    <p class="bf-muted">{config.subtitle || 'Background Layout'}</p>
+    <h2>{config.title || 'Background hero'}</h2>
+    {config.description && <p>{config.description}</p>}
+    {config.ctaHref && <BlowfishButton href={config.ctaHref} label={config.ctaLabel || 'Explore'} />}
+  </div>
+</section>
+
+{config.showRecent && (
+  <BlowfishHomeRecent
+    articles={articles}
+    limit={config.recentLimit || 5}
+    cardView={Boolean(config.cardView)}
+  />
+)}
+
+<style>
+  .bf-home-background {
+    min-height: 340px;
+    border-radius: 16px;
+    overflow: hidden;
+    background:
+      linear-gradient(160deg, rgba(14, 19, 29, 0.85), rgba(18, 30, 40, 0.55)),
+      var(--bf-home-bg);
+    background-size: cover;
+    background-position: center;
+    display: grid;
+    align-items: end;
+  }
+
+  .bf-home-background-overlay {
+    margin: 1rem;
+    padding: 1rem;
+    max-width: 620px;
+  }
+
+  .bf-home-background-overlay h2 {
+    margin: 0.2rem 0 0.55rem;
+  }
+
+  .bf-home-background-overlay p {
+    margin: 0;
+  }
+</style>

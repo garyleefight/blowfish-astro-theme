@@ -23,6 +23,7 @@ export { default as BlowfishLead } from './components/BlowfishLead.astro';
 export { default as BlowfishLTR } from './components/BlowfishLTR.astro';
 export { default as BlowfishMarkdown } from './components/BlowfishMarkdown.astro';
 export { default as BlowfishMermaid } from './components/BlowfishMermaid.astro';
+export { default as BlowfishHomepage } from './components/BlowfishHomepage.astro';
 export { default as BlowfishRTL } from './components/BlowfishRTL.astro';
 export { default as BlowfishShortcode } from './components/BlowfishShortcode.astro';
 export { default as BlowfishTab } from './components/BlowfishTab.astro';
@@ -32,3 +33,10 @@ export { default as BlowfishTimelineItem } from './components/BlowfishTimelineIt
 export { default as BlowfishTypeIt } from './components/BlowfishTypeIt.astro';
 export { default as BlowfishVideo } from './components/BlowfishVideo.astro';
 export { default as BlowfishYouTubeLite } from './components/BlowfishYouTubeLite.astro';
+export type {
+  BlowfishFeatureCard,
+  BlowfishHomepageConfig,
+  BlowfishHomepageLayout,
+  BlowfishLink,
+  BlowfishRecentArticle
+} from './types/homepage';

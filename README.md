@@ -69,6 +69,7 @@ It recreates equivalent behavior in Astro and preserves parameter names where pr
 - `BlowfishTypeIt`
 - `BlowfishVideo`
 - `BlowfishYouTubeLite`
+- `BlowfishHomepage` (homepage layout dispatcher)
 
 ## Next steps
 
@@ -80,3 +81,4 @@ It recreates equivalent behavior in Astro and preserves parameter names where pr
 
 - Shortcode usage examples: `docs/SHORTCODE_USAGE.md`
 - Compatibility and aliases: `COMPATIBILITY.md`
+- Homepage layout docs demo: `/homepage-layout` (when running dev server)

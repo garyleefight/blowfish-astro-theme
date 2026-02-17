@@ -39,6 +39,7 @@ const sampleVideo =
       <BlowfishBadge label="Astro-native" variant="primary" />
       <BlowfishBadge label="Blowfish-compatible" variant="warning" />
     </div>
+    <p><a href="/homepage-layout" class="docs-link">Open Homepage Layout Docs</a></p>
   </header>
 
   <section class="docs-block bf-card">
@@ -185,6 +186,12 @@ A[Astro] --> B[Theme]
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+  }
+
+  .docs-link {
+    color: var(--bf-primary);
+    text-decoration: none;
+    font-weight: 600;
   }
 
   .docs-block {

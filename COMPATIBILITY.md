@@ -58,4 +58,5 @@ This package targets API similarity with Blowfish docs while remaining Astro-nat
 - Visual parity: partial to moderate (shortcode surfaces themed)
 - API parity: broad surface + common aliases
 - Content shortcode parity: broad component coverage
+- Homepage layout parity: implemented (`profile`, `page`, `hero`, `background`, `card`, `custom`) via `BlowfishHomepage`
 - Hugo template parity: not applicable (Astro-native implementation)

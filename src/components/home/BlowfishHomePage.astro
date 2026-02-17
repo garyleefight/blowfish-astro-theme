@@ -1,0 +1,35 @@
+---
+import BlowfishHomeRecent from './BlowfishHomeRecent.astro';
+import type { BlowfishHomepageConfig, BlowfishRecentArticle } from '../../types/homepage';
+
+export interface Props {
+  config: BlowfishHomepageConfig;
+  contentHtml?: string;
+  articles?: BlowfishRecentArticle[];
+}
+
+const { config, contentHtml = '', articles = [] } = Astro.props;
+---
+
+<section class="bf-card bf-home-page">
+  <h2>{config.title || 'Page Layout'}</h2>
+  {config.subtitle && <p class="bf-muted">{config.subtitle}</p>}
+  {contentHtml ? <div set:html={contentHtml} /> : <slot />}
+  {config.showRecent && (
+    <BlowfishHomeRecent
+      articles={articles}
+      limit={config.recentLimit || 5}
+      cardView={Boolean(config.cardView)}
+    />
+  )}
+</section>
+
+<style>
+  .bf-home-page {
+    padding: 1rem;
+  }
+
+  .bf-home-page h2 {
+    margin-top: 0;
+  }
+</style>

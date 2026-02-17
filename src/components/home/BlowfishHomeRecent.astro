@@ -1,0 +1,49 @@
+---
+import BlowfishArticle from '../BlowfishArticle.astro';
+import type { BlowfishRecentArticle } from '../../types/homepage';
+
+export interface Props {
+  articles?: BlowfishRecentArticle[];
+  limit?: number;
+  cardView?: boolean;
+}
+
+const { articles = [], limit = 5, cardView = false } = Astro.props;
+const items = articles.slice(0, limit);
+---
+
+{items.length > 0 && (
+  <section class="bf-home-recent">
+    <h3>Recent Articles</h3>
+    <div class:list={["bf-home-recent-list", cardView && 'bf-home-recent-card']}>
+      {items.map((article) => (
+        <BlowfishArticle
+          title={article.title}
+          description={article.summary}
+          date={article.date}
+          href={article.href}
+        />
+      ))}
+    </div>
+  </section>
+)}
+
+<style>
+  .bf-home-recent {
+    margin-top: 1rem;
+  }
+
+  .bf-home-recent h3 {
+    margin: 0 0 0.65rem;
+    font-size: 1rem;
+  }
+
+  .bf-home-recent-list {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .bf-home-recent-card :global(.bf-article) {
+    border-radius: 14px;
+  }
+</style>

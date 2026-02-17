@@ -1,0 +1,70 @@
+---
+import BlowfishCard from '../BlowfishCard.astro';
+import BlowfishHomeRecent from './BlowfishHomeRecent.astro';
+import type { BlowfishHomepageConfig, BlowfishRecentArticle } from '../../types/homepage';
+
+export interface Props {
+  config: BlowfishHomepageConfig;
+  articles?: BlowfishRecentArticle[];
+}
+
+const { config, articles = [] } = Astro.props;
+const cards = config.featureCards || [];
+---
+
+<section class="bf-card bf-home-card">
+  <h2>{config.title || 'Card Layout'}</h2>
+  {config.subtitle && <p class="bf-muted">{config.subtitle}</p>}
+  <div class="bf-home-card-grid">
+    {cards.map((card) => (
+      <BlowfishCard title={card.title} description={card.summary} href={card.href}>
+        {card.image && <img src={card.image} alt={card.title} class="bf-home-card-image" />}
+      </BlowfishCard>
+    ))}
+  </div>
+</section>
+
+{config.showRecent && (
+  <BlowfishHomeRecent
+    articles={articles}
+    limit={config.recentLimit || 5}
+    cardView={Boolean(config.cardView)}
+  />
+)}
+
+<style>
+  .bf-home-card {
+    padding: 1rem;
+  }
+
+  .bf-home-card h2 {
+    margin: 0;
+  }
+
+  .bf-home-card-grid {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 0.7rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .bf-home-card-image {
+    width: 100%;
+    margin-top: 0.5rem;
+    border-radius: 10px;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+  }
+
+  @media (max-width: 900px) {
+    .bf-home-card-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 620px) {
+    .bf-home-card-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

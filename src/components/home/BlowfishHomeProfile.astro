@@ -1,0 +1,74 @@
+---
+import BlowfishButton from '../BlowfishButton.astro';
+import type { BlowfishHomepageConfig, BlowfishRecentArticle } from '../../types/homepage';
+import BlowfishHomeRecent from './BlowfishHomeRecent.astro';
+
+export interface Props {
+  config: BlowfishHomepageConfig;
+  articles?: BlowfishRecentArticle[];
+}
+
+const { config, articles = [] } = Astro.props;
+---
+
+<section class="bf-card bf-home-profile">
+  {config.image && <img src={config.image} alt={config.imageAlt || config.title || 'profile'} />}
+  <h2>{config.title || 'Profile Layout'}</h2>
+  {config.subtitle && <p class="bf-muted">{config.subtitle}</p>}
+  {config.description && <p>{config.description}</p>}
+  {config.ctaHref && (
+    <BlowfishButton href={config.ctaHref} label={config.ctaLabel || 'Read more'} variant="primary" />
+  )}
+  {config.links && config.links.length > 0 && (
+    <div class="bf-home-links">
+      {config.links.map((link) => (
+        <a href={link.href}>{link.label}</a>
+      ))}
+    </div>
+  )}
+  {config.showRecent && (
+    <BlowfishHomeRecent
+      articles={articles}
+      limit={config.recentLimit || 5}
+      cardView={Boolean(config.cardView)}
+    />
+  )}
+</section>
+
+<style>
+  .bf-home-profile {
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .bf-home-profile img {
+    width: 128px;
+    height: 128px;
+    border-radius: 999px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 0.8rem;
+    border: 2px solid var(--bf-border);
+  }
+
+  .bf-home-profile h2 {
+    margin: 0;
+  }
+
+  .bf-home-profile p {
+    margin: 0.45rem 0;
+  }
+
+  .bf-home-links {
+    margin-top: 0.6rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  .bf-home-links a {
+    color: var(--bf-primary);
+    text-decoration: none;
+  }
+</style>
