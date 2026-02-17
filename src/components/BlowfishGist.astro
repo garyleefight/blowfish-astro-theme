@@ -1,11 +1,24 @@
 ---
+import { pickString } from '../lib/props';
+
 export interface Props {
-  id: string;
+  id?: string;
+  gistId?: string;
+  gist?: string;
+  url?: string;
   file?: string;
   user?: string;
+  username?: string;
 }
 
-const { id, file, user } = Astro.props;
+const props = Astro.props as Record<string, unknown>;
+const explicitId = pickString(props, ['id', 'gistId', 'gist']);
+const url = pickString(props, ['url']);
+const file = pickString(props, ['file']);
+const user = pickString(props, ['user', 'username']);
+
+const derivedId = url.match(/gist\.github\.com\/(?:[^/]+\/)?([a-f0-9]+)/i)?.[1] || '';
+const id = explicitId || derivedId;
 const gistUrl = `https://gist.github.com/${user ? `${user}/` : ''}${id}${file ? `?file=${encodeURIComponent(file)}` : ''}`;
 ---
 

@@ -1,10 +1,17 @@
 ---
+import { pickBoolean, pickString } from '../lib/props';
+
 export interface Props {
-  name: string;
+  name?: string;
+  title?: string;
+  label?: string;
   active?: boolean;
+  open?: boolean;
 }
 
-const { name, active = false } = Astro.props;
+const props = Astro.props as Record<string, unknown>;
+const name = pickString(props, ['name', 'title', 'label'], 'Tab');
+const active = pickBoolean(props, ['active', 'open'], false);
 ---
 
 <section class="bf-tab" data-name={name} data-active={active ? 'true' : 'false'}>

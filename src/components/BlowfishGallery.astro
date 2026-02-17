@@ -1,25 +1,42 @@
 ---
+import { pickArray, pickNumber, pickString } from '../lib/props';
+
 interface GalleryItem {
-  src: string;
-  alt: string;
+  src?: string;
+  image?: string;
+  url?: string;
+  alt?: string;
+  title?: string;
   caption?: string;
+  text?: string;
 }
 
 export interface Props {
-  images: GalleryItem[];
+  images?: GalleryItem[];
+  items?: GalleryItem[];
   columns?: 2 | 3 | 4;
+  cols?: 2 | 3 | 4;
 }
 
-const { images, columns = 3 } = Astro.props;
+const props = Astro.props as Record<string, unknown>;
+const images = pickArray<GalleryItem>(props, ['images', 'items']);
+const columns = pickNumber(props, ['columns', 'cols'], 3);
+const normalizedColumns = columns === 2 || columns === 4 ? columns : 3;
 ---
 
-<section class="bf-gallery" style={`--bf-gallery-cols: ${columns};`}>
-  {images.map((image) => (
-    <figure class="bf-card">
-      <img src={image.src} alt={image.alt} loading="lazy" />
-      {image.caption && <figcaption>{image.caption}</figcaption>}
-    </figure>
-  ))}
+<section class="bf-gallery" style={`--bf-gallery-cols: ${normalizedColumns};`}>
+  {images.map((image) => {
+    const src = pickString(image as Record<string, unknown>, ['src', 'image', 'url']);
+    const alt = pickString(image as Record<string, unknown>, ['alt', 'title', 'caption'], 'image');
+    const caption = pickString(image as Record<string, unknown>, ['caption', 'text', 'title']);
+
+    return (
+      <figure class="bf-card">
+        <img src={src} alt={alt} loading="lazy" />
+        {caption && <figcaption>{caption}</figcaption>}
+      </figure>
+    );
+  })}
 </section>
 
 <style>

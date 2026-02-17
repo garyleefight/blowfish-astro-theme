@@ -1,10 +1,17 @@
 ---
+import { pickString } from '../lib/props';
+
 export interface Props {
-  title: string;
+  title?: string;
+  name?: string;
+  label?: string;
   date?: string;
+  time?: string;
 }
 
-const { title, date } = Astro.props;
+const props = Astro.props as Record<string, unknown>;
+const title = pickString(props, ['title', 'name', 'label'], 'Event');
+const date = pickString(props, ['date', 'time']);
 ---
 
 <li>

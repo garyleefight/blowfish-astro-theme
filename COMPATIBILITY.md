@@ -34,14 +34,26 @@ This package targets API similarity with Blowfish docs while remaining Astro-nat
 - Blowfish shortcode `typeit` -> `BlowfishTypeIt`
 - Blowfish shortcode `youtubeLite` -> `BlowfishYouTubeLite`
 
-## Parameter naming strategy
+## Alias compatibility examples
 
-- Keep canonical names where practical (`type`, `title`, `content`, `src`, `alt`, `caption`, `href`, `id`)
-- For shortcode APIs with multiple naming variants in Hugo docs/ecosystem, use the primary names and add aliases incrementally.
+- `BlowfishBadge`: `text | label | content`, `color | variant`
+- `BlowfishAlert`: `type | style | alertType`, `title | heading`, `content | text | description`
+- `BlowfishButton`: `href | url | link`, `label | text | title`, `variant | style`
+- `BlowfishFigure`: `src | url | image`, `caption | title`
+- `BlowfishGallery`: `images | items`, `columns | cols`, item keys `src | image | url`
+- `BlowfishDetails`: `summary | title`, `open | defaultOpen | expanded`
+- `BlowfishGist`: `id | gistId | gist | url`, `user | username`
+- `BlowfishGitHubCard`: `repo | repository`, `user | owner`
+- `BlowfishTab`: `name | title | label`, `active | open`
+- `BlowfishTabs`: `defaultTab | default | selected`
+- `BlowfishTimelineItem`: `title | name | label`, `date | time`
+- `BlowfishKaTeX`: `equation | expr | formula`, `display | block`
+- `BlowfishTypeIt`: `text | strings`, `speed | lifeLike`
+- `BlowfishYouTubeLite`: `id | videoId | youtube | url`, `title | label`
 
 ## Current parity level
 
 - Visual parity: partial to moderate (shortcode surfaces themed)
-- API parity: broad surface implemented; some advanced aliases pending
+- API parity: broad surface + common aliases
 - Content shortcode parity: broad component coverage
 - Hugo template parity: not applicable (Astro-native implementation)

@@ -1,11 +1,17 @@
 ---
+import { pickString } from '../lib/props';
+
 export interface Props {
-  repo: string;
+  repo?: string;
+  repository?: string;
   user?: string;
+  owner?: string;
 }
 
-const { repo, user } = Astro.props;
-const path = user ? `${user}/${repo}` : repo;
+const props = Astro.props as Record<string, unknown>;
+const repo = pickString(props, ['repo', 'repository']);
+const owner = pickString(props, ['user', 'owner']);
+const path = owner ? `${owner}/${repo}` : repo;
 const href = `https://github.com/${path}`;
 ---
 

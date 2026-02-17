@@ -1,10 +1,21 @@
 ---
+import { pickString } from '../lib/props';
+
 export interface Props {
-  id: string;
+  id?: string;
+  videoId?: string;
+  youtube?: string;
+  url?: string;
   title?: string;
+  label?: string;
 }
 
-const { id, title = 'YouTube video' } = Astro.props;
+const props = Astro.props as Record<string, unknown>;
+const raw = pickString(props, ['id', 'videoId', 'youtube']);
+const url = pickString(props, ['url']);
+const parsedFromUrl = url.match(/[?&]v=([A-Za-z0-9_-]{6,})/)?.[1] || url.match(/youtu\.be\/([A-Za-z0-9_-]{6,})/)?.[1] || '';
+const id = raw || parsedFromUrl;
+const title = pickString(props, ['title', 'label'], 'YouTube video');
 const thumbnail = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
 const href = `https://www.youtube.com/watch?v=${id}`;
 ---

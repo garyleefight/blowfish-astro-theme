@@ -1,16 +1,30 @@
 ---
+import { pickString } from '../lib/props';
+
 export interface Props {
-  href: string;
-  label: string;
+  href?: string;
+  url?: string;
+  link?: string;
+  label?: string;
+  text?: string;
+  title?: string;
   variant?: 'primary' | 'outline' | 'ghost';
+  style?: 'primary' | 'outline' | 'ghost';
   target?: string;
   rel?: string;
 }
 
-const { href, label, variant = 'primary', target, rel } = Astro.props;
+const props = Astro.props as Record<string, unknown>;
+const href = pickString(props, ['href', 'url', 'link'], '#');
+const label = pickString(props, ['label', 'text', 'title'], 'Open');
+const variant = pickString(props, ['variant', 'style'], 'primary') as Props['variant'];
+const target = pickString(props, ['target']);
+const rel = pickString(props, ['rel']);
+
+const selected = variant === 'outline' || variant === 'ghost' ? variant : 'primary';
 ---
 
-<a class={`bf-btn bf-btn-${variant}`} href={href} target={target} rel={rel}>
+<a class={`bf-btn bf-btn-${selected}`} href={href} target={target || undefined} rel={rel || undefined}>
   {label}
 </a>
 

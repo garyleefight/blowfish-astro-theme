@@ -1,11 +1,21 @@
 ---
+import { pickString } from '../lib/props';
+
 export interface Props {
   type?: 'info' | 'success' | 'warning' | 'error';
+  style?: 'info' | 'success' | 'warning' | 'error';
+  alertType?: 'info' | 'success' | 'warning' | 'error';
   title?: string;
+  heading?: string;
   content?: string;
+  text?: string;
+  description?: string;
 }
 
-const { type = 'info', title, content } = Astro.props;
+const props = Astro.props as Record<string, unknown>;
+const type = pickString(props, ['type', 'style', 'alertType'], 'info') as Props['type'];
+const title = pickString(props, ['title', 'heading']);
+const content = pickString(props, ['content', 'text', 'description']);
 
 const colorMap = {
   info: 'var(--bf-primary)',
@@ -13,9 +23,11 @@ const colorMap = {
   warning: 'var(--bf-warning)',
   error: 'var(--bf-danger)'
 };
+
+const selected = type && type in colorMap ? type : 'info';
 ---
 
-<aside class="bf-card bf-alert" style={`--bf-alert-color: ${colorMap[type]};`}>
+<aside class="bf-card bf-alert" style={`--bf-alert-color: ${colorMap[selected]};`}>
   {title && <h4>{title}</h4>}
   {content && <p>{content}</p>}
   <slot />

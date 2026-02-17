@@ -1,10 +1,17 @@
 ---
+import { pickString } from '../lib/props';
+
 export interface Props {
-  text: string;
+  text?: string;
+  label?: string;
+  content?: string;
   color?: 'primary' | 'success' | 'warning' | 'danger' | 'neutral';
+  variant?: 'primary' | 'success' | 'warning' | 'danger' | 'neutral';
 }
 
-const { text, color = 'neutral' } = Astro.props;
+const props = Astro.props as Record<string, unknown>;
+const text = pickString(props, ['text', 'label', 'content']);
+const color = pickString(props, ['color', 'variant'], 'neutral') as Props['color'];
 
 const styleMap = {
   primary: 'var(--bf-primary)',
@@ -13,9 +20,11 @@ const styleMap = {
   danger: 'var(--bf-danger)',
   neutral: 'var(--bf-muted)'
 };
+
+const selected = color && color in styleMap ? color : 'neutral';
 ---
 
-<span class="bf-badge" style={`--bf-badge-color: ${styleMap[color]};`}>{text}</span>
+<span class="bf-badge" style={`--bf-badge-color: ${styleMap[selected]};`}>{text}</span>
 
 <style>
   .bf-badge {

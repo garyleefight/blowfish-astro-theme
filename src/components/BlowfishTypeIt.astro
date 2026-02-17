@@ -1,14 +1,23 @@
 ---
+import { pickArray, pickBoolean, pickNumber, pickString } from '../lib/props';
+
 export interface Props {
-  text: string;
+  text?: string;
+  strings?: string[];
   speed?: number;
+  lifeLike?: number;
   loop?: boolean;
 }
 
-const { text, speed = 75, loop = false } = Astro.props;
+const props = Astro.props as Record<string, unknown>;
+const text = pickString(props, ['text']);
+const strings = pickArray<string>(props, ['strings']);
+const displayText = text || strings.join(' | ');
+const speed = pickNumber(props, ['speed', 'lifeLike'], 75);
+const loop = pickBoolean(props, ['loop'], false);
 ---
 
-<span class="bf-typeit" data-speed={speed} data-loop={loop ? 'true' : 'false'}>{text}</span>
+<span class="bf-typeit" data-speed={speed} data-loop={loop ? 'true' : 'false'}>{displayText}</span>
 
 <style>
   .bf-typeit { border-right: 1px solid var(--bf-muted); padding-right: 0.1rem; }

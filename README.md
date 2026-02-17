@@ -71,6 +71,11 @@ It recreates equivalent behavior in Astro and preserves parameter names where pr
 
 ## Next steps
 
-- Add docs parity matrix with exact Blowfish shortcode mappings
+- Extend alias coverage for edge-case shortcode parameters
 - Add article layout, taxonomy pages, and nav/footer variants
 - Publish package to npm and tag `v1.0.0`
+
+## Examples
+
+- Shortcode usage examples: `docs/SHORTCODE_USAGE.md`
+- Compatibility and aliases: `COMPATIBILITY.md`

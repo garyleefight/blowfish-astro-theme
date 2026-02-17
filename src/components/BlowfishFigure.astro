@@ -1,17 +1,27 @@
 ---
+import { pickNumber, pickString } from '../lib/props';
+
 export interface Props {
-  src: string;
-  alt: string;
+  src?: string;
+  url?: string;
+  image?: string;
+  alt?: string;
   caption?: string;
+  title?: string;
   width?: number;
   height?: number;
 }
 
-const { src, alt, caption, width, height } = Astro.props;
+const props = Astro.props as Record<string, unknown>;
+const src = pickString(props, ['src', 'url', 'image']);
+const alt = pickString(props, ['alt', 'title', 'caption'], 'image');
+const caption = pickString(props, ['caption', 'title']);
+const width = pickNumber(props, ['width'], 0);
+const height = pickNumber(props, ['height'], 0);
 ---
 
 <figure class="bf-card bf-figure">
-  <img src={src} alt={alt} width={width} height={height} loading="lazy" />
+  <img src={src} alt={alt} width={width || undefined} height={height || undefined} loading="lazy" />
   {caption && <figcaption>{caption}</figcaption>}
 </figure>
 

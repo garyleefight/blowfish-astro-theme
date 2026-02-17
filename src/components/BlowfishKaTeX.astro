@@ -1,10 +1,17 @@
 ---
+import { pickBoolean, pickString } from '../lib/props';
+
 export interface Props {
-  equation: string;
+  equation?: string;
+  expr?: string;
+  formula?: string;
   display?: boolean;
+  block?: boolean;
 }
 
-const { equation, display = false } = Astro.props;
+const props = Astro.props as Record<string, unknown>;
+const equation = pickString(props, ['equation', 'expr', 'formula']);
+const display = pickBoolean(props, ['display', 'block'], false);
 ---
 
 {display ? (
