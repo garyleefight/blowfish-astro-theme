@@ -1,0 +1,84 @@
+---
+export interface NavItem {
+  label: string;
+  href: string;
+}
+
+export interface Props {
+  title: string;
+  nav?: NavItem[];
+  enableSearch?: boolean;
+}
+
+const { title, nav = [], enableSearch = true } = Astro.props;
+---
+
+<header class="bf-site-header">
+  <div class="bf-site-header-inner">
+    <a class="bf-site-brand" href="/">{title}</a>
+    <nav class="bf-site-nav" aria-label="Main">
+      {nav.map((item) => (
+        <a href={item.href}>{item.label}</a>
+      ))}
+    </nav>
+    {enableSearch && (
+      <form class="bf-site-search" action="/search" method="get">
+        <input type="search" name="q" placeholder="Search" />
+      </form>
+    )}
+  </div>
+</header>
+
+<style>
+  .bf-site-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    backdrop-filter: blur(10px);
+    background: color-mix(in srgb, var(--bf-bg) 82%, transparent);
+    border-bottom: 1px solid var(--bf-border);
+  }
+
+  .bf-site-header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0.7rem 1rem;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .bf-site-brand {
+    color: var(--bf-text);
+    text-decoration: none;
+    font-weight: 800;
+  }
+
+  .bf-site-nav {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .bf-site-nav a {
+    color: var(--bf-muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+
+  .bf-site-search input {
+    border: 1px solid var(--bf-border);
+    background: color-mix(in srgb, var(--bf-surface) 88%, black 12%);
+    color: var(--bf-text);
+    border-radius: 0.5rem;
+    padding: 0.35rem 0.55rem;
+    min-width: 10rem;
+  }
+
+  @media (max-width: 760px) {
+    .bf-site-header-inner {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

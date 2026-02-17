@@ -1,0 +1,27 @@
+---
+import BlowfishBreadcrumbs from '../../components/site/BlowfishBreadcrumbs.astro';
+import BlowfishPagination from '../../components/site/BlowfishPagination.astro';
+import BlowfishSiteLayout from '../../layouts/site/BlowfishSiteLayout.astro';
+---
+
+<BlowfishSiteLayout title="Single Template" nav={[{ label: 'Home', href: '/' }, { label: 'Theme List', href: '/theme/list' }]}> 
+  <BlowfishBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Blog', href: '/theme/list' }, { label: 'Single Post' }]} />
+  <article class="bf-single bf-card">
+    <header>
+      <h1>Single Post Template</h1>
+      <p class="bf-muted">2026-02-17 · 5 min read · 1200 words</p>
+    </header>
+    <section class="bf-prose">
+      <p>This is the single template parity target (`_default/single.html`).</p>
+      <p>Next passes will add full meta, sharing, toc, related posts, and taxonomy blocks.</p>
+    </section>
+  </article>
+  <BlowfishPagination prevHref="#" nextHref="#" />
+</BlowfishSiteLayout>
+
+<style>
+  .bf-single { padding: 1rem; }
+  .bf-single h1 { margin: 0; }
+  .bf-single header p { margin: 0.5rem 0 0; }
+  .bf-prose { margin-top: 0.85rem; }
+</style>

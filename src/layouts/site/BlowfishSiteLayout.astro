@@ -1,0 +1,37 @@
+---
+import BlowfishFooter from '../../components/site/BlowfishFooter.astro';
+import BlowfishHeader from '../../components/site/BlowfishHeader.astro';
+import '../../styles/theme.css';
+
+export interface Props {
+  title?: string;
+  siteTitle?: string;
+  nav?: { label: string; href: string }[];
+}
+
+const { title = 'Blowfish Theme', siteTitle = 'Blowfish Astro Theme', nav = [] } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <BlowfishHeader title={siteTitle} nav={nav} />
+    <main class="bf-site-main">
+      <slot />
+    </main>
+    <BlowfishFooter />
+  </body>
+</html>
+
+<style>
+  .bf-site-main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.25rem 1rem;
+  }
+</style>

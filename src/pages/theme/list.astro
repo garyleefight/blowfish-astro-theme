@@ -1,0 +1,40 @@
+---
+import BlowfishBreadcrumbs from '../../components/site/BlowfishBreadcrumbs.astro';
+import BlowfishPagination from '../../components/site/BlowfishPagination.astro';
+import BlowfishSiteLayout from '../../layouts/site/BlowfishSiteLayout.astro';
+
+const posts = [
+  { title: 'A post about Astro themes', date: '2026-02-17', summary: 'Implementing a full Blowfish parity layer.', href: '#' },
+  { title: 'Cloudflare Pages checklist', date: '2026-02-16', summary: 'Static-only delivery practices.', href: '#' },
+  { title: 'Shortcode compatibility notes', date: '2026-02-15', summary: 'Mapping Hugo shortcodes to Astro components.', href: '#' }
+];
+---
+
+<BlowfishSiteLayout title="List Template" nav={[{ label: 'Home', href: '/' }, { label: 'Homepage Layout', href: '/homepage-layout' }]}> 
+  <BlowfishBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Blog' }]} />
+  <header class="bf-list-header">
+    <h1>Blog</h1>
+    <p class="bf-muted">List template parity target (`_default/list.html`).</p>
+  </header>
+
+  <section class="bf-list-items">
+    {posts.map((post) => (
+      <article class="bf-list-item bf-card">
+        <h2><a href={post.href}>{post.title}</a></h2>
+        <p class="bf-muted">{post.date}</p>
+        <p>{post.summary}</p>
+      </article>
+    ))}
+  </section>
+
+  <BlowfishPagination prevHref="#" nextHref="#" />
+</BlowfishSiteLayout>
+
+<style>
+  .bf-list-header h1 { margin: 0; }
+  .bf-list-items { display: grid; gap: 0.9rem; margin-top: 1rem; }
+  .bf-list-item { padding: 1rem; }
+  .bf-list-item h2 { margin: 0; font-size: 1.1rem; }
+  .bf-list-item h2 a { color: var(--bf-text); text-decoration: none; }
+  .bf-list-item p { margin: 0.45rem 0 0; }
+</style>
