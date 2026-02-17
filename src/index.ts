@@ -30,4 +30,5 @@ export { default as BlowfishTabs } from './components/BlowfishTabs.astro';
 export { default as BlowfishTimeline } from './components/BlowfishTimeline.astro';
 export { default as BlowfishTimelineItem } from './components/BlowfishTimelineItem.astro';
 export { default as BlowfishTypeIt } from './components/BlowfishTypeIt.astro';
+export { default as BlowfishVideo } from './components/BlowfishVideo.astro';
 export { default as BlowfishYouTubeLite } from './components/BlowfishYouTubeLite.astro';

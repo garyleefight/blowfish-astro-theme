@@ -1,10 +1,17 @@
 ---
+import { pickBoolean, pickString } from '../lib/props';
+
 export interface Props {
-  title: string;
+  title?: string;
+  heading?: string;
+  label?: string;
   open?: boolean;
+  defaultOpen?: boolean;
 }
 
-const { title, open = false } = Astro.props;
+const props = Astro.props as Record<string, unknown>;
+const title = pickString(props, ['title', 'heading', 'label'], 'Item');
+const open = pickBoolean(props, ['open', 'defaultOpen'], false);
 ---
 
 <details class="bf-accordion-item" open={open}>

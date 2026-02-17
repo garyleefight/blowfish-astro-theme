@@ -1,12 +1,22 @@
 ---
+import { pickNumber, pickString } from '../lib/props';
+
 export interface Props {
   type?: string;
+  chartType?: string;
   height?: number;
+  h?: number;
   options?: string;
+  config?: string;
   series?: string;
+  data?: string;
 }
 
-const { type = 'line', height = 320, options = '{}', series = '[]' } = Astro.props;
+const props = Astro.props as Record<string, unknown>;
+const type = pickString(props, ['type', 'chartType'], 'line');
+const height = pickNumber(props, ['height', 'h'], 320);
+const options = pickString(props, ['options', 'config'], '{}');
+const series = pickString(props, ['series', 'data'], '[]');
 ---
 
 <div class="bf-card bf-code" data-bf-apex data-type={type} data-height={height} data-options={options} data-series={series}>

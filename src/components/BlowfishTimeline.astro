@@ -1,9 +1,14 @@
 ---
+import { pickString } from '../lib/props';
+
 export interface Props {
   title?: string;
+  heading?: string;
+  label?: string;
 }
 
-const { title } = Astro.props;
+const props = Astro.props as Record<string, unknown>;
+const title = pickString(props, ['title', 'heading', 'label']);
 ---
 
 <section class="bf-card bf-timeline">

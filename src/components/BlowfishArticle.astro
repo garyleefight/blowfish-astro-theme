@@ -1,12 +1,23 @@
 ---
+import { pickString } from '../lib/props';
+
 export interface Props {
-  title: string;
+  title?: string;
+  heading?: string;
   summary?: string;
+  description?: string;
   date?: string;
+  publishedAt?: string;
   link?: string;
+  href?: string;
+  url?: string;
 }
 
-const { title, summary, date, link = '#' } = Astro.props;
+const props = Astro.props as Record<string, unknown>;
+const title = pickString(props, ['title', 'heading'], 'Article');
+const summary = pickString(props, ['summary', 'description']);
+const date = pickString(props, ['date', 'publishedAt']);
+const link = pickString(props, ['link', 'href', 'url'], '#');
 ---
 
 <article class="bf-card bf-article">

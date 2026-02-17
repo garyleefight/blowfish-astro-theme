@@ -1,12 +1,22 @@
 ---
+import { pickString } from '../lib/props';
+
 export interface Props {
   type?: 'bar' | 'line' | 'pie' | 'doughnut' | 'radar' | 'polarArea';
+  chartType?: 'bar' | 'line' | 'pie' | 'doughnut' | 'radar' | 'polarArea';
   labels?: string;
+  xLabels?: string;
   data?: string;
+  series?: string;
   title?: string;
+  heading?: string;
 }
 
-const { type = 'bar', labels = '[]', data = '[]', title } = Astro.props;
+const props = Astro.props as Record<string, unknown>;
+const type = pickString(props, ['type', 'chartType'], 'bar');
+const labels = pickString(props, ['labels', 'xLabels'], '[]');
+const data = pickString(props, ['data', 'series'], '[]');
+const title = pickString(props, ['title', 'heading']);
 ---
 
 <div class="bf-card bf-code" data-bf-chart data-type={type} data-labels={labels} data-data={data}>

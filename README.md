@@ -67,6 +67,7 @@ It recreates equivalent behavior in Astro and preserves parameter names where pr
 - `BlowfishTabs`, `BlowfishTab`
 - `BlowfishTimeline`, `BlowfishTimelineItem`
 - `BlowfishTypeIt`
+- `BlowfishVideo`
 - `BlowfishYouTubeLite`
 
 ## Next steps

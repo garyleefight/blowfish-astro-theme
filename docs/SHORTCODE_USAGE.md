@@ -19,6 +19,7 @@ import {
   BlowfishTimeline,
   BlowfishTimelineItem,
   BlowfishTypeIt,
+  BlowfishVideo,
   BlowfishYouTubeLite,
 } from '@garyleefight/blowfish-astro-theme';
 ---
@@ -56,5 +57,6 @@ import {
 </BlowfishTimeline>
 
 <BlowfishTypeIt strings={['hello', 'world']} lifeLike={50} loop={true} />
+<BlowfishVideo url="/videos/intro.mp4" title="Intro" controls={true} />
 <BlowfishYouTubeLite url="https://www.youtube.com/watch?v=dQw4w9WgXcQ" label="Demo" />
 ```

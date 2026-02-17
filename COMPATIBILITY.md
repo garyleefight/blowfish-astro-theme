@@ -32,6 +32,7 @@ This package targets API similarity with Blowfish docs while remaining Astro-nat
 - Blowfish shortcode `tabs` -> `BlowfishTabs`, `BlowfishTab`
 - Blowfish shortcode `timeline` -> `BlowfishTimeline`, `BlowfishTimelineItem`
 - Blowfish shortcode `typeit` -> `BlowfishTypeIt`
+- Blowfish shortcode `video` -> `BlowfishVideo`
 - Blowfish shortcode `youtubeLite` -> `BlowfishYouTubeLite`
 
 ## Alias compatibility examples
@@ -49,6 +50,7 @@ This package targets API similarity with Blowfish docs while remaining Astro-nat
 - `BlowfishTimelineItem`: `title | name | label`, `date | time`
 - `BlowfishKaTeX`: `equation | expr | formula`, `display | block`
 - `BlowfishTypeIt`: `text | strings`, `speed | lifeLike`
+- `BlowfishVideo`: `src | url | video`, `caption | title`
 - `BlowfishYouTubeLite`: `id | videoId | youtube | url`, `title | label`
 
 ## Current parity level

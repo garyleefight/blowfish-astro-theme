@@ -1,24 +1,37 @@
 ---
+import { pickArray, pickString } from '../lib/props';
+
 interface Item {
-  src: string;
-  alt: string;
+  src?: string;
+  image?: string;
+  url?: string;
+  alt?: string;
+  title?: string;
   caption?: string;
 }
 
 export interface Props {
-  images: Item[];
+  images?: Item[];
+  items?: Item[];
 }
 
-const { images } = Astro.props;
+const props = Astro.props as Record<string, unknown>;
+const images = pickArray<Item>(props, ['images', 'items']);
 ---
 
 <div class="bf-carousel" role="region" aria-label="carousel">
-  {images.map((img) => (
-    <figure class="bf-card">
-      <img src={img.src} alt={img.alt} loading="lazy" />
-      {img.caption && <figcaption>{img.caption}</figcaption>}
-    </figure>
-  ))}
+  {images.map((img) => {
+    const src = pickString(img as Record<string, unknown>, ['src', 'image', 'url']);
+    const alt = pickString(img as Record<string, unknown>, ['alt', 'title', 'caption'], 'slide');
+    const caption = pickString(img as Record<string, unknown>, ['caption', 'title']);
+
+    return (
+      <figure class="bf-card">
+        <img src={src} alt={alt} loading="lazy" />
+        {caption && <figcaption>{caption}</figcaption>}
+      </figure>
+    );
+  })}
 </div>
 
 <style>

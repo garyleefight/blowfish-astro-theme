@@ -1,10 +1,16 @@
 ---
+import { pickString } from '../lib/props';
+
 export interface Props {
   author?: string;
+  name?: string;
   cite?: string;
+  source?: string;
 }
 
-const { author, cite } = Astro.props;
+const props = Astro.props as Record<string, unknown>;
+const author = pickString(props, ['author', 'name']);
+const cite = pickString(props, ['cite', 'source']);
 ---
 
 <blockquote class="bf-card bf-blockquote">

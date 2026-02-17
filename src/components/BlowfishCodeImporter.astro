@@ -1,13 +1,26 @@
 ---
+import { pickNumber, pickString } from '../lib/props';
+
 export interface Props {
   url?: string;
+  src?: string;
+  path?: string;
   lang?: string;
+  language?: string;
   title?: string;
+  heading?: string;
   startLine?: number;
+  from?: number;
   endLine?: number;
+  to?: number;
 }
 
-const { url, lang = 'text', title, startLine, endLine } = Astro.props;
+const props = Astro.props as Record<string, unknown>;
+const url = pickString(props, ['url', 'src', 'path']);
+const lang = pickString(props, ['lang', 'language'], 'text');
+const title = pickString(props, ['title', 'heading']);
+const startLine = pickNumber(props, ['startLine', 'from'], 0);
+const endLine = pickNumber(props, ['endLine', 'to'], 0);
 ---
 
 <section class="bf-card bf-code-importer">
