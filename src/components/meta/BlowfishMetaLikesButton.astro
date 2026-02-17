@@ -1,0 +1,25 @@
+<button id="bf-likes-button" class="bf-likes-button" type="button">
+  <span id="bf-likes-heart">♡</span>
+  <span id="bf-likes-text">Like</span>
+</button>
+
+<script is:inline>
+  const btn = document.getElementById('bf-likes-button');
+  const text = document.getElementById('bf-likes-text');
+  btn?.addEventListener('click', () => {
+    if (!text) return;
+    text.textContent = text.textContent === 'Like' ? 'Liked' : 'Like';
+  });
+</script>
+
+<style>
+  .bf-likes-button {
+    border: 1px solid color-mix(in srgb, var(--bf-primary) 60%, var(--bf-border));
+    color: var(--bf-primary);
+    border-radius: 0.4rem;
+    padding: 0.15rem 0.45rem;
+    background: transparent;
+    cursor: pointer;
+    font-size: 0.8rem;
+  }
+</style>

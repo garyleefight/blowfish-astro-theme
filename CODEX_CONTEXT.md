@@ -1,6 +1,6 @@
 # Codex Handoff Context
 
-Last updated: 2026-02-17
+Last updated: 2026-02-17 (session continuation)
 Repo: `blowfish-astro-theme`
 Goal: rewrite Hugo Blowfish theme into Astro-native package with parity tracking.
 
@@ -17,6 +17,9 @@ Goal: rewrite Hugo Blowfish theme into Astro-native package with parity tracking
   - head/schema/analytics scaffolding
   - search endpoint + Fuse client runtime
   - runtime layer for tabs/gallery/mermaid/chart/typeit/scroll-top/theme toggle
+  - hero partials (`hero/basic`, `hero/background`, `hero/big`, `hero/thumbAndBackground`)
+  - author partials (`author-links`, `author-extra`)
+  - meta partial components (`meta/date`, `meta/date-updated`, `meta/reading-time`, `meta/word-count`, `meta/edit`, `meta/views`, `meta/likes`, `meta/likes_button`, `meta/zen-mode`)
 
 ## Important conventions
 

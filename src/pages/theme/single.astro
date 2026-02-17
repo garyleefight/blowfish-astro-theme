@@ -9,6 +9,15 @@ import BlowfishSeries from '../../components/article/BlowfishSeries.astro';
 import BlowfishSharingLinks from '../../components/article/BlowfishSharingLinks.astro';
 import BlowfishSiteLayout from '../../layouts/site/BlowfishSiteLayout.astro';
 import BlowfishToc from '../../components/article/BlowfishToc.astro';
+import BlowfishMetaDate from '../../components/meta/BlowfishMetaDate.astro';
+import BlowfishMetaDateUpdated from '../../components/meta/BlowfishMetaDateUpdated.astro';
+import BlowfishMetaEdit from '../../components/meta/BlowfishMetaEdit.astro';
+import BlowfishMetaLikes from '../../components/meta/BlowfishMetaLikes.astro';
+import BlowfishMetaLikesButton from '../../components/meta/BlowfishMetaLikesButton.astro';
+import BlowfishMetaReadingTime from '../../components/meta/BlowfishMetaReadingTime.astro';
+import BlowfishMetaViews from '../../components/meta/BlowfishMetaViews.astro';
+import BlowfishMetaWordCount from '../../components/meta/BlowfishMetaWordCount.astro';
+import BlowfishMetaZenMode from '../../components/meta/BlowfishMetaZenMode.astro';
 
 const related = [
   { title: 'Related post 1', href: '#', summary: 'Deeper dive on template parity.', date: '2026-02-14', thumbnail: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=900' },
@@ -23,6 +32,17 @@ const related = [
     <header>
       <h1>Single Post Template</h1>
       <BlowfishArticleMetaBasic date="2026-02-17" updated="2026-02-18" readingTime="5 min" wordCount={1200} />
+      <div class="bf-meta-row">
+        <BlowfishMetaDate date="2026-02-17T00:00:00Z" />
+        <BlowfishMetaDateUpdated date="2026-02-18T00:00:00Z" />
+        <BlowfishMetaReadingTime minutes={5} />
+        <BlowfishMetaWordCount words={1200} />
+        <BlowfishMetaEdit url="https://github.com/nunocoracao/blowfish" />
+        <BlowfishMetaViews count={231} />
+        <BlowfishMetaLikes count={45} />
+        <BlowfishMetaLikesButton />
+        <BlowfishMetaZenMode />
+      </div>
       <BlowfishArticleMetaTaxonomy
         categories={[{ label: 'Engineering', href: '#' }]}
         tags={[{ label: 'astro', href: '/theme/term' }, { label: 'theme', href: '#' }]}
@@ -69,6 +89,7 @@ const related = [
   }
 
   .bf-prose p { color: color-mix(in srgb, var(--bf-text) 90%, white 10%); }
+  .bf-meta-row { margin-top: 0.45rem; display: flex; gap: 0.55rem; flex-wrap: wrap; align-items: center; color: var(--bf-muted); font-size: 0.86rem; }
 
   @media (max-width: 900px) {
     .bf-single-grid { grid-template-columns: 1fr; }

@@ -1,0 +1,6 @@
+---
+export interface Props { count?: number; }
+const { count } = Astro.props;
+---
+
+<span>{typeof count === 'number' ? count : 'loading'} 👁</span>

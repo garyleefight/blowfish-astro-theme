@@ -62,7 +62,7 @@ Source baseline: `/tmp/blowfish-upstream` (GitHub `nunocoracao/blowfish`).
 - PARTIAL `layouts/partials/article-link/simple.html` -> `src/components/article/BlowfishArticleLinkSimple.astro`
 - PARTIAL `layouts/partials/article-link/card.html` -> `src/components/article/BlowfishArticleLinkCard.astro`
 - PARTIAL `layouts/partials/article-link/card-related.html` -> `src/components/article/BlowfishArticleLinkCardRelated.astro`
-- PARTIAL article meta partials (`article-meta/*`, `meta/*`) -> `src/components/article/BlowfishArticleMeta*.astro`
+- PARTIAL article meta partials (`article-meta/*`, `meta/*`) -> `src/components/article/BlowfishArticleMeta*.astro`, `src/components/meta/BlowfishMeta*.astro`
 - PARTIAL article pagination / sharing / series -> `src/components/article/BlowfishSharingLinks.astro`, `src/components/article/BlowfishSeries.astro`, `src/components/site/BlowfishPagination.astro`
 
 ## Assets and behavior
