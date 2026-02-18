@@ -7,11 +7,24 @@ import BlowfishBreadcrumbs from '../../components/site/BlowfishBreadcrumbs.astro
 import BlowfishFooter from '../../components/site/BlowfishFooter.astro';
 import BlowfishPagination from '../../components/site/BlowfishPagination.astro';
 import BlowfishScrollTop from '../../components/site/BlowfishScrollTop.astro';
+import BlowfishArticlePagination from '../../components/article/BlowfishArticlePagination.astro';
+import BlowfishArticleMetaList from '../../components/article/BlowfishArticleMetaList.astro';
+import BlowfishArticleMetaTerm from '../../components/article/BlowfishArticleMetaTerm.astro';
+import BlowfishTermLinkCard from '../../components/term/BlowfishTermLinkCard.astro';
+import BlowfishTermLinkText from '../../components/term/BlowfishTermLinkText.astro';
 
 const code = {
   breadcrumbs: `<BlowfishBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Docs', href: '/blocks' }, { label: 'Content' }]} />`,
-  pagination: `<BlowfishPagination totalPages={12} currentPage={6} baseUrl=\"/blog\" />`,
+  pagination: `<BlowfishPagination totalPages={12} currentPage={6} baseUrl="/blog" />`,
   footer: `<BlowfishFooter footerMenu={[{ name: 'GitHub', url: 'https://github.com', pre: 'github' }]} />`,
+  articlePagination: `<BlowfishArticlePagination
+  prev={{ title: 'Previous Article', href: '/blog/prev', date: '2026-02-17' }}
+  next={{ title: 'Next Article', href: '/blog/next', date: '2026-02-19' }}
+/>`,
+  termLinks: `<BlowfishTermLinkCard title="Astro" href="/tags/astro" count={12} />
+<BlowfishTermLinkText title="Hugo" href="/tags/hugo" count={8} />`,
+  articleMetaList: `<BlowfishArticleMetaList title="Blog Posts" count={24} />`,
+  articleMetaTerm: `<BlowfishArticleMetaTerm title="astro" count={12} taxonomy="tags" />`,
 };
 ---
 
@@ -71,6 +84,51 @@ const code = {
         </div>
       </div>
       <BlowfishScrollTop />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="article-pagination" title="Article Pagination" effect="Prev/next article navigation with dates and invert support." usage={code.articlePagination}>
+      <BlowfishArticlePagination
+        prev={{ title: 'Getting Started with Astro', href: '#', date: '2026-02-17' }}
+        next={{ title: 'Advanced Component Patterns', href: '#', date: '2026-02-19' }}
+        showDate={true}
+      />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="term-links" title="Term Link Card + Text" effect="Taxonomy term display variants for tags/categories." usage={code.termLinks}>
+      <div class="space-y-4">
+        <div class="grid gap-4 sm:grid-cols-2">
+          <BlowfishTermLinkCard
+            title="Astro"
+            href="#"
+            count={12}
+            image="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80"
+          />
+          <BlowfishTermLinkCard
+            title="Blowfish"
+            href="#"
+            count={8}
+            image="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=600&q=80"
+          />
+        </div>
+        <div class="flex flex-wrap">
+          <BlowfishTermLinkText title="Hugo" href="#" count={15} />
+          <BlowfishTermLinkText title="Tailwind" href="#" count={23} />
+          <BlowfishTermLinkText title="TypeScript" href="#" count={9} />
+        </div>
+      </div>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="article-meta" title="Article Meta (List + Term)" effect="Page header metadata for list and taxonomy term pages." usage={code.articleMetaList + '\n' + code.articleMetaTerm}>
+      <div class="space-y-4">
+        <div class="rounded-md border border-neutral-300 p-4 dark:border-neutral-700">
+          <p class="m-0 mb-2 text-xs uppercase tracking-wide text-neutral-500">List Page Header</p>
+          <BlowfishArticleMetaList title="Blog Posts" count={24} />
+        </div>
+        <div class="rounded-md border border-neutral-300 p-4 dark:border-neutral-700">
+          <p class="m-0 mb-2 text-xs uppercase tracking-wide text-neutral-500">Term Page Header</p>
+          <BlowfishArticleMetaTerm title="astro" count={12} taxonomy="tags" />
+        </div>
+      </div>
     </BlowfishDocItem>
 
     <section class="rounded-xl border border-neutral-300 bg-neutral-50/70 p-4 shadow-sm dark:border-neutral-700 dark:bg-neutral-800/60">

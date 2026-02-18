@@ -1,0 +1,200 @@
+---
+import BlowfishSiteLayout from '../../layouts/site/BlowfishSiteLayout.astro';
+import BlowfishBlocksHeader from '../../components/docs/BlowfishBlocksHeader.astro';
+import BlowfishDocItem from '../../components/docs/BlowfishDocItem.astro';
+
+const code = {
+  headingAnchors: `## Heading with Anchor {#custom-id}
+
+Headings automatically get IDs and anchor links.
+Hover over a heading to see the anchor link.`,
+
+  githubAlerts: `> [!NOTE]
+> Useful information that users should know.
+
+> [!TIP]
+> Helpful advice for doing things better.
+
+> [!IMPORTANT]
+> Key information users need to know.
+
+> [!WARNING]
+> Urgent info that needs immediate attention.
+
+> [!CAUTION]
+> Advises about risks or negative outcomes.`,
+
+  externalLinks: `[External Link](https://github.com)
+Opens in new tab with rel="noreferrer"`,
+
+  codeTitle: "```js title=\"example.js\"\nconst greeting = 'Hello World';\nconsole.log(greeting);\n```",
+};
+---
+
+<BlowfishSiteLayout
+  title="Blowfish Blocks: Markdown Renderers"
+  description="Markdown rendering features with upstream parity."
+  siteTitle="Blowfish Blocks"
+  nav={[
+    { label: 'All Blocks', href: '/' },
+    { label: 'Markdown Render', href: '/blocks/markdown-render' },
+    { label: 'Layouts', href: '/blocks/layouts' },
+  ]}
+  headerLayout="basic"
+  enableAppearanceToggle={true}
+  footerMenu={[
+    { name: 'All Blocks', url: '/', pre: 'list' },
+    { name: 'Content', url: '/blocks/content', pre: 'file-lines' },
+  ]}
+>
+  <BlowfishBlocksHeader
+    title="Markdown Renderer Blocks"
+    description="Markdown rendering hooks with Blowfish upstream parity: heading anchors, GitHub alerts, external links, and code block titles."
+  />
+
+  <section class="mt-8 space-y-4">
+    <BlowfishDocItem
+      id="heading-anchors"
+      title="Heading Anchors"
+      effect="Auto-generated IDs and hover-visible anchor links on headings."
+      usage={code.headingAnchors}
+    >
+      <div class="prose dark:prose-invert max-w-none">
+        <p class="text-sm text-neutral-600 dark:text-neutral-300 not-prose mb-4">
+          Hover over the headings below to see the anchor links appear:
+        </p>
+        <h2 id="demo-heading-2">Demo Heading Level 2</h2>
+        <p>This heading has an auto-generated ID and a hoverable anchor link.</p>
+        <h3 id="demo-heading-3">Demo Heading Level 3</h3>
+        <p>Anchor links are styled with <code>.heading-anchor</code> class.</p>
+        <h4 id="demo-heading-4">Demo Heading Level 4</h4>
+        <p>Matches upstream Blowfish behavior with opacity transition on hover.</p>
+      </div>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem
+      id="github-alerts"
+      title="GitHub Blockquote Alerts"
+      effect="GitHub-style alerts: NOTE, TIP, IMPORTANT, WARNING, CAUTION."
+      usage={code.githubAlerts}
+    >
+      <div class="space-y-3">
+        <div class="markdown-alert markdown-alert-note">
+          <p class="markdown-alert-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/>
+            </svg>
+            Note
+          </p>
+          <p>Useful information that users should know, even when skimming content.</p>
+        </div>
+
+        <div class="markdown-alert markdown-alert-tip">
+          <p class="markdown-alert-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"/>
+            </svg>
+            Tip
+          </p>
+          <p>Helpful advice for doing things better or more easily.</p>
+        </div>
+
+        <div class="markdown-alert markdown-alert-important">
+          <p class="markdown-alert-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/>
+            </svg>
+            Important
+          </p>
+          <p>Key information users need to know to achieve their goal.</p>
+        </div>
+
+        <div class="markdown-alert markdown-alert-warning">
+          <p class="markdown-alert-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/>
+            </svg>
+            Warning
+          </p>
+          <p>Urgent info that needs immediate user attention to avoid problems.</p>
+        </div>
+
+        <div class="markdown-alert markdown-alert-caution">
+          <p class="markdown-alert-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M4.47.22A.749.749 0 0 1 5 0h6c.199 0 .389.079.53.22l4.25 4.25c.141.14.22.331.22.53v6a.749.749 0 0 1-.22.53l-4.25 4.25A.749.749 0 0 1 11 16H5a.749.749 0 0 1-.53-.22L.22 11.53A.749.749 0 0 1 0 11V5c0-.199.079-.389.22-.53Zm.84 1.28L1.5 5.31v5.38l3.81 3.81h5.38l3.81-3.81V5.31L10.69 1.5ZM8 4a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/>
+            </svg>
+            Caution
+          </p>
+          <p>Advises about risks or negative outcomes of certain actions.</p>
+        </div>
+      </div>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem
+      id="external-links"
+      title="External Links"
+      effect="External links open in new tab with rel='noreferrer'."
+      usage={code.externalLinks}
+    >
+      <div class="space-y-3">
+        <p class="m-0 text-sm text-neutral-600 dark:text-neutral-300">
+          Links to external domains automatically get <code>target="_blank"</code> and <code>rel="noreferrer"</code>:
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a href="https://github.com" target="_blank" rel="noreferrer" class="rounded-md border border-neutral-300 px-3 py-1.5 no-underline hover:border-primary-500 hover:text-primary-600 dark:border-neutral-700 dark:hover:border-primary-400 dark:hover:text-primary-300">
+            GitHub (external)
+          </a>
+          <a href="https://astro.build" target="_blank" rel="noreferrer" class="rounded-md border border-neutral-300 px-3 py-1.5 no-underline hover:border-primary-500 hover:text-primary-600 dark:border-neutral-700 dark:hover:border-primary-400 dark:hover:text-primary-300">
+            Astro (external)
+          </a>
+          <a href="/" class="rounded-md border border-neutral-300 px-3 py-1.5 no-underline hover:border-primary-500 hover:text-primary-600 dark:border-neutral-700 dark:hover:border-primary-400 dark:hover:text-primary-300">
+            Home (internal)
+          </a>
+        </div>
+        <p class="m-0 text-xs text-neutral-500 dark:text-neutral-400">
+          Internal links stay in the same tab. Configurable via <code>externalLinkForceNewTab</code> param.
+        </p>
+      </div>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem
+      id="code-title"
+      title="Code Block Titles"
+      effect="Add titles to code blocks with title attribute."
+      usage={code.codeTitle}
+    >
+      <div class="space-y-4">
+        <p class="m-0 text-sm text-neutral-600 dark:text-neutral-300">
+          Code blocks can have titles using the <code>title="filename.js"</code> syntax:
+        </p>
+        <div class="highlight-wrapper">
+          <div class="codeblock-title">example.js</div>
+          <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> greeting</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'Hello World'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(greeting);</span></span></code></pre>
+        </div>
+        <div class="highlight-wrapper">
+          <div class="codeblock-title">styles.css</div>
+          <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#B392F0">.heading-anchor</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  opacity</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  transition</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">150</span><span style="color:#F97583">ms</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+        </div>
+      </div>
+    </BlowfishDocItem>
+
+    <section class="rounded-xl border border-neutral-300 bg-neutral-50/70 p-4 shadow-sm dark:border-neutral-700 dark:bg-neutral-800/60">
+      <h3 class="m-0 text-xl font-semibold">Configuration</h3>
+      <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-300">
+        These features are configured in <code>astro.config.mjs</code> using remark/rehype plugins:
+      </p>
+      <ul class="mt-3 space-y-1 text-sm text-neutral-600 dark:text-neutral-300">
+        <li><code>rehype-slug</code> - Generate heading IDs</li>
+        <li><code>rehype-autolink-headings</code> - Add anchor links</li>
+        <li><code>rehype-external-links</code> - External link handling</li>
+        <li><code>remark-github-blockquote-alert</code> - GitHub alerts</li>
+        <li><code>remark-code-title</code> - Code block titles</li>
+      </ul>
+    </section>
+  </section>
+</BlowfishSiteLayout>

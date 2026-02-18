@@ -1,0 +1,67 @@
+---
+/**
+ * Term link card component - Displays taxonomy term as a card with optional image
+ * Upstream parity: layouts/partials/term-link/card.html
+ */
+import { t } from '../../lib/i18n';
+
+export interface Props {
+  title: string;
+  href: string;
+  count?: number;
+  image?: string;
+  externalUrl?: string;
+  showTermCount?: boolean;
+}
+
+const {
+  title,
+  href,
+  count,
+  image,
+  externalUrl,
+  showTermCount = true,
+} = Astro.props;
+
+const linkHref = externalUrl || href;
+const isExternal = Boolean(externalUrl);
+---
+
+<div class="min-w-full">
+  <div class="border-neutral-200 dark:border-neutral-700 border-2 rounded overflow-hidden shadow-2xl relative">
+    {image && (
+      <figure class="not-prose flex-none relative overflow-hidden thumbnail_card">
+        <img
+          src={image}
+          alt={title}
+          loading="lazy"
+          decoding="async"
+          fetchpriority="low"
+          class="not-prose absolute inset-0 w-full h-full object-cover"
+        />
+      </figure>
+    )}
+    {showTermCount && typeof count === 'number' && (
+      <span class="absolute bottom-0 right-0 m-2">
+        <span class="flex">
+          <span class="rounded-md border border-primary-400 px-1 py-[1px] text-xl font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">
+            {count}
+          </span>
+        </span>
+      </span>
+    )}
+    <div class="px-6 py-4">
+      <a
+        href={linkHref}
+        target={isExternal ? '_blank' : undefined}
+        rel={isExternal ? 'external' : undefined}
+        class="not-prose before:absolute before:inset-0 decoration-primary-500 dark:text-neutral text-xl font-bold text-neutral-800 hover:underline hover:underline-offset-2"
+      >
+        <div class="font-bold text-xl text-neutral-800 decoration-primary-500 hover:underline hover:underline-offset-2 dark:text-neutral">
+          {title}
+        </div>
+      </a>
+    </div>
+    <div class="px-6 pt-4 pb-2"></div>
+  </div>
+</div>

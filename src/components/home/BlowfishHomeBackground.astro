@@ -12,6 +12,7 @@ export interface Props {
 const { config, articles = [], contentHtml = '' } = Astro.props;
 const bg = config.backgroundImage || config.homepageImage || config.image || '';
 const avatar = config.image || config.homepageImage;
+const enableBlur = config.layoutBackgroundBlur ?? false;
 ---
 
 <article class="max-w-full prose dark:prose-invert">
@@ -25,13 +26,22 @@ const avatar = config.image || config.homepageImage;
           <div class="from-neutral absolute inset-0 h-[1000px] bg-gradient-to-t to-neutral-100 opacity-60 mix-blend-normal dark:from-neutral-800 dark:to-neutral-800"></div>
         </div>
         <div class="relative flex flex-col items-center justify-center px-1 py-1 text-center">
-          {avatar && <img class="mb-2 h-36 w-36 rounded-full object-cover" src={avatar} alt={config.imageAlt || config.title || t('components.author_image_alt')} />}
+          {avatar && (
+            <img
+              class="mb-2 h-36 w-36 rounded-full"
+              width="144"
+              height="144"
+              src={avatar}
+              alt={config.imageAlt || config.title || t('components.author_image_alt')}
+              data-zoom-src={avatar}
+            />
+          )}
           <h1 class="mb-2 text-4xl font-extrabold text-neutral-800 dark:text-neutral-200">{config.title || t('author.default_name')}</h1>
           {config.subtitle && <h2 class="mb-0 mt-0 text-xl text-neutral-800 dark:text-neutral-300">{config.subtitle}</h2>}
           {config.links && config.links.length > 0 && (
             <div class="mt-3 mb-10 flex flex-wrap text-2xl">
               {config.links.map((link) => (
-                <a class="px-1 text-primary-800 hover:text-primary-400 dark:text-primary-200" href={link.href} target="_blank" rel="noopener noreferrer">
+                <a class="px-1 text-primary-800 hover:text-primary-400 dark:text-primary-200" href={link.href} target="_blank" rel="me noopener noreferrer" aria-label={link.label} title={link.label}>
                   {link.label}
                 </a>
               ))}
@@ -54,4 +64,14 @@ const avatar = config.image || config.homepageImage;
     showMoreLink={config.showMoreLink}
     heading={t('shortcode.recent_articles')}
   />
+)}
+
+{enableBlur && (
+  <>
+    <div
+      id="background-blur"
+      class="fixed opacity-0 inset-x-0 top-0 h-full single_hero_background nozoom backdrop-blur-xl bg-neutral-100/75 dark:bg-neutral-800/60"
+    ></div>
+    <script is:inline data-blur-id="background-blur" data-image-id="background-image"></script>
+  </>
 )}

@@ -1,0 +1,81 @@
+---
+/**
+ * Article pagination component - Prev/Next article navigation
+ * Upstream parity: layouts/partials/article-pagination.html
+ */
+import { t } from '../../lib/i18n';
+
+export interface PaginationArticle {
+  title: string;
+  href: string;
+  date?: string;
+}
+
+export interface Props {
+  prev?: PaginationArticle;
+  next?: PaginationArticle;
+  showPagination?: boolean;
+  showDate?: boolean;
+  invertPagination?: boolean;
+}
+
+const {
+  prev: prevProp,
+  next: nextProp,
+  showPagination = true,
+  showDate = true,
+  invertPagination = false,
+} = Astro.props;
+
+// Support invert pagination (swap prev/next)
+const prev = invertPagination ? nextProp : prevProp;
+const next = invertPagination ? prevProp : nextProp;
+
+const hasPagination = prev || next;
+---
+
+{showPagination && hasPagination && (
+  <div class="pt-8">
+    <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+    <div class="flex justify-between pt-3">
+      <span class="flex flex-col">
+        {prev && (
+          <>
+            <a
+              class="flex text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+              href={prev.href}
+            >
+              <span class="leading-6">
+                <span class="inline-block rtl:rotate-180">&larr;</span>&ensp;{prev.title}
+              </span>
+            </a>
+            {showDate && prev.date && (
+              <span class="ms-6 mt-1 text-xs text-neutral-500 dark:text-neutral-400">
+                {prev.date}
+              </span>
+            )}
+          </>
+        )}
+      </span>
+      <span class="flex flex-col items-end">
+        {next && (
+          <>
+            <a
+              class="flex text-right text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+              href={next.href}
+            >
+              <span class="leading-6">
+                {next.title}&ensp;<span class="inline-block rtl:rotate-180">&rarr;</span>
+              </span>
+            </a>
+            {showDate && next.date && (
+              <span class="me-6 mt-1 text-xs text-neutral-500 dark:text-neutral-400">
+                {next.date}
+              </span>
+            )}
+          </>
+        )}
+      </span>
+    </div>
+  </div>
+)}

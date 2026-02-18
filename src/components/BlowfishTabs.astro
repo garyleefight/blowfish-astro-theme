@@ -1,21 +1,101 @@
 ---
-import { pickString } from '../lib/props';
+import { pickArray, pickString } from '../lib/props';
+import BlowfishIcon from './BlowfishIcon.astro';
+
+interface TabDefinition {
+  label: string;
+  icon?: string;
+  content?: string;
+}
 
 export interface Props {
   defaultTab?: string;
   default?: string;
   selected?: string;
   group?: string;
+  tabs?: TabDefinition[];
 }
 
 const props = Astro.props as Record<string, unknown>;
 const defaultTab = pickString(props, ['defaultTab', 'default', 'selected']);
 const group = pickString(props, ['group']);
+const tabs = pickArray<TabDefinition>(props, ['tabs']);
+
+// If tabs prop is provided, we can render buttons server-side (full parity)
+const hasTabsProp = tabs.length > 0;
 ---
 
-<div class="tab__container w-full" data-tab-group={group} data-default-tab={defaultTab}>
+<div class="tab__container w-full" data-tab-group={group || undefined} data-default-tab={defaultTab || undefined}>
   <div class="tab__nav" role="tablist">
-    <div class="flex flex-wrap gap-1"></div>
+    <div class="flex flex-wrap gap-1">
+      {hasTabsProp && tabs.map((tab, index) => {
+        const isActive = defaultTab ? tab.label === defaultTab : index === 0;
+        return (
+          <button
+            class:list={[
+              'tab__button px-3 py-2 text-sm font-semibold border-b-2 border-transparent rounded-t-md hover:bg-neutral-200 dark:hover:bg-neutral-700',
+              isActive && 'tab--active'
+            ]}
+            role="tab"
+            aria-selected={isActive ? 'true' : 'false'}
+            data-tab-index={index}
+            data-tab-label={tab.label}
+          >
+            <span class="flex items-center gap-1">
+              {tab.icon && <BlowfishIcon name={tab.icon} />}
+              {tab.label}
+            </span>
+          </button>
+        );
+      })}
+    </div>
   </div>
-  <div class="tab__content mt-4"><slot /></div>
+  <div class="tab__content mt-4">
+    {hasTabsProp ? (
+      tabs.map((tab, index) => {
+        const isActive = defaultTab ? tab.label === defaultTab : index === 0;
+        return (
+          <div class:list={['tab__panel', isActive && 'tab--active']} data-tab-index={index}>
+            {tab.content && <Fragment set:html={tab.content} />}
+          </div>
+        );
+      })
+    ) : (
+      <slot />
+    )}
+  </div>
 </div>
+
+{/* For slot-based usage, render buttons client-side before paint */}
+{!hasTabsProp && (
+  <script is:inline>
+    (function() {
+      var containers = document.querySelectorAll('.tab__container');
+      containers.forEach(function(container) {
+        var nav = container.querySelector('.tab__nav > div');
+        var panels = container.querySelectorAll('.tab__panel');
+        var defaultTab = container.getAttribute('data-default-tab');
+        if (nav && nav.children.length === 0 && panels.length > 0) {
+          panels.forEach(function(panel, index) {
+            var label = panel.getAttribute('data-tab-label') || 'Tab ' + (index + 1);
+            var icon = panel.getAttribute('data-tab-icon');
+            var isActive = defaultTab ? label === defaultTab : index === 0;
+            panel.setAttribute('data-tab-index', index);
+            if (isActive) panel.classList.add('tab--active');
+            var btn = document.createElement('button');
+            btn.className = 'tab__button px-3 py-2 text-sm font-semibold border-b-2 border-transparent rounded-t-md hover:bg-neutral-200 dark:hover:bg-neutral-700' + (isActive ? ' tab--active' : '');
+            btn.setAttribute('role', 'tab');
+            btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            btn.setAttribute('data-tab-index', index);
+            btn.setAttribute('data-tab-label', label);
+            var span = document.createElement('span');
+            span.className = 'flex items-center gap-1';
+            span.textContent = label;
+            btn.appendChild(span);
+            nav.appendChild(btn);
+          });
+        }
+      });
+    })();
+  </script>
+)}

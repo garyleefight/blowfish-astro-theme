@@ -1,5 +1,5 @@
 ---
-import { pickArray, pickNumber, pickString } from '../lib/props';
+import { pickArray, pickString } from '../lib/props';
 import { t } from '../lib/i18n';
 
 interface GalleryItem {
@@ -10,41 +10,52 @@ interface GalleryItem {
   title?: string;
   caption?: string;
   text?: string;
+  class?: string;
+  gridClass?: string;
 }
 
 export interface Props {
   images?: GalleryItem[];
   items?: GalleryItem[];
-  columns?: 2 | 3 | 4;
-  cols?: 2 | 3 | 4;
+  id?: string;
 }
 
 const props = Astro.props as Record<string, unknown>;
 const images = pickArray<GalleryItem>(props, ['images', 'items']);
-const columns = pickNumber(props, ['columns', 'cols'], 3);
-const normalizedColumns = columns === 2 || columns === 4 ? columns : 3;
+const galleryId = pickString(props, ['id'], `gallery-${Math.random().toString(36).slice(2, 9)}`);
+
 const normalizedImages = images.map((image) => {
   const record = image as Record<string, unknown>;
   return {
     src: pickString(record, ['src', 'image', 'url']),
     alt: pickString(record, ['alt', 'title', 'caption'], t('components.image_alt')),
-    caption: pickString(record, ['caption', 'text', 'title'])
+    caption: pickString(record, ['caption', 'text', 'title']),
+    class: pickString(record, ['class', 'gridClass']),
   };
 });
 
-const columnsClass =
-  normalizedColumns === 2
-    ? 'md:grid-cols-2'
-    : normalizedColumns === 4
-      ? 'md:grid-cols-4'
-      : 'md:grid-cols-3';
+// Check if we have slot content (for raw HTML gallery like upstream)
+const hasSlot = Astro.slots.has('default');
 ---
 
-<div class:list={['gallery grid grid-cols-1 gap-3 sm:grid-cols-2', columnsClass]}>
-  {normalizedImages.map((image) => (
-    <figure class="m-0 overflow-hidden rounded-md border border-neutral-200 shadow-sm dark:border-neutral-700">
-      <img src={image.src} alt={image.alt} loading="lazy" class="mt-0 mb-0 block aspect-[4/3] w-full object-cover" />
-      {image.caption && <figcaption class="px-3 py-2 text-sm text-neutral-600 dark:text-neutral-400">{image.caption}</figcaption>}
-    </figure>
-  ))}
-</div>
+<div class="width-patch"></div>
+{hasSlot ? (
+  <div id={galleryId} class="gallery">
+    <slot />
+  </div>
+) : (
+  <div id={galleryId} class="gallery">
+    {normalizedImages.map((image) => (
+      <figure class={image.class || undefined}>
+        <img
+          src={image.src}
+          alt={image.alt}
+          loading="lazy"
+          class="mt-0 mb-0"
+          data-zoom-src={image.src}
+        />
+        {image.caption && <figcaption>{image.caption}</figcaption>}
+      </figure>
+    ))}
+  </div>
+)}

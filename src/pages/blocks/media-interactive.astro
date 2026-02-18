@@ -25,9 +25,17 @@ const images = [
 const equation = String.raw`\int_0^\infty e^{-x^2}\,dx=\frac{\sqrt{\pi}}{2}`;
 
 const code = {
-  media: `<BlowfishGallery images={[...]} columns={3} />\n<BlowfishCarousel images={[...]} />`,
-  runtime: `<BlowfishChart type=\"bar\" labels='[\"A\",\"B\",\"C\"]' data='[2,7,4]' />\n<BlowfishKaTeX equation={String.raw\`...\`} display={true} />`,
-  video: `<BlowfishVideo src=\"https://.../flower.mp4\" controls />\n<BlowfishYouTubeLite id=\"SgXhGb-7QbU\" />`,
+  figure: `<BlowfishFigure
+  src="..."
+  alt="Description"
+  caption="Caption with **markdown**"
+  href="/link"           // Optional link wrapper
+  nozoom={false}         // Disable lightbox zoom
+  figureClass="my-class" // Custom figure class
+/>`,
+  media: `<BlowfishGallery images={[...]} />\n<BlowfishCarousel images={[...]} />`,
+  runtime: `<BlowfishChart type="bar" labels='["A","B","C"]' data='[2,7,4]' />\n<BlowfishKaTeX equation={String.raw\`...\`} display={true} />`,
+  video: `<BlowfishVideo src="https://.../flower.mp4" controls />\n<BlowfishYouTubeLite id="SgXhGb-7QbU" />`,
 };
 ---
 
@@ -53,11 +61,27 @@ const code = {
   />
 
   <section class="mt-8 space-y-4">
-    <BlowfishDocItem id="media" title="Figure + Screenshot + Gallery + Carousel" effect="Image-first blocks for rich article pages." usage={code.media}>
+    <BlowfishDocItem id="figure" title="Figure (Enhanced)" effect="Image with caption, link wrapper, zoom, and custom classes." usage={code.figure}>
       <div class="space-y-4">
-        <BlowfishFigure src={images[0].src} alt={images[0].alt} caption="Figure sample" />
+        <p class="m-0 text-sm text-neutral-600 dark:text-neutral-300">
+          Basic figure with caption and lightbox zoom (click to zoom):
+        </p>
+        <BlowfishFigure src={images[0].src} alt={images[0].alt} caption="**Mountain lake** - click image to zoom" />
+        <p class="m-0 text-sm text-neutral-600 dark:text-neutral-300">
+          Figure with link wrapper (opens link on click):
+        </p>
+        <BlowfishFigure src={images[1].src} alt={images[1].alt} caption="Forest - linked image" href="https://unsplash.com" target="_blank" nozoom={true} />
+        <p class="m-0 text-sm text-neutral-600 dark:text-neutral-300">
+          Figure with nozoom and custom class:
+        </p>
+        <BlowfishFigure src={images[2].src} alt={images[2].alt} caption="Canyon - no zoom" nozoom={true} figureClass="border border-primary-500 rounded-lg p-2" />
+      </div>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="media" title="Screenshot + Gallery + Carousel" effect="Image-first blocks for rich article pages." usage={code.media}>
+      <div class="space-y-4">
         <BlowfishScreenshot src={images[1].src} alt={images[1].alt} caption="Screenshot sample" />
-        <BlowfishGallery images={images} columns={3} />
+        <BlowfishGallery images={images} />
         <BlowfishCarousel images={images} />
       </div>
     </BlowfishDocItem>

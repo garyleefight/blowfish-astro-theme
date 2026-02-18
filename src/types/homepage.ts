@@ -47,4 +47,8 @@ export interface BlowfishHomepageConfig {
   showMoreLink?: string;
   links?: BlowfishLink[];
   featureCards?: BlowfishFeatureCard[];
+  /** Hero layout: disable gradient filter over background image */
+  disableHeroImageFilter?: boolean;
+  /** Background layout: enable scroll-based background blur */
+  layoutBackgroundBlur?: boolean;
 }

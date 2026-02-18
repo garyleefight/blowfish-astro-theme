@@ -1,0 +1,52 @@
+---
+/**
+ * Article meta for list pages - Shows views/likes for list context
+ * Upstream parity: layouts/partials/article-meta/list.html
+ */
+import BlowfishMetaViews from '../meta/BlowfishMetaViews.astro';
+import BlowfishMetaLikes from '../meta/BlowfishMetaLikes.astro';
+import BlowfishMetaLikesButton from '../meta/BlowfishMetaLikesButton.astro';
+
+export interface Props {
+  showViews?: boolean;
+  showLikes?: boolean;
+  scope?: 'list' | 'single';
+  /** Page path for Firebase tracking */
+  pagePath?: string;
+}
+
+const {
+  showViews = false,
+  showLikes = false,
+  scope = 'list',
+  pagePath,
+} = Astro.props;
+
+// Collect meta parts that should be shown
+const parts: string[] = [];
+if (showViews) parts.push('views');
+if (showLikes) parts.push('likes');
+if (scope === 'single' && showLikes) parts.push('likes_button');
+
+const hasContent = parts.length > 0;
+---
+
+{hasContent && (
+  <div class="flex flex-row flex-wrap items-center">
+    {showViews && (
+      <>
+        <BlowfishMetaViews pagePath={pagePath} />
+        {(showLikes) && <span class="px-2 text-primary-500">&middot;</span>}
+      </>
+    )}
+    {showLikes && (
+      <>
+        <BlowfishMetaLikes pagePath={pagePath} />
+        {scope === 'single' && <span class="px-2 text-primary-500">&middot;</span>}
+      </>
+    )}
+    {scope === 'single' && showLikes && (
+      <BlowfishMetaLikesButton pagePath={pagePath} />
+    )}
+  </div>
+)}

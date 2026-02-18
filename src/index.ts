@@ -1,3 +1,6 @@
+export { default as BlowfishArticleMetaList } from './components/article/BlowfishArticleMetaList.astro';
+export { default as BlowfishArticleMetaTerm } from './components/article/BlowfishArticleMetaTerm.astro';
+export { default as BlowfishArticlePagination } from './components/article/BlowfishArticlePagination.astro';
 export { default as BlowfishAuthor } from './components/article/BlowfishAuthor.astro';
 export { default as BlowfishAuthorExtra } from './components/article/BlowfishAuthorExtra.astro';
 export { default as BlowfishAuthorLinks } from './components/article/BlowfishAuthorLinks.astro';
@@ -65,6 +68,8 @@ export { default as BlowfishSeries } from './components/article/BlowfishSeries.a
 export { default as BlowfishSwatches } from './components/BlowfishSwatches.astro';
 export { default as BlowfishTab } from './components/BlowfishTab.astro';
 export { default as BlowfishTabs } from './components/BlowfishTabs.astro';
+export { default as BlowfishTermLinkCard } from './components/term/BlowfishTermLinkCard.astro';
+export { default as BlowfishTermLinkText } from './components/term/BlowfishTermLinkText.astro';
 export { default as BlowfishToc } from './components/article/BlowfishToc.astro';
 export { default as BlowfishTimeline } from './components/BlowfishTimeline.astro';
 export { default as BlowfishTimelineItem } from './components/BlowfishTimelineItem.astro';
