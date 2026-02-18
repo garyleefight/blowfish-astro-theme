@@ -3,6 +3,7 @@
     "name": "blowfish-astro-full-rewrite",
     "source_of_truth": "/tmp/blowfish-upstream",
     "must_be_upstream_derived": true,
+    "must_verify_upstream_implementation_first": true,
     "no_speculative_scaffold": true,
     "static_only": true,
     "cloudflare_pages_compatible": true

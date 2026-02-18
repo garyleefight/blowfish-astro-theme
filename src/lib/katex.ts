@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
+import { fileURLToPath } from 'node:url';
 
 type KatexApi = {
   renderToString: (
@@ -19,7 +20,14 @@ const loadKatex = (): KatexApi | null => {
   if (katexApi) return katexApi;
 
   try {
-    const katexPath = path.resolve(process.cwd(), 'public/blowfish-lib/katex/katex.min.js');
+    const moduleDir = path.dirname(fileURLToPath(import.meta.url));
+    const candidatePaths = [
+      path.resolve(process.cwd(), 'public/blowfish-lib/katex/katex.min.js'),
+      path.resolve(moduleDir, '../../public/blowfish-lib/katex/katex.min.js'),
+    ];
+    const katexPath = candidatePaths.find((candidate) => fs.existsSync(candidate));
+    if (!katexPath) return null;
+
     const source = fs.readFileSync(katexPath, 'utf8');
     const context: Record<string, unknown> = { console };
     context.window = context;
@@ -57,4 +65,3 @@ export const renderKatex = (expression: string, displayMode: boolean): string | 
     return null;
   }
 };
-

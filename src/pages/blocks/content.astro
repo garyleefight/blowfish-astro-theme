@@ -1,0 +1,104 @@
+---
+import BlowfishSiteLayout from '../../layouts/site/BlowfishSiteLayout.astro';
+import BlowfishBlocksHeader from '../../components/docs/BlowfishBlocksHeader.astro';
+import BlowfishDocItem from '../../components/docs/BlowfishDocItem.astro';
+
+import BlowfishAccordion from '../../components/BlowfishAccordion.astro';
+import BlowfishAccordionItem from '../../components/BlowfishAccordionItem.astro';
+import BlowfishAlert from '../../components/BlowfishAlert.astro';
+import BlowfishArticle from '../../components/BlowfishArticle.astro';
+import BlowfishBadge from '../../components/BlowfishBadge.astro';
+import BlowfishBlockquote from '../../components/BlowfishBlockquote.astro';
+import BlowfishButton from '../../components/BlowfishButton.astro';
+import BlowfishKeyword from '../../components/BlowfishKeyword.astro';
+import BlowfishKeywordList from '../../components/BlowfishKeywordList.astro';
+import BlowfishLead from '../../components/BlowfishLead.astro';
+import BlowfishList from '../../components/BlowfishList.astro';
+import BlowfishTab from '../../components/BlowfishTab.astro';
+import BlowfishTabs from '../../components/BlowfishTabs.astro';
+import BlowfishTimeline from '../../components/BlowfishTimeline.astro';
+import BlowfishTimelineItem from '../../components/BlowfishTimelineItem.astro';
+
+const listItems = [
+  { title: 'Portable APIs', summary: 'Props are aligned with Blowfish where possible.' },
+  { title: 'Tailwind-based styling', summary: 'Theme tokens and utility classes are reused.' },
+  { title: 'Astro-native output', summary: 'No Hugo runtime dependency required.' },
+];
+
+const code = {
+  actions: `<BlowfishAlert>Alert text</BlowfishAlert>\n<BlowfishBadge>Stable</BlowfishBadge>\n<BlowfishButton href=\"/blog\">Read Blog</BlowfishButton>`,
+  tabs: `<BlowfishTabs defaultTab=\"Overview\">\n  <BlowfishTab name=\"Overview\" active>...</BlowfishTab>\n  <BlowfishTab name=\"API\">...</BlowfishTab>\n</BlowfishTabs>`,
+  article: `<BlowfishArticle title=\"Sample article\" summary=\"Optional summary\" date=\"2026-02-18\" link=\"/theme/single\" />`,
+  timeline: `<BlowfishTimeline title=\"Milestones\">\n  <BlowfishTimelineItem title=\"Build\" date=\"Day 1\">...</BlowfishTimelineItem>\n</BlowfishTimeline>`,
+};
+---
+
+<BlowfishSiteLayout
+  title="Blowfish Blocks: Content"
+  description="Content-focused components with live usage examples."
+  siteTitle="Blowfish Blocks"
+  nav={[
+    { label: 'All Blocks', href: '/' },
+    { label: 'Content', href: '/blocks/content' },
+    { label: 'Layouts', href: '/blocks/layouts' },
+  ]}
+  headerLayout="basic"
+  enableAppearanceToggle={true}
+  footerMenu={[
+    { name: 'All Blocks', url: '/', pre: 'list' },
+    { name: 'Media', url: '/blocks/media-interactive', pre: 'image' },
+  ]}
+>
+  <BlowfishBlocksHeader
+    title="Content Blocks"
+    description="UI blocks for article and content pages. Each card shows usage and live behavior."
+  />
+
+  <section class="mt-8 space-y-4">
+    <BlowfishDocItem id="actions" title="Alert + Badge + Button" effect="Base action/content primitives." usage={code.actions}>
+      <div class="space-y-3">
+        <BlowfishAlert>Heads up: this section uses Blowfish design tokens.</BlowfishAlert>
+        <div class="flex flex-wrap items-center gap-2">
+          <BlowfishBadge>Stable</BlowfishBadge>
+          <BlowfishButton href="/theme/list">Read Blog</BlowfishButton>
+        </div>
+        <BlowfishBlockquote quote="This is a blockquote component rendered in Astro." />
+      </div>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="interactive" title="Accordion + Tabs" effect="Expandable content with tabbed panes." usage={code.tabs}>
+      <div class="space-y-4">
+        <BlowfishAccordion mode="collapse">
+          <BlowfishAccordionItem title="What is this?" open>Astro component wrapper for Blowfish accordion behavior.</BlowfishAccordionItem>
+          <BlowfishAccordionItem title="How to use?">Pass `title` and content through slot.</BlowfishAccordionItem>
+        </BlowfishAccordion>
+        <BlowfishTabs defaultTab="Overview">
+          <BlowfishTab name="Overview" active>Overview content.</BlowfishTab>
+          <BlowfishTab name="API">API details content.</BlowfishTab>
+        </BlowfishTabs>
+      </div>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="article" title="Lead + Keywords + Article + List" effect="Common article list metadata and summary blocks." usage={code.article}>
+      <div class="space-y-3">
+        <BlowfishLead>Lead paragraph to introduce page content.</BlowfishLead>
+        <div class="flex flex-wrap gap-2">
+          <BlowfishKeyword text="astro" href="/theme/term" icon="tag" />
+          <BlowfishKeyword text="blowfish" href="/theme/term" icon="tag" />
+        </div>
+        <BlowfishKeywordList items={[{ text: 'astro' }, { text: 'theme' }, { text: 'components' }]} />
+        <BlowfishArticle title="Sample article" summary="Optional summary" date="2026-02-18" link="/theme/single" />
+        <BlowfishList items={listItems} />
+      </div>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="timeline" title="Timeline" effect="Ordered milestone/event storytelling block." usage={code.timeline}>
+      <BlowfishTimeline title="Milestones">
+        <BlowfishTimelineItem title="Build" date="Day 1">Component architecture was created.</BlowfishTimelineItem>
+        <BlowfishTimelineItem title="Review" date="Day 2">Design and behavior were validated.</BlowfishTimelineItem>
+        <BlowfishTimelineItem title="Ship" date="Day 3">Blocks demo pages were published.</BlowfishTimelineItem>
+      </BlowfishTimeline>
+    </BlowfishDocItem>
+  </section>
+
+</BlowfishSiteLayout>

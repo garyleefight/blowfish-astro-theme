@@ -1,4 +1,3 @@
-export { default as BlowfishBaseLayout } from './layouts/BlowfishBaseLayout.astro';
 export { default as BlowfishAuthor } from './components/article/BlowfishAuthor.astro';
 export { default as BlowfishAuthorExtra } from './components/article/BlowfishAuthorExtra.astro';
 export { default as BlowfishAuthorLinks } from './components/article/BlowfishAuthorLinks.astro';
@@ -14,7 +13,6 @@ export { default as BlowfishArticleMetaTaxonomy } from './components/article/Blo
 export { default as BlowfishBadge } from './components/BlowfishBadge.astro';
 export { default as BlowfishBlockquote } from './components/BlowfishBlockquote.astro';
 export { default as BlowfishButton } from './components/BlowfishButton.astro';
-export { default as BlowfishCard } from './components/BlowfishCard.astro';
 export { default as BlowfishCarousel } from './components/BlowfishCarousel.astro';
 export { default as BlowfishChart } from './components/BlowfishChart.astro';
 export { default as BlowfishCodeberg } from './components/BlowfishCodeberg.astro';
@@ -23,7 +21,7 @@ export { default as BlowfishFigure } from './components/BlowfishFigure.astro';
 export { default as BlowfishForgejo } from './components/BlowfishForgejo.astro';
 export { default as BlowfishGallery } from './components/BlowfishGallery.astro';
 export { default as BlowfishGist } from './components/BlowfishGist.astro';
-export { default as BlowfishGitHubCard } from './components/BlowfishGitHubCard.astro';
+export { default as BlowfishGitHub } from './components/BlowfishGitHub.astro';
 export { default as BlowfishGitea } from './components/BlowfishGitea.astro';
 export { default as BlowfishGitLab } from './components/BlowfishGitLab.astro';
 export { default as BlowfishHuggingFace } from './components/BlowfishHuggingFace.astro';

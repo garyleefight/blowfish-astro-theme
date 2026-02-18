@@ -2,11 +2,13 @@
 import BlowfishAnalytics from '../../components/site/BlowfishAnalytics.astro';
 import BlowfishHead, { type AuthorLink, type Verification } from '../../components/site/BlowfishHead.astro';
 import BlowfishFooter from '../../components/site/BlowfishFooter.astro';
+import BlowfishHomepage from '../../components/BlowfishHomepage.astro';
 import BlowfishHeader, { type MenuItem, type TranslationItem } from '../../components/site/BlowfishHeader.astro';
 import BlowfishRuntime from '../../components/site/BlowfishRuntime.astro';
 import BlowfishSearch from '../../components/site/BlowfishSearch.astro';
 import BlowfishSchema from '../../components/site/BlowfishSchema.astro';
 import BlowfishScrollTop from '../../components/site/BlowfishScrollTop.astro';
+import type { BlowfishHomepageConfig, BlowfishRecentArticle } from '../../types/homepage';
 import '../../styles/theme.css';
 
 export interface Props {
@@ -52,6 +54,9 @@ export interface Props {
     href: string;
     title?: string;
   }>;
+  homepage?: BlowfishHomepageConfig;
+  homepageArticles?: BlowfishRecentArticle[];
+  homepageContentHtml?: string;
 }
 
 const {
@@ -92,6 +97,9 @@ const {
   publishedTime,
   defaultSocialImage,
   alternativeOutputFormats = [],
+  homepage,
+  homepageArticles = [],
+  homepageContentHtml = '',
 } = Astro.props;
 
 const resolvedMainMenu = mainMenu ?? nav.map((item) => ({ name: item.label, url: item.href }));
@@ -151,7 +159,13 @@ const isHome = Astro.url.pathname === '/';
     {enableSearch && <BlowfishSearch />}
     <div class="relative flex flex-col grow">
       <main id="main-content" class="grow">
-        <slot />
+        {isHome && homepage ? (
+          <BlowfishHomepage config={homepage} articles={homepageArticles} contentHtml={homepageContentHtml}>
+            <slot />
+          </BlowfishHomepage>
+        ) : (
+          <slot />
+        )}
       </main>
       <BlowfishScrollTop />
       <BlowfishFooter footerMenu={footerMenu} />

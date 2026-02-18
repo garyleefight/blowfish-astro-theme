@@ -6,6 +6,7 @@ Rewrite the official Hugo Blowfish theme into an Astro-native package with parit
 ## Source of truth
 - Official upstream clone: `/tmp/blowfish-upstream`
 - Do not invent features that are not derived from upstream behavior.
+- Hard requirement: before implementing or changing any parity behavior, inspect the corresponding upstream template/partial/shortcode and derive implementation from that source.
 
 ## Hard constraints
 - Static output only (Cloudflare Pages free-tier compatible)
@@ -18,12 +19,13 @@ Rewrite the official Hugo Blowfish theme into an Astro-native package with parit
 3. `src/pages/index.astro` (documentation/demo entry hub)
 
 ## Process checklist per rewrite pass
-1. Implement next parity slice from `docs/PARITY_TRACKER.md`
-2. Update `docs/PARITY_TRACKER.md` statuses
-3. Update `AI_CONTEXT.md` with new completion state + next steps
-4. Update `src/pages/index.astro` so demos/docs stay current
-5. Run `npm run build`
-6. Verify clean state with `git status`
+1. Inspect matching upstream files in `/tmp/blowfish-upstream` for the parity slice being changed
+2. Implement next parity slice from `docs/PARITY_TRACKER.md`
+3. Update `docs/PARITY_TRACKER.md` statuses
+4. Update `AI_CONTEXT.md` with new completion state + next steps
+5. Update `src/pages/index.astro` so demos/docs stay current
+6. Run `npm run build`
+7. Verify clean state with `git status`
 
 ## Main references
 - `docs/PARITY_TRACKER.md` (feature-level status)

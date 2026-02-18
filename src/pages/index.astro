@@ -1,359 +1,86 @@
 ---
-import fs from 'node:fs';
-import path from 'node:path';
+import BlowfishSiteLayout from '../layouts/site/BlowfishSiteLayout.astro';
+import BlowfishBlocksHeader from '../components/docs/BlowfishBlocksHeader.astro';
+import BlowfishCategoryCard from '../components/docs/BlowfishCategoryCard.astro';
 
-import BlowfishBaseLayout from '../layouts/BlowfishBaseLayout.astro';
-import BlowfishRuntime from '../components/site/BlowfishRuntime.astro';
-import BlowfishDocItem from '../components/docs/BlowfishDocItem.astro';
-import BlowfishPropTable from '../components/docs/BlowfishPropTable.astro';
-
-import BlowfishAccordion from '../components/BlowfishAccordion.astro';
-import BlowfishAccordionItem from '../components/BlowfishAccordionItem.astro';
-import BlowfishAlert from '../components/BlowfishAlert.astro';
-import BlowfishArticle from '../components/BlowfishArticle.astro';
-import BlowfishBadge from '../components/BlowfishBadge.astro';
-import BlowfishButton from '../components/BlowfishButton.astro';
-import BlowfishCarousel from '../components/BlowfishCarousel.astro';
-import BlowfishChart from '../components/BlowfishChart.astro';
-import BlowfishCodeberg from '../components/BlowfishCodeberg.astro';
-import BlowfishCodeImporter from '../components/BlowfishCodeImporter.astro';
-import BlowfishFigure from '../components/BlowfishFigure.astro';
-import BlowfishForgejo from '../components/BlowfishForgejo.astro';
-import BlowfishGallery from '../components/BlowfishGallery.astro';
-import BlowfishGist from '../components/BlowfishGist.astro';
-import BlowfishGitea from '../components/BlowfishGitea.astro';
-import BlowfishGitHubCard from '../components/BlowfishGitHubCard.astro';
-import BlowfishGitLab from '../components/BlowfishGitLab.astro';
-import BlowfishHuggingFace from '../components/BlowfishHuggingFace.astro';
-import BlowfishIcon from '../components/BlowfishIcon.astro';
-import BlowfishKaTeX from '../components/BlowfishKaTeX.astro';
-import BlowfishKeyword from '../components/BlowfishKeyword.astro';
-import BlowfishKeywordList from '../components/BlowfishKeywordList.astro';
-import BlowfishLTR from '../components/BlowfishLTR.astro';
-import BlowfishLead from '../components/BlowfishLead.astro';
-import BlowfishList from '../components/BlowfishList.astro';
-import BlowfishMdImporter from '../components/BlowfishMdImporter.astro';
-import BlowfishMermaid from '../components/BlowfishMermaid.astro';
-import BlowfishRTL from '../components/BlowfishRTL.astro';
-import BlowfishScreenshot from '../components/BlowfishScreenshot.astro';
-import BlowfishSwatches from '../components/BlowfishSwatches.astro';
-import BlowfishTab from '../components/BlowfishTab.astro';
-import BlowfishTabs from '../components/BlowfishTabs.astro';
-import BlowfishTimeline from '../components/BlowfishTimeline.astro';
-import BlowfishTimelineItem from '../components/BlowfishTimelineItem.astro';
-import BlowfishTypeIt from '../components/BlowfishTypeIt.astro';
-import BlowfishVideo from '../components/BlowfishVideo.astro';
-import BlowfishYouTubeLite from '../components/BlowfishYouTubeLite.astro';
-
-import BlowfishMetaViews from '../components/meta/BlowfishMetaViews.astro';
-import BlowfishMetaLikes from '../components/meta/BlowfishMetaLikes.astro';
-import BlowfishMetaLikesButton from '../components/meta/BlowfishMetaLikesButton.astro';
-import BlowfishAnalytics from '../components/site/BlowfishAnalytics.astro';
-
-type PropRow = {
-  name: string;
-  type: string;
-  required: boolean;
-  possibleValues?: string;
-  defaultValue?: string;
-  notes?: string;
-};
-
-type ComponentApiItem = {
-  name: string;
-  file: string;
-  description: string;
-};
-
-const componentCatalog: ComponentApiItem[] = [
-  { name: 'BlowfishAccordion', file: 'src/components/BlowfishAccordion.astro', description: 'Accordion container controlling disclosure mode and grouping.' },
-  { name: 'BlowfishAccordionItem', file: 'src/components/BlowfishAccordionItem.astro', description: 'Single accordion disclosure item.' },
-  { name: 'BlowfishAlert', file: 'src/components/BlowfishAlert.astro', description: 'Inline alert block with icon and theme token overrides.' },
-  { name: 'BlowfishArticle', file: 'src/components/BlowfishArticle.astro', description: 'Simple article card for list/content previews.' },
-  { name: 'BlowfishBadge', file: 'src/components/BlowfishBadge.astro', description: 'Badge token component (slot-only).' },
-  { name: 'BlowfishButton', file: 'src/components/BlowfishButton.astro', description: 'Primary Blowfish button style with link behavior.' },
-  { name: 'BlowfishCarousel', file: 'src/components/BlowfishCarousel.astro', description: 'Horizontal image carousel.' },
-  { name: 'BlowfishChart', file: 'src/components/BlowfishChart.astro', description: 'Chart.js wrapper supporting inline config or simple labels/data.' },
-  { name: 'BlowfishCodeberg', file: 'src/components/BlowfishCodeberg.astro', description: 'Codeberg repo card integration.' },
-  { name: 'BlowfishCodeImporter', file: 'src/components/BlowfishCodeImporter.astro', description: 'Imports remote source code and optional line ranges.' },
-  { name: 'BlowfishFigure', file: 'src/components/BlowfishFigure.astro', description: 'Image figure with optional dimensions and caption.' },
-  { name: 'BlowfishForgejo', file: 'src/components/BlowfishForgejo.astro', description: 'Forgejo-compatible repo card integration.' },
-  { name: 'BlowfishGallery', file: 'src/components/BlowfishGallery.astro', description: 'Responsive gallery layout.' },
-  { name: 'BlowfishGist', file: 'src/components/BlowfishGist.astro', description: 'GitHub Gist link card.' },
-  { name: 'BlowfishGitea', file: 'src/components/BlowfishGitea.astro', description: 'Gitea repo card integration.' },
-  { name: 'BlowfishGitHubCard', file: 'src/components/BlowfishGitHubCard.astro', description: 'GitHub repo card integration.' },
-  { name: 'BlowfishGitLab', file: 'src/components/BlowfishGitLab.astro', description: 'GitLab repo card integration.' },
-  { name: 'BlowfishHuggingFace', file: 'src/components/BlowfishHuggingFace.astro', description: 'Hugging Face model/dataset/space card integration.' },
-  { name: 'BlowfishIcon', file: 'src/components/BlowfishIcon.astro', description: 'Inline SVG icon renderer.' },
-  { name: 'BlowfishKaTeX', file: 'src/components/BlowfishKaTeX.astro', description: 'Math expression wrapper.' },
-  { name: 'BlowfishKeyword', file: 'src/components/BlowfishKeyword.astro', description: 'Single keyword pill.' },
-  { name: 'BlowfishKeywordList', file: 'src/components/BlowfishKeywordList.astro', description: 'Keyword list renderer.' },
-  { name: 'BlowfishLead', file: 'src/components/BlowfishLead.astro', description: 'Lead paragraph component.' },
-  { name: 'BlowfishList', file: 'src/components/BlowfishList.astro', description: 'Simple list component for title/summary items.' },
-  { name: 'BlowfishLTR', file: 'src/components/BlowfishLTR.astro', description: 'Direction wrapper forcing LTR.' },
-  { name: 'BlowfishMdImporter', file: 'src/components/BlowfishMdImporter.astro', description: 'Imports remote markdown and renders HTML.' },
-  { name: 'BlowfishMermaid', file: 'src/components/BlowfishMermaid.astro', description: 'Mermaid diagram renderer.' },
-  { name: 'BlowfishRTL', file: 'src/components/BlowfishRTL.astro', description: 'Direction wrapper forcing RTL.' },
-  { name: 'BlowfishScreenshot', file: 'src/components/BlowfishScreenshot.astro', description: 'Screenshot image wrapper.' },
-  { name: 'BlowfishSwatches', file: 'src/components/BlowfishSwatches.astro', description: 'Color swatch list/grid.' },
-  { name: 'BlowfishTab', file: 'src/components/BlowfishTab.astro', description: 'Single tab panel for BlowfishTabs.' },
-  { name: 'BlowfishTabs', file: 'src/components/BlowfishTabs.astro', description: 'Tabbed content container.' },
-  { name: 'BlowfishTimeline', file: 'src/components/BlowfishTimeline.astro', description: 'Timeline wrapper.' },
-  { name: 'BlowfishTimelineItem', file: 'src/components/BlowfishTimelineItem.astro', description: 'Single timeline event.' },
-  { name: 'BlowfishTypeIt', file: 'src/components/BlowfishTypeIt.astro', description: 'Typed text animation wrapper.' },
-  { name: 'BlowfishVideo', file: 'src/components/BlowfishVideo.astro', description: 'HTML5 video wrapper.' },
-  { name: 'BlowfishYouTubeLite', file: 'src/components/BlowfishYouTubeLite.astro', description: 'Lite YouTube embed.' },
-  { name: 'BlowfishMetaViews', file: 'src/components/meta/BlowfishMetaViews.astro', description: 'View count meta inline indicator.' },
-  { name: 'BlowfishMetaLikes', file: 'src/components/meta/BlowfishMetaLikes.astro', description: 'Like count meta inline indicator.' },
-  { name: 'BlowfishMetaLikesButton', file: 'src/components/meta/BlowfishMetaLikesButton.astro', description: 'Like toggle button UI.' },
-  { name: 'BlowfishAnalytics', file: 'src/components/site/BlowfishAnalytics.astro', description: 'Analytics script integration (GA/Fathom/Umami/Seline).' },
+const categories = [
+  {
+    href: '/blocks/layouts',
+    title: 'Layouts',
+    description: 'Blowfish homepage layout variants (profile/page/hero/background/card/custom) with dedicated previews.',
+    componentCount: 1,
+    icon: 'list',
+  },
+  {
+    href: '/blocks/content',
+    title: 'Content',
+    description: 'Common UI blocks for article/content pages: alerts, tabs, accordions, badges, buttons, and timelines.',
+    componentCount: 14,
+    icon: 'file-lines',
+  },
+  {
+    href: '/blocks/media-interactive',
+    title: 'Media + Interactive',
+    description: 'Visual and runtime-driven components: gallery, carousel, chart, KaTeX, mermaid, video, and typed text.',
+    componentCount: 13,
+    icon: 'image',
+  },
+  {
+    href: '/blocks/navigation',
+    title: 'Navigation + Site',
+    description: 'Navigation helpers and site-level components such as breadcrumbs, pagination, scroll-top, and footer.',
+    componentCount: 6,
+    icon: 'bars',
+  },
+  {
+    href: '/blocks/meta-analytics',
+    title: 'Meta + Analytics',
+    description: 'Page metadata components for views/likes and analytics provider integration setup.',
+    componentCount: 4,
+    icon: 'bell',
+  },
 ];
-
-const aliasRoot: Record<string, string> = {
-  heading: 'title',
-  label: 'title',
-  defaultOpen: 'open',
-  chartType: 'type',
-  options: 'config',
-  chart: 'config',
-  repository: 'repo',
-  user: 'owner',
-  src: 'url',
-  path: 'url',
-  language: 'lang',
-  type: 'lang',
-  from: 'startLine',
-  to: 'endLine',
-  image: 'src',
-  expr: 'equation',
-  formula: 'equation',
-  keywords: 'items',
-  default: 'defaultTab',
-  selected: 'defaultTab',
-  name: 'title',
-  time: 'date',
-  lifeLike: 'speed',
-  video: 'src',
-  videoId: 'id',
-  youtube: 'id',
-  url: 'id',
-  caption: 'title',
-};
-
-const inferPossibleValues = (type: string): string => {
-  const literals = [...type.matchAll(/'([^']+)'/g)].map((m) => m[1]);
-  if (literals.length > 0) return literals.join(' | ');
-
-  const numericUnion = type
-    .split('|')
-    .map((p) => p.trim())
-    .filter(Boolean);
-  if (numericUnion.length > 1 && numericUnion.every((p) => /^\d+$/.test(p))) {
-    return numericUnion.join(' | ');
-  }
-
-  if (type === 'boolean') return 'true | false';
-  if (type.endsWith('[]')) return 'Array values';
-  return '-';
-};
-
-const parseProps = (filePath: string): PropRow[] => {
-  const fullPath = path.resolve(process.cwd(), filePath);
-  const content = fs.readFileSync(fullPath, 'utf8');
-  const match = content.match(/export interface Props\s*\{([\s\S]*?)\}/m);
-
-  if (!match) return [];
-
-  const declarations = match[1]
-    .split(';')
-    .map((line) => line.trim())
-    .filter(Boolean);
-
-  return declarations
-    .map((declaration) => {
-      const parsed = declaration.match(/^([A-Za-z0-9_]+)(\?)?\s*:\s*(.+)$/);
-      if (!parsed) return null;
-
-      const name = parsed[1];
-      const required = !parsed[2];
-      const type = parsed[3].trim();
-      const alias = aliasRoot[name];
-
-      return {
-        name,
-        type,
-        required,
-        possibleValues: inferPossibleValues(type),
-        notes: alias ? `Alias of ${alias}` : undefined,
-      } satisfies PropRow;
-    })
-    .filter((row): row is PropRow => Boolean(row));
-};
-
-const apiReference = componentCatalog.map((item) => ({
-  ...item,
-  rows: parseProps(item.file),
-}));
-
-const galleryImages = [
-  { src: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80', alt: 'Mountain lake', caption: 'Gallery image 1' },
-  { src: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=1200&q=80', alt: 'Forest', caption: 'Gallery image 2' },
-  { src: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=1200&q=80', alt: 'Canyon', caption: 'Gallery image 3' },
-];
-
-const listItems = [
-  { title: 'Mapped Hugo shortcodes', summary: 'All shortcode components have Astro equivalents.' },
-  { title: 'Tailwind parity', summary: 'Blowfish utility classes and tokens are preserved.' },
-  { title: 'Runtime parity hooks', summary: 'Tabs, chart, mermaid, typeit, and blur hooks are wired.' },
-];
-
-const code = {
-  accordion: String.raw`<BlowfishAccordion mode="collapse">\n  <BlowfishAccordionItem title="Item A" open>...</BlowfishAccordionItem>\n  <BlowfishAccordionItem title="Item B">...</BlowfishAccordionItem>\n</BlowfishAccordion>`,
-  chart: String.raw`<BlowfishChart type="bar" labels='["A","B","C"]' data='[2,7,4]' />`,
-  gallery: String.raw`<BlowfishGallery images={[{ src, alt, caption }]} columns={3} />`,
-  repo: String.raw`<BlowfishGitHubCard repo="nunocoracao/blowfish" />`,
-  importer: String.raw`<BlowfishCodeImporter url="https://..." lang="html" startLine={1} endLine={20} />`,
-  metaViews: String.raw`<BlowfishMetaViews count={231} />`,
-  metaLikes: String.raw`<BlowfishMetaLikes count={45} />`,
-  metaLikesButton: String.raw`<BlowfishMetaLikesButton />`,
-  analytics: String.raw`<BlowfishAnalytics provider="umami" id="website-id" host="analytics.example.com" />`,
-};
-
-const katexEquation = String.raw`\int_0^\infty e^{-x^2}\,dx=\frac{\sqrt{\pi}}{2}`;
 ---
 
-<BlowfishBaseLayout title="Blowfish Component Documentation" description="Detailed component docs with prop references and live effects">
-  <header class="rounded-xl border border-neutral-300 bg-neutral-50/70 p-5 shadow-sm dark:border-neutral-700 dark:bg-neutral-800/60">
-    <h1 class="m-0 text-3xl font-bold">Blowfish Component Documentation</h1>
-    <p class="mt-2 text-neutral-500 dark:text-neutral-300">This documentation page replaces the old demo page. It includes live component effects and a full prop reference section (with possible values) in a React-style API format.</p>
-    <div class="mt-4 flex flex-wrap gap-2">
-      <a class="rounded border border-primary-500 px-3 py-1 no-underline text-primary-600 hover:text-primary-500 dark:text-primary-400" href="#showcase">Showcase</a>
-      <a class="rounded border border-primary-500 px-3 py-1 no-underline text-primary-600 hover:text-primary-500 dark:text-primary-400" href="#meta-analytics">View Count + Analytics</a>
-      <a class="rounded border border-primary-500 px-3 py-1 no-underline text-primary-600 hover:text-primary-500 dark:text-primary-400" href="#api-reference">API Reference</a>
-    </div>
-  </header>
+<BlowfishSiteLayout
+  title="Blowfish Blocks"
+  description="Browse Blowfish Astro components by category, with dedicated demo pages and examples."
+  siteTitle="Blowfish Blocks"
+  nav={[
+    { label: 'All Blocks', href: '/' },
+    { label: 'Layouts', href: '/blocks/layouts' },
+    { label: 'Theme', href: '/theme/list' },
+  ]}
+  headerLayout="basic"
+  enableAppearanceToggle={true}
+  footerMenu={[
+    { name: 'Blocks', url: '/', pre: 'list' },
+    { name: 'Search', url: '/search', pre: 'search' },
+  ]}
+>
+  <BlowfishBlocksHeader
+    title="Blowfish Blocks"
+    description="A block-style component explorer. Each category has its own page with live examples and usage snippets."
+  />
 
-  <section id="showcase" class="mt-6 space-y-4">
-    <h2 class="m-0 text-2xl font-semibold">Showcase</h2>
-
-    <BlowfishDocItem id="accordion" title="Interactive Components" effect="Accordions, tabs, and timelines support runtime behavior and state transitions." usage={code.accordion}>
-      <div class="space-y-4">
-        <BlowfishAccordion mode="collapse">
-          <BlowfishAccordionItem title="Item A" open>First panel content.</BlowfishAccordionItem>
-          <BlowfishAccordionItem title="Item B">Second panel content.</BlowfishAccordionItem>
-        </BlowfishAccordion>
-        <BlowfishTabs defaultTab="Overview">
-          <BlowfishTab name="Overview" active>Overview tab content.</BlowfishTab>
-          <BlowfishTab name="Setup">Setup tab content.</BlowfishTab>
-        </BlowfishTabs>
-        <BlowfishTimeline title="Milestones">
-          <BlowfishTimelineItem title="Build" date="Day 1">Implementation started.</BlowfishTimelineItem>
-          <BlowfishTimelineItem title="Ship" date="Day 2">Documentation finalized.</BlowfishTimelineItem>
-        </BlowfishTimeline>
-      </div>
-    </BlowfishDocItem>
-
-    <BlowfishDocItem id="content" title="Content Components" effect="Alert, badge, button, lead, list, and article components provide Blowfish-styled content primitives." usage={'<BlowfishAlert>...</BlowfishAlert>\n<BlowfishBadge>...</BlowfishBadge>\n<BlowfishButton href="...">...</BlowfishButton>'}>
-      <div class="space-y-3">
-        <BlowfishAlert>This is a parity-style alert block.</BlowfishAlert>
-        <BlowfishLead>Lead paragraph style for introductory content.</BlowfishLead>
-        <div class="flex flex-wrap gap-2">
-          <BlowfishBadge>Stable</BlowfishBadge>
-          <BlowfishButton href="/theme/list">Read more</BlowfishButton>
-          <BlowfishKeyword text="astro" href="/theme/term" icon="tag" />
-        </div>
-        <BlowfishKeywordList items={[{ text: 'astro' }, { text: 'blowfish' }, { text: 'theme' }]} />
-        <BlowfishList items={listItems} />
-        <BlowfishArticle title="Sample article" summary="Optional summary" date="2026-02-17" link="/theme/single" />
-      </div>
-    </BlowfishDocItem>
-
-    <BlowfishDocItem id="media" title="Media + Visualization Components" effect="Image/video embeds and data visualizations use Blowfish-compatible markup and runtime scripts." usage={code.gallery}>
-      <div class="space-y-4">
-        <BlowfishFigure src={galleryImages[0].src} alt="Figure sample" caption="Figure caption" />
-        <BlowfishScreenshot src={galleryImages[1].src} alt="Screenshot sample" caption="Screenshot caption" />
-        <BlowfishGallery images={galleryImages} columns={3} />
-        <BlowfishCarousel images={galleryImages} />
-        <BlowfishVideo src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" controls />
-        <BlowfishYouTubeLite id="SgXhGb-7QbU" title="Demo video" />
-      </div>
-    </BlowfishDocItem>
-
-    <BlowfishDocItem id="remote" title="Remote Data Components" effect="Repository cards and importers fetch remote data at build time and render cards/content." usage={code.repo}>
-      <div class="space-y-3">
-        <BlowfishGitHubCard repo="nunocoracao/blowfish" />
-        <BlowfishGitLab repo="gitlab-org/gitlab" />
-        <BlowfishCodeberg repo="Codeberg/Community" />
-        <BlowfishForgejo repo="forgejo/forgejo" host="codeberg.org" />
-        <BlowfishGitea repo="gitea/act_runner" owner="gitea" host="gitea.com" />
-        <BlowfishHuggingFace model="distilbert-base-uncased" />
-        <BlowfishGist id="aa5a315d61ae9438b18d" user="octocat" />
-        <BlowfishCodeImporter
-          url="https://raw.githubusercontent.com/nunocoracao/blowfish/main/layouts/shortcodes/alert.html"
-          lang="html"
-          startLine={1}
-          endLine={20}
-        />
-        <BlowfishMdImporter source="https://raw.githubusercontent.com/nunocoracao/blowfish/main/README.md" />
-      </div>
-    </BlowfishDocItem>
-
-    <BlowfishDocItem id="utility" title="Utility Components" effect="Icon, KaTeX, Mermaid, Chart, Swatches, TypeIt, and text direction wrappers." usage={code.chart}>
-      <div class="space-y-4">
-        <div class="flex items-center gap-3 text-2xl">
-          <BlowfishIcon name="moon" />
-          <BlowfishIcon name="sun" />
-          <BlowfishIcon name="search" />
-        </div>
-        <BlowfishKaTeX equation={katexEquation} display={true} />
-        <BlowfishMermaid code={'graph TD; Start --> Build; Build --> Ship;'} />
-        <BlowfishChart type="bar" labels='["A","B","C"]' data='[2,7,4]' title="Sample chart" />
-        <BlowfishSwatches items={[{ name: 'primary-500', color: 'rgb(59,130,246)' }, { name: 'neutral-800', color: 'rgb(38,38,38)' }]} />
-        <BlowfishTypeIt text="Typed text effect" speed={50} />
-        <BlowfishLTR><p>LTR example text.</p></BlowfishLTR>
-        <BlowfishRTL><p>RTL example text.</p></BlowfishRTL>
-      </div>
-    </BlowfishDocItem>
+  <section class="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+    {categories.map((category) => (
+      <BlowfishCategoryCard {...category} />
+    ))}
   </section>
 
-  <section id="meta-analytics" class="mt-8 space-y-4">
-    <h2 class="m-0 text-2xl font-semibold">View Count + Likes + Analytics</h2>
-
-    <BlowfishDocItem id="meta-views" title="BlowfishMetaViews" effect="Shows a views badge with an eye icon. Pass `count` for static/demo values." usage={code.metaViews}>
-      <BlowfishMetaViews count={231} />
-    </BlowfishDocItem>
-
-    <BlowfishDocItem id="meta-likes" title="BlowfishMetaLikes" effect="Shows a likes badge with a heart icon. Pass `count` for static/demo values." usage={code.metaLikes}>
-      <BlowfishMetaLikes count={45} />
-    </BlowfishDocItem>
-
-    <BlowfishDocItem id="meta-likes-button" title="BlowfishMetaLikesButton" effect="UI-only like toggle button (visual state changes on click)." usage={code.metaLikesButton}>
-      <BlowfishMetaLikesButton />
-    </BlowfishDocItem>
-
-    <BlowfishDocItem id="analytics" title="BlowfishAnalytics" effect="Injects analytics script tags for `ga`, `fathom`, `umami`, or `seline` provider." usage={code.analytics}>
-      <p class="m-0 text-sm text-neutral-600 dark:text-neutral-300">No visual UI output. This component mounts script tags in `<head>` when used from layout.</p>
-      <BlowfishAnalytics provider="umami" id="demo-website-id" />
-    </BlowfishDocItem>
-  </section>
-
-  <section id="api-reference" class="mt-8 rounded-xl border border-neutral-300 bg-neutral-50/70 p-5 shadow-sm dark:border-neutral-700 dark:bg-neutral-800/60">
-    <h2 class="m-0 text-2xl font-semibold">API Reference</h2>
-    <p class="mt-2 text-neutral-500 dark:text-neutral-300">Traditional component reference with description, supported props, and possible values.</p>
-
-    <div class="mt-4 space-y-3">
-      {apiReference.map((item) => (
-        <details class="rounded-lg border border-neutral-300 bg-neutral-50/60 p-3 dark:border-neutral-700 dark:bg-neutral-900/30">
-          <summary class="cursor-pointer text-base font-semibold">{item.name}</summary>
-          <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-300">{item.description}</p>
-          <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400"><code>import {'{'} {item.name} {'}'} from '@garyleefight/blowfish-astro-theme'</code></p>
-          <div class="mt-3">
-            <BlowfishPropTable rows={item.rows} />
-          </div>
-        </details>
-      ))}
+  <section class="mt-8 rounded-2xl border border-neutral-300 bg-neutral-50/70 p-5 shadow-sm dark:border-neutral-700 dark:bg-neutral-800/60">
+    <h2 class="m-0 text-xl font-semibold">Homepage Layout Shortcuts</h2>
+    <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-300">
+      Open dedicated previews to inspect Blowfish homepage.layout variants.
+    </p>
+    <div class="mt-4 flex flex-wrap gap-2 text-sm">
+      <a class="rounded-md border border-neutral-300 px-3 py-1.5 no-underline hover:border-primary-500 hover:text-primary-600 dark:border-neutral-700 dark:hover:border-primary-400 dark:hover:text-primary-300" href="/blocks/previews/profile">Homepage: profile</a>
+      <a class="rounded-md border border-neutral-300 px-3 py-1.5 no-underline hover:border-primary-500 hover:text-primary-600 dark:border-neutral-700 dark:hover:border-primary-400 dark:hover:text-primary-300" href="/blocks/previews/page">Homepage: page</a>
+      <a class="rounded-md border border-neutral-300 px-3 py-1.5 no-underline hover:border-primary-500 hover:text-primary-600 dark:border-neutral-700 dark:hover:border-primary-400 dark:hover:text-primary-300" href="/blocks/previews/hero">Homepage: hero</a>
+      <a class="rounded-md border border-neutral-300 px-3 py-1.5 no-underline hover:border-primary-500 hover:text-primary-600 dark:border-neutral-700 dark:hover:border-primary-400 dark:hover:text-primary-300" href="/blocks/previews/background">Homepage: background</a>
+      <a class="rounded-md border border-neutral-300 px-3 py-1.5 no-underline hover:border-primary-500 hover:text-primary-600 dark:border-neutral-700 dark:hover:border-primary-400 dark:hover:text-primary-300" href="/blocks/previews/card">Homepage: card</a>
+      <a class="rounded-md border border-neutral-300 px-3 py-1.5 no-underline hover:border-primary-500 hover:text-primary-600 dark:border-neutral-700 dark:hover:border-primary-400 dark:hover:text-primary-300" href="/blocks/previews/custom">Homepage: custom</a>
     </div>
   </section>
-
-  <BlowfishRuntime />
-</BlowfishBaseLayout>
+</BlowfishSiteLayout>

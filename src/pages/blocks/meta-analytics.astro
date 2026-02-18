@@ -1,0 +1,59 @@
+---
+import BlowfishSiteLayout from '../../layouts/site/BlowfishSiteLayout.astro';
+import BlowfishBlocksHeader from '../../components/docs/BlowfishBlocksHeader.astro';
+import BlowfishDocItem from '../../components/docs/BlowfishDocItem.astro';
+
+import BlowfishMetaLikes from '../../components/meta/BlowfishMetaLikes.astro';
+import BlowfishMetaLikesButton from '../../components/meta/BlowfishMetaLikesButton.astro';
+import BlowfishMetaViews from '../../components/meta/BlowfishMetaViews.astro';
+import BlowfishAnalytics from '../../components/site/BlowfishAnalytics.astro';
+
+const code = {
+  views: `<BlowfishMetaViews count={231} />`,
+  likes: `<BlowfishMetaLikes count={45} />\n<BlowfishMetaLikesButton />`,
+  analytics: `<BlowfishAnalytics provider=\"umami\" id=\"website-id\" host=\"analytics.example.com\" />`,
+};
+---
+
+<BlowfishSiteLayout
+  title="Blowfish Blocks: Meta + Analytics"
+  description="Views, likes, and analytics integration examples."
+  siteTitle="Blowfish Blocks"
+  nav={[
+    { label: 'All Blocks', href: '/' },
+    { label: 'Meta + Analytics', href: '/blocks/meta-analytics' },
+    { label: 'Layouts', href: '/blocks/layouts' },
+  ]}
+  headerLayout="basic"
+  enableAppearanceToggle={true}
+  footerMenu={[
+    { name: 'All Blocks', url: '/', pre: 'list' },
+    { name: 'Content', url: '/blocks/content', pre: 'file-lines' },
+  ]}
+>
+  <BlowfishBlocksHeader
+    title="Meta + Analytics Blocks"
+    description="Metadata indicators and analytics provider integration snippets."
+  />
+
+  <section class="mt-8 space-y-4">
+    <BlowfishDocItem id="views" title="View Counter" effect="Renders page view count with icon support." usage={code.views}>
+      <BlowfishMetaViews count={231} />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="likes" title="Like Counter + Button" effect="Like count display and UI-only like toggle button." usage={code.likes}>
+      <div class="flex items-center gap-3">
+        <BlowfishMetaLikes count={45} />
+        <BlowfishMetaLikesButton />
+      </div>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="analytics" title="Analytics Integrations" effect="Injects provider scripts (GA/Fathom/Umami/Seline)." usage={code.analytics}>
+      <div class="space-y-2 text-sm text-neutral-600 dark:text-neutral-300">
+        <p class="m-0">This component has no visible UI. It injects script tags into the page.</p>
+        <p class="m-0">Demo mount below:</p>
+      </div>
+      <BlowfishAnalytics provider="umami" id="demo-website-id" />
+    </BlowfishDocItem>
+  </section>
+</BlowfishSiteLayout>

@@ -1,0 +1,86 @@
+---
+import BlowfishSiteLayout from '../../layouts/site/BlowfishSiteLayout.astro';
+import BlowfishBlocksHeader from '../../components/docs/BlowfishBlocksHeader.astro';
+import BlowfishDocItem from '../../components/docs/BlowfishDocItem.astro';
+
+import BlowfishBreadcrumbs from '../../components/site/BlowfishBreadcrumbs.astro';
+import BlowfishFooter from '../../components/site/BlowfishFooter.astro';
+import BlowfishPagination from '../../components/site/BlowfishPagination.astro';
+import BlowfishScrollTop from '../../components/site/BlowfishScrollTop.astro';
+
+const code = {
+  breadcrumbs: `<BlowfishBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Docs', href: '/blocks' }, { label: 'Content' }]} />`,
+  pagination: `<BlowfishPagination totalPages={12} currentPage={6} baseUrl=\"/blog\" />`,
+  footer: `<BlowfishFooter footerMenu={[{ name: 'GitHub', url: 'https://github.com', pre: 'github' }]} />`,
+};
+---
+
+<BlowfishSiteLayout
+  title="Blowfish Blocks: Navigation"
+  description="Navigation and site-level helper components."
+  siteTitle="Blowfish Blocks"
+  nav={[
+    { label: 'All Blocks', href: '/' },
+    { label: 'Navigation', href: '/blocks/navigation' },
+    { label: 'Layouts', href: '/blocks/layouts' },
+  ]}
+  headerLayout="basic"
+  enableAppearanceToggle={true}
+  footerMenu={[
+    { name: 'All Blocks', url: '/', pre: 'list' },
+    { name: 'Meta + Analytics', url: '/blocks/meta-analytics', pre: 'bell' },
+  ]}
+>
+  <BlowfishBlocksHeader
+    title="Navigation + Site Blocks"
+    description="Components used for breadcrumb trails, pagination, footer rendering, and scroll controls."
+  />
+
+  <section class="mt-8 space-y-4">
+    <BlowfishDocItem id="breadcrumbs" title="Breadcrumbs" effect="Lightweight breadcrumb trail renderer." usage={code.breadcrumbs}>
+      <BlowfishBreadcrumbs
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Blocks', href: '/blocks/content' },
+          { label: 'Content' },
+        ]}
+      />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="pagination" title="Pagination" effect="Numbered pagination with ellipsis and prev/next controls." usage={code.pagination}>
+      <BlowfishPagination totalPages={12} currentPage={6} baseUrl="/blog" />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="footer" title="Footer" effect="Footer nav links and attribution area." usage={code.footer}>
+      <BlowfishFooter
+        footerMenu={[
+          { name: 'GitHub', url: 'https://github.com', pre: 'github' },
+          { name: 'Docs', url: '/blocks/content', pre: 'list' },
+        ]}
+      />
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="scroll-top" title="Scroll Top Button" effect="Floating button appears after scroll and returns to top." usage={'<BlowfishScrollTop />'}>
+      <div class="space-y-3">
+        <p class="m-0 text-sm text-neutral-600 dark:text-neutral-300">
+          Scroll this page to see the button appear in the bottom-right corner.
+        </p>
+        <div class="rounded-md border border-neutral-300 p-3 dark:border-neutral-700">
+          <p class="m-0 text-sm">Extra spacer for demo scroll behavior.</p>
+          <div class="h-64"></div>
+        </div>
+      </div>
+      <BlowfishScrollTop />
+    </BlowfishDocItem>
+
+    <section class="rounded-xl border border-neutral-300 bg-neutral-50/70 p-4 shadow-sm dark:border-neutral-700 dark:bg-neutral-800/60">
+      <h3 class="m-0 text-xl font-semibold">Header, Search, Appearance Toggle</h3>
+      <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-300">
+        These are orchestrated by <code>BlowfishSiteLayout</code>. Open the Layouts page for full-page previews with real header behavior.
+      </p>
+      <a class="mt-3 inline-flex rounded-md border border-primary-500 px-3 py-1.5 no-underline text-primary-600 hover:text-primary-500 dark:text-primary-300 dark:hover:text-primary-200" href="/blocks/layouts">
+        Open Layout Blocks →
+      </a>
+    </section>
+  </section>
+</BlowfishSiteLayout>

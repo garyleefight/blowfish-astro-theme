@@ -1,0 +1,94 @@
+---
+import BlowfishSiteLayout from '../../layouts/site/BlowfishSiteLayout.astro';
+import BlowfishBlocksHeader from '../../components/docs/BlowfishBlocksHeader.astro';
+import BlowfishDocItem from '../../components/docs/BlowfishDocItem.astro';
+
+import BlowfishCarousel from '../../components/BlowfishCarousel.astro';
+import BlowfishChart from '../../components/BlowfishChart.astro';
+import BlowfishFigure from '../../components/BlowfishFigure.astro';
+import BlowfishGallery from '../../components/BlowfishGallery.astro';
+import BlowfishIcon from '../../components/BlowfishIcon.astro';
+import BlowfishKaTeX from '../../components/BlowfishKaTeX.astro';
+import BlowfishMermaid from '../../components/BlowfishMermaid.astro';
+import BlowfishScreenshot from '../../components/BlowfishScreenshot.astro';
+import BlowfishSwatches from '../../components/BlowfishSwatches.astro';
+import BlowfishTypeIt from '../../components/BlowfishTypeIt.astro';
+import BlowfishVideo from '../../components/BlowfishVideo.astro';
+import BlowfishYouTubeLite from '../../components/BlowfishYouTubeLite.astro';
+
+const images = [
+  { src: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80', alt: 'Mountain lake', caption: 'Mountain lake' },
+  { src: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=1200&q=80', alt: 'Forest', caption: 'Forest' },
+  { src: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=1200&q=80', alt: 'Canyon', caption: 'Canyon' },
+];
+
+const equation = String.raw`\int_0^\infty e^{-x^2}\,dx=\frac{\sqrt{\pi}}{2}`;
+
+const code = {
+  media: `<BlowfishGallery images={[...]} columns={3} />\n<BlowfishCarousel images={[...]} />`,
+  runtime: `<BlowfishChart type=\"bar\" labels='[\"A\",\"B\",\"C\"]' data='[2,7,4]' />\n<BlowfishKaTeX equation={String.raw\`...\`} display={true} />`,
+  video: `<BlowfishVideo src=\"https://.../flower.mp4\" controls />\n<BlowfishYouTubeLite id=\"SgXhGb-7QbU\" />`,
+};
+---
+
+<BlowfishSiteLayout
+  title="Blowfish Blocks: Media + Interactive"
+  description="Media and interactive components with visual examples."
+  siteTitle="Blowfish Blocks"
+  nav={[
+    { label: 'All Blocks', href: '/' },
+    { label: 'Media + Interactive', href: '/blocks/media-interactive' },
+    { label: 'Layouts', href: '/blocks/layouts' },
+  ]}
+  headerLayout="basic"
+  enableAppearanceToggle={true}
+  footerMenu={[
+    { name: 'All Blocks', url: '/', pre: 'list' },
+    { name: 'Navigation', url: '/blocks/navigation', pre: 'bars' },
+  ]}
+>
+  <BlowfishBlocksHeader
+    title="Media + Interactive Blocks"
+    description="Image/media components and runtime-driven blocks like charts, KaTeX, Mermaid, and TypeIt."
+  />
+
+  <section class="mt-8 space-y-4">
+    <BlowfishDocItem id="media" title="Figure + Screenshot + Gallery + Carousel" effect="Image-first blocks for rich article pages." usage={code.media}>
+      <div class="space-y-4">
+        <BlowfishFigure src={images[0].src} alt={images[0].alt} caption="Figure sample" />
+        <BlowfishScreenshot src={images[1].src} alt={images[1].alt} caption="Screenshot sample" />
+        <BlowfishGallery images={images} columns={3} />
+        <BlowfishCarousel images={images} />
+      </div>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="runtime" title="KaTeX + Mermaid + Chart + TypeIt" effect="Runtime-enhanced visual blocks." usage={code.runtime}>
+      <div class="space-y-4">
+        <BlowfishKaTeX equation={equation} display={true} />
+        <BlowfishMermaid code={'graph TD; Block --> Preview; Preview --> Ship;'} />
+        <BlowfishChart type="bar" labels='["A","B","C"]' data='[2,7,4]' title="Sample chart" />
+        <BlowfishTypeIt text="Typed text effect" speed={50} />
+      </div>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="video" title="Video + YouTube Lite" effect="Native video and optimized YouTube embed options." usage={code.video}>
+      <div class="space-y-4">
+        <BlowfishVideo src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" controls />
+        <BlowfishYouTubeLite id="SgXhGb-7QbU" title="Demo video" />
+      </div>
+    </BlowfishDocItem>
+
+    <BlowfishDocItem id="utility" title="Icons + Swatches" effect="Visual helpers for iconography and theme token previews." usage={'<BlowfishIcon name="moon" />\n<BlowfishSwatches items={[...]} />'}>
+      <div class="space-y-4">
+        <div class="flex items-center gap-3 text-2xl">
+          <BlowfishIcon name="moon" />
+          <BlowfishIcon name="sun" />
+          <BlowfishIcon name="search" />
+          <BlowfishIcon name="tag" />
+        </div>
+        <BlowfishSwatches items={[{ name: 'primary-500', color: 'rgb(59,130,246)' }, { name: 'neutral-800', color: 'rgb(38,38,38)' }]} />
+      </div>
+    </BlowfishDocItem>
+  </section>
+
+</BlowfishSiteLayout>

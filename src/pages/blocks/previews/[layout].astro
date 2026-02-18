@@ -1,0 +1,168 @@
+---
+import BlowfishSiteLayout from '../../../layouts/site/BlowfishSiteLayout.astro';
+import BlowfishHomepage from '../../../components/BlowfishHomepage.astro';
+import BlowfishLead from '../../../components/BlowfishLead.astro';
+import type { BlowfishHomepageConfig, BlowfishRecentArticle } from '../../../types/homepage';
+
+const allLayouts = ['profile', 'page', 'hero', 'background', 'card', 'custom'] as const;
+type LayoutVariant = (typeof allLayouts)[number];
+
+export function getStaticPaths() {
+  const variants = ['profile', 'page', 'hero', 'background', 'card', 'custom'];
+  return variants.map((layout) => ({ params: { layout } }));
+}
+
+const { layout } = Astro.params as { layout: LayoutVariant };
+const currentLayout = allLayouts.includes(layout) ? layout : 'profile';
+const title = `Homepage Layout Preview: ${currentLayout}`;
+const layoutLinks = allLayouts.map((item) => ({
+  href: `/blocks/previews/${item}`,
+  label: item,
+  active: item === currentLayout,
+}));
+
+const recent: BlowfishRecentArticle[] = [
+  {
+    title: 'Migrating from Hugo Blowfish to Astro',
+    summary: 'How to map shortcode and homepage layout settings.',
+    date: '2026-02-17',
+    href: '#',
+    thumbnail: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1000',
+  },
+  {
+    title: 'Cloudflare Pages static deployment checklist',
+    summary: 'Static output + no SSR recommendations.',
+    date: '2026-02-16',
+    href: '#',
+    thumbnail: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1000',
+  },
+  {
+    title: 'Theme package versioning strategy',
+    summary: 'Reusable package workflow for multiple Astro sites.',
+    date: '2026-02-15',
+    href: '#',
+    thumbnail: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1000',
+  },
+];
+
+const prose = `<p>This is sample homepage content rendered as prose, similar to Blowfish home content sections.</p>`;
+
+const configByLayout: Record<LayoutVariant, BlowfishHomepageConfig> = {
+  profile: {
+    layout: 'profile',
+    title: 'Sirui Li',
+    subtitle: 'Tech lead | Staff software engineer',
+    homepageImage: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=600',
+    showRecent: true,
+    showRecentItems: 2,
+    links: [
+      { label: 'GitHub', href: 'https://github.com' },
+      { label: 'LinkedIn', href: 'https://linkedin.com' },
+    ],
+  },
+  page: {
+    layout: 'page',
+    title: 'Homepage Layout Page',
+    showRecent: true,
+    showRecentItems: 2,
+  },
+  hero: {
+    layout: 'hero',
+    title: 'Sirui Li',
+    subtitle: 'Tech lead | Staff software engineer',
+    homepageImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1400',
+    image: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=600',
+    showRecent: true,
+    showRecentItems: 2,
+    links: [
+      { label: 'GitHub', href: 'https://github.com' },
+      { label: 'LinkedIn', href: 'https://linkedin.com' },
+    ],
+  },
+  background: {
+    layout: 'background',
+    title: 'Sirui Li',
+    subtitle: 'Tech lead | Staff software engineer',
+    backgroundImage: 'https://images.unsplash.com/photo-1518773553398-650c184e0bb3?w=1600',
+    image: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=600',
+    showRecent: true,
+    showRecentItems: 2,
+    links: [
+      { label: 'GitHub', href: 'https://github.com' },
+      { label: 'LinkedIn', href: 'https://linkedin.com' },
+    ],
+  },
+  card: {
+    layout: 'card',
+    title: 'Build Better Themes Faster',
+    homepageImage: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1300',
+    showRecent: true,
+    showRecentItems: 3,
+    cardView: true,
+  },
+  custom: {
+    layout: 'custom',
+    showRecent: true,
+    showRecentItems: 2,
+  },
+};
+
+const currentConfig = configByLayout[currentLayout];
+---
+
+<BlowfishSiteLayout
+  title={title}
+  description={`Preview for Blowfish homepage.layout=${currentLayout}`}
+  siteTitle="Blowfish Astro Blocks"
+  nav={[
+    { label: 'Blocks', href: '/' },
+    { label: 'Layouts', href: '/blocks/layouts' },
+    { label: currentLayout, href: `/blocks/previews/${currentLayout}` },
+  ]}
+  footerMenu={[
+    { name: 'Layouts', url: '/blocks/layouts', pre: 'list' },
+    { name: 'All Blocks', url: '/', pre: 'search' },
+  ]}
+  enableAppearanceToggle={true}
+  headerLayout="basic"
+>
+  <section class="mt-6 space-y-4">
+    <section class="rounded-xl border border-neutral-300 bg-neutral-50/70 p-4 shadow-sm dark:border-neutral-700 dark:bg-neutral-800/60">
+      <p class="m-0 text-sm font-medium text-neutral-700 dark:text-neutral-200">Switch homepage.layout variant</p>
+      <div class="mt-3 flex flex-wrap gap-2">
+        {layoutLinks.map((item) => (
+          <a
+            href={item.href}
+            class:list={[
+              'rounded-md border px-3 py-1.5 text-sm no-underline transition-colors',
+              item.active
+                ? 'border-primary-500 bg-primary-100 text-primary-700 dark:border-primary-400 dark:bg-primary-900/60 dark:text-primary-300'
+                : 'border-neutral-300 text-neutral-700 hover:border-primary-500 hover:text-primary-600 dark:border-neutral-700 dark:text-neutral-300 dark:hover:border-primary-400 dark:hover:text-primary-300',
+            ]}
+          >
+            {item.label}
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <a class="text-sm text-primary-600 hover:text-primary-500 dark:text-primary-300 dark:hover:text-primary-200" href="/blocks/layouts">← Back to Layout Blocks</a>
+    <h1 class="m-0 text-3xl font-bold">{title}</h1>
+    <BlowfishLead>
+      This page renders <code>BlowfishHomepage</code> with <code>config.layout=&quot;{currentLayout}&quot;</code>.
+    </BlowfishLead>
+
+    <section class="rounded-xl border border-neutral-300 bg-neutral-50/70 p-4 shadow-sm dark:border-neutral-700 dark:bg-neutral-800/60">
+      {currentLayout === 'custom' ? (
+        <BlowfishHomepage config={currentConfig} articles={recent}>
+          <article class="max-w-[760px]">
+            <h3>Custom content area</h3>
+            <p>Use your own Astro/MDX content while keeping recent article behavior.</p>
+          </article>
+        </BlowfishHomepage>
+      ) : (
+        <BlowfishHomepage config={currentConfig} articles={recent} contentHtml={prose} />
+      )}
+    </section>
+  </section>
+</BlowfishSiteLayout>

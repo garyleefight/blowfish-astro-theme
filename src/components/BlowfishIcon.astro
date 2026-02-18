@@ -1,6 +1,7 @@
 ---
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 export interface Props {
   name?: string;
@@ -12,10 +13,13 @@ const { name, class: className } = Astro.props;
 let svgContent = '';
 
 if (name) {
-  const iconPath = path.resolve(process.cwd(), 'public', 'blowfish-icons', `${name}.svg`);
-  if (fs.existsSync(iconPath)) {
-    svgContent = fs.readFileSync(iconPath, 'utf8');
-  }
+  const moduleDir = path.dirname(fileURLToPath(import.meta.url));
+  const candidatePaths = [
+    path.resolve(process.cwd(), 'public', 'blowfish-icons', `${name}.svg`),
+    path.resolve(moduleDir, '../../public/blowfish-icons', `${name}.svg`),
+  ];
+  const iconPath = candidatePaths.find((candidate) => fs.existsSync(candidate));
+  if (iconPath) svgContent = fs.readFileSync(iconPath, 'utf8');
 }
 ---
 

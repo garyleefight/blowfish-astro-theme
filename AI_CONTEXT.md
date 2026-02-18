@@ -1,6 +1,6 @@
 # AI Rewrite Context
 
-Last updated: 2026-02-17
+Last updated: 2026-02-18
 Repo: `blowfish-astro-theme`
 Goal: full parity rewrite of Hugo Blowfish into Astro.
 
@@ -38,6 +38,13 @@ Goal: full parity rewrite of Hugo Blowfish into Astro.
   - script wired in runtime and stylesheet imported globally (`src/components/site/BlowfishRuntime.astro`, `src/styles/theme.css`)
 - Parity tracker status now reflects completion across the Claude 8-step rewrite scope, including i18n migration
 - Build status: `npm run build` passes
+- Upstream-homepage parity recheck completed from source files:
+  - `/tmp/blowfish-upstream/layouts/index.html`
+  - `/tmp/blowfish-upstream/layouts/partials/home/{profile,page,hero,background,card}.html`
+  - `/tmp/blowfish-upstream/exampleSite/layouts/partials/home/custom.html`
+- `BlowfishSiteLayout` now supports Blowfish-style homepage config flow via `homepage`, `homepageArticles`, and `homepageContentHtml` props (applied only on `/`)
+- `BlowfishHomepage` now matches upstream fallback behavior by defaulting to `profile` when layout is invalid/missing
+- Layout demo UX updated: `/blocks/layouts` now demos homepage layout variants and `/blocks/previews/[layout]` now renders `profile/page/hero/background/card/custom` previews (instead of header layout variants)
 
 ## Where to continue next
 1. Optional micro-tuning against upstream visual diffs

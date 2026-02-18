@@ -24,12 +24,17 @@ Process configuration: `REWRITE_CONFIG.json` (mandatory update checklist for fut
 
 ## Homepage
 
+- DONE upstream homepage selector parity recheck completed against:
+  - `layouts/index.html` (layout dispatch by `.Site.Params.homepage.layout` with fallback)
+  - `layouts/partials/home/{profile,page,hero,background,card}.html`
+  - `exampleSite/layouts/partials/home/custom.html`
 - DONE `layouts/partials/home/profile.html` -> `src/components/home/BlowfishHomeProfile.astro`
 - DONE `layouts/partials/home/page.html` -> `src/components/home/BlowfishHomePage.astro`
 - DONE `layouts/partials/home/hero.html` -> `src/components/home/BlowfishHomeHero.astro`
 - DONE `layouts/partials/home/background.html` -> `src/components/home/BlowfishHomeBackground.astro`
 - DONE `layouts/partials/home/card.html` -> `src/components/home/BlowfishHomeCard.astro`
-- DONE `layouts/partials/home/custom.html` -> `src/components/home/BlowfishHomeCustom.astro`
+- DONE custom homepage mode (Astro slot equivalent of Blowfish user override at `exampleSite/layouts/partials/home/custom.html`) -> `src/components/home/BlowfishHomeCustom.astro`
+- DONE homepage layout fallback parity: unknown layout value falls back to `profile` in `src/components/BlowfishHomepage.astro` (matching upstream `layouts/index.html`)
 
 ## Recent Articles
 
@@ -44,10 +49,13 @@ Process configuration: `REWRITE_CONFIG.json` (mandatory update checklist for fut
 - DONE missing shortcode stubs/components from upstream:
   - `codeberg`, `forgejo`, `gitea`, `gitlab`, `huggingface`, `keyword`, `keywordList`, `list`, `mdimporter`, `screenshot`, `swatches`
 - DONE shortcode/home/hero/meta scoped legacy component CSS removal (all component-local `<style>` blocks removed; utility/Tailwind classes now drive rendering)
+- DONE removed invented generic `BlowfishCard`; GitHub shortcode component renamed to upstream-aligned `BlowfishGitHub`
 
 ## Core templates
 
 - DONE `layouts/_default/baseof.html` -> `src/layouts/site/BlowfishSiteLayout.astro` (Astro-adapted)
+- DONE homepage layout wiring via site layout: `src/layouts/site/BlowfishSiteLayout.astro` accepts `homepage` props and renders `BlowfishHomepage` only on `/`, mirroring upstream index/home dispatch behavior
+- DONE removed non-upstream convenience wrapper `src/layouts/BlowfishBaseLayout.astro`; demo/docs routes now use `src/layouts/site/BlowfishSiteLayout.astro`
 - DONE `layouts/_default/list.html` -> `src/pages/theme/list.astro` (parity demo route)
 - DONE `layouts/_default/single.html` -> `src/pages/theme/single.astro` (parity demo route)
 - DONE `layouts/_default/term.html` -> `src/pages/theme/term.astro` (parity demo route)
@@ -91,6 +99,7 @@ Process configuration: `REWRITE_CONFIG.json` (mandatory update checklist for fut
 - DONE icon parity baseline (inline SVG loading via `src/components/BlowfishIcon.astro`; key header/footer/share/alert/repo wiring done)
 - DONE i18n parity (`src/lib/i18n.ts` + `src/i18n/en.ts`; component/page UI labels migrated to `t()` for parity scope)
 - DONE demo hub now renders live component instances instead of plain catalog text (`src/pages/index.astro`)
+- DONE layout demo routing now showcases homepage layout variants (`profile`, `page`, `hero`, `background`, `card`, `custom`) via `src/pages/blocks/layouts.astro` and `src/pages/blocks/previews/[layout].astro`
 - DONE remote-data parity baseline for high-impact shortcodes:
   - API-backed repo cards (`github`, `gitlab`, `codeberg`, `forgejo`, `gitea`, `huggingface`) now fetch and render live metadata at build time with fallback behavior
   - `codeimporter` and `mdimporter` now fetch and render remote source content (line slicing for code importer)

@@ -1,0 +1,44 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+const nav = [
+  { href: '/', label: 'All Blocks' },
+  { href: '/blocks/layouts', label: 'Layouts' },
+  { href: '/blocks/content', label: 'Content' },
+  { href: '/blocks/media-interactive', label: 'Media + Interactive' },
+  { href: '/blocks/navigation', label: 'Navigation' },
+  { href: '/blocks/meta-analytics', label: 'Meta + Analytics' },
+];
+
+const isActive = (href: string) => {
+  const normalized = href.replace(/\/$/, '') || '/';
+  return pathname === normalized;
+};
+---
+
+<header class="rounded-2xl border border-neutral-300 bg-neutral-50/70 p-6 shadow-sm dark:border-neutral-700 dark:bg-neutral-800/60">
+  <h1 class="m-0 text-3xl font-bold tracking-tight">{title}</h1>
+  <p class="mt-2 text-neutral-600 dark:text-neutral-300">{description}</p>
+
+  <nav class="mt-5 flex flex-wrap gap-2" aria-label="Blocks navigation">
+    {nav.map((item) => (
+      <a
+        href={item.href}
+        class:list={[
+          'rounded-md border px-3 py-1.5 text-sm no-underline transition-colors',
+          isActive(item.href)
+            ? 'border-primary-500 bg-primary-100 text-primary-700 dark:border-primary-400 dark:bg-primary-900/60 dark:text-primary-300'
+            : 'border-neutral-300 text-neutral-700 hover:border-primary-500 hover:text-primary-600 dark:border-neutral-700 dark:text-neutral-300 dark:hover:border-primary-400 dark:hover:text-primary-300',
+        ]}
+      >
+        {item.label}
+      </a>
+    ))}
+  </nav>
+</header>

@@ -1,5 +1,5 @@
 ---
-import BlowfishBaseLayout from '../layouts/BlowfishBaseLayout.astro';
+import BlowfishSiteLayout from '../layouts/site/BlowfishSiteLayout.astro';
 import BlowfishHomepage from '../components/BlowfishHomepage.astro';
 
 const recent = [
@@ -92,7 +92,22 @@ const customConfig = {
 const prose = `<p>This is sample homepage content rendered as prose, similar to Blowfish home content sections.</p>`;
 ---
 
-<BlowfishBaseLayout title="Homepage Layout Docs" description="Blowfish homepage layout compatibility demo">
+<BlowfishSiteLayout
+  title="Homepage Layout Docs"
+  description="Blowfish homepage layout compatibility demo"
+  siteTitle="Blowfish Blocks"
+  nav={[
+    { label: 'All Blocks', href: '/' },
+    { label: 'Homepage Layout', href: '/homepage-layout' },
+    { label: 'Layouts', href: '/blocks/layouts' },
+  ]}
+  headerLayout="basic"
+  enableAppearanceToggle={true}
+  footerMenu={[
+    { name: 'All Blocks', url: '/', pre: 'list' },
+    { name: 'Layouts', url: '/blocks/layouts', pre: 'list' },
+  ]}
+>
   <header class="rounded-xl border border-neutral-300 bg-neutral-50/70 p-4 shadow-sm dark:border-neutral-700 dark:bg-neutral-800/60">
     <h1 class="m-0 text-3xl font-bold">Homepage Layout Compatibility</h1>
     <p class="mt-2 text-neutral-500 dark:text-neutral-400">Updated to mirror Blowfish layout behavior more closely.</p>
@@ -135,4 +150,4 @@ const prose = `<p>This is sample homepage content rendered as prose, similar to 
       </article>
     </BlowfishHomepage>
   </section>
-</BlowfishBaseLayout>
+</BlowfishSiteLayout>
