@@ -1,3 +1,5 @@
+import './styles/theme.css';
+
 export { default as BlowfishArticleMetaList } from './components/article/BlowfishArticleMetaList.astro';
 export { default as BlowfishArticleMetaTerm } from './components/article/BlowfishArticleMetaTerm.astro';
 export { default as BlowfishArticlePagination } from './components/article/BlowfishArticlePagination.astro';

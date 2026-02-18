@@ -17,13 +17,25 @@ From npm:
 npm install @garyleefight/blowfish-astro-theme
 ```
 
-From GitHub:
+From GitHub (recommended for Cloudflare Pages builds):
 
 ```bash
-npm install github:garyleefight/blowfish-astro-theme
+npm install https://codeload.github.com/garyleefight/blowfish-astro-theme/tar.gz/main
 ```
 
 ## Use The Library In Your Astro Project
+
+### Recommended (hassle-free)
+
+Use package root imports:
+
+```astro
+---
+import { BlowfishAlert, BlowfishBadge, BlowfishButton } from '@garyleefight/blowfish-astro-theme';
+---
+```
+
+Root import auto-loads theme styles for exported components.
 
 ### 1) Sync static assets
 
@@ -65,6 +77,8 @@ import { BlowfishAlert, BlowfishBadge, BlowfishButton } from '@garyleefight/blow
 </BlowfishSiteLayout>
 ```
 
+Important: `BlowfishSiteLayout` is a page-level shell (`html/head/body`). Use it in page files (for example `src/pages/*.astro`), not inside nested content components.
+
 Homepage layout mode (Blowfish-style `homepage.layout`) is available directly on `BlowfishSiteLayout`:
 
 ```astro
@@ -97,13 +111,13 @@ Direct component import also works:
 
 ```astro
 ---
-import BlowfishChart from '@garyleefight/blowfish-astro-theme/components/BlowfishChart.astro';
+import { BlowfishChart } from '@garyleefight/blowfish-astro-theme';
 ---
 
 <BlowfishChart type="bar" labels='["A","B","C"]' data='[2,7,4]' />
 ```
 
-If you render components outside `BlowfishSiteLayout`, import styles manually:
+If you deep-import files from subpaths (for example `.../components/BlowfishChart.astro`), import styles manually:
 
 ```astro
 ---

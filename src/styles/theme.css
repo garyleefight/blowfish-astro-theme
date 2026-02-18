@@ -1,6 +1,8 @@
 /*! Blowfish Astro | MIT License | Ported from github.com/nunocoracao/blowfish */
 
 @config "../../tailwind.config.js";
+@source "../components/**/*.astro";
+@source "../layouts/**/*.astro";
 
 @import url("/blowfish-lib/lite-youtube-embed/lite-yt-embed.css");
 @import url("/blowfish-lib/katex/katex.min.css");
