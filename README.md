@@ -107,6 +107,17 @@ import BlowfishSiteLayout from '@garyleefight/blowfish-astro-theme/layouts/site/
 </BlowfishSiteLayout>
 ```
 
+For `homepage.layout: 'background'`, you can configure video background and keep image as fallback/poster:
+
+```astro
+homepage={{
+  layout: 'background',
+  backgroundVideo: '/videos/home-bg.webm', // takes precedence when provided
+  backgroundImage: '/images/home-bg.jpg',  // fallback + poster
+  image: '/images/avatar.jpg'
+}}
+```
+
 Direct component import also works:
 
 ```astro

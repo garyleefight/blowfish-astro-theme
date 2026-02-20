@@ -37,6 +37,8 @@ export interface BlowfishHomepageConfig {
   homepageImage?: string;
   imageAlt?: string;
   backgroundImage?: string;
+  /** Background layout: optional background video URL (webm preferred). Takes precedence over backgroundImage when set. */
+  backgroundVideo?: string;
   ctaLabel?: string;
   ctaHref?: string;
   showRecent?: boolean;

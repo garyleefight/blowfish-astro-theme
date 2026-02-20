@@ -24,7 +24,7 @@ const layoutCards = [
   {
     href: '/blocks/previews/background',
     title: 'Homepage: background',
-    description: 'Full-page background image style with content layered above.',
+    description: 'Full-page background image/video style with content layered above.',
     badge: 'homepage.layout="background"',
   },
   {
@@ -96,6 +96,9 @@ import BlowfishSiteLayout from '@garyleefight/blowfish-astro-theme/layouts/site/
     title: "Your Name",
     subtitle: "Your tagline",
     homepageImage: "/images/hero.jpg",
+    // background layout only:
+    // backgroundVideo: "/videos/home-bg.webm", // takes precedence over backgroundImage
+    // backgroundImage: "/images/home-bg.jpg",  // fallback + poster
     showRecent: true,
     showRecentItems: 3
   }}
