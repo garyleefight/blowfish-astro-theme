@@ -1,28 +1,15 @@
 ---
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
 export interface Props {
   name?: string;
   class?: string;
 }
 
 const { name, class: className } = Astro.props;
-
-let svgContent = '';
-
-if (name) {
-  const moduleDir = path.dirname(fileURLToPath(import.meta.url));
-  const candidatePaths = [
-    path.resolve(process.cwd(), 'public', 'blowfish-icons', `${name}.svg`),
-    path.resolve(moduleDir, '../../public/blowfish-icons', `${name}.svg`),
-  ];
-  const iconPath = candidatePaths.find((candidate) => fs.existsSync(candidate));
-  if (iconPath) svgContent = fs.readFileSync(iconPath, 'utf8');
-}
+const iconSrc = name ? `/blowfish-icons/${name}.svg` : null;
 ---
 
-{svgContent ? (
-  <span class:list={['relative block icon', className]} set:html={svgContent} />
+{iconSrc ? (
+  <span class:list={['relative block icon', className]}>
+    <img src={iconSrc} alt="" aria-hidden="true" class="h-[1em] w-[1em]" loading="lazy" decoding="async" />
+  </span>
 ) : null}

@@ -1,51 +1,20 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import vm from 'node:vm';
-import { fileURLToPath } from 'node:url';
-
-type KatexApi = {
-  renderToString: (
-    expression: string,
-    options?: {
-      displayMode?: boolean;
-      throwOnError?: boolean;
-      strict?: 'warn' | 'ignore' | 'error' | boolean;
-    }
-  ) => string;
+type KatexOptions = {
+  displayMode?: boolean;
+  throwOnError?: boolean;
+  strict?: 'warn' | 'ignore' | 'error' | boolean;
 };
 
-let katexApi: KatexApi | null = null;
+type KatexApi = {
+  renderToString: (expression: string, options?: KatexOptions) => string;
+};
 
+/**
+ * Worker-safe KaTeX SSR entry.
+ * We intentionally avoid Node-only dependencies (fs/path/vm) so this package
+ * can run under Cloudflare Workers. Client-side runtime rendering remains
+ * available via BlowfishRuntime.
+ */
 const loadKatex = (): KatexApi | null => {
-  if (katexApi) return katexApi;
-
-  try {
-    const moduleDir = path.dirname(fileURLToPath(import.meta.url));
-    const candidatePaths = [
-      path.resolve(process.cwd(), 'public/blowfish-lib/katex/katex.min.js'),
-      path.resolve(moduleDir, '../../public/blowfish-lib/katex/katex.min.js'),
-    ];
-    const katexPath = candidatePaths.find((candidate) => fs.existsSync(candidate));
-    if (!katexPath) return null;
-
-    const source = fs.readFileSync(katexPath, 'utf8');
-    const context: Record<string, unknown> = { console };
-    context.window = context;
-    context.self = context;
-    context.globalThis = context;
-
-    vm.createContext(context as vm.Context);
-    vm.runInContext(source, context as vm.Context);
-
-    const maybeKaTeX = (context as { katex?: KatexApi }).katex;
-    if (maybeKaTeX && typeof maybeKaTeX.renderToString === 'function') {
-      katexApi = maybeKaTeX;
-      return katexApi;
-    }
-  } catch {
-    return null;
-  }
-
   return null;
 };
 

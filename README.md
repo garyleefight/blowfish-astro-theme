@@ -55,6 +55,12 @@ Optional: auto-sync after install in your consumer project:
 }
 ```
 
+### Cloudflare Pages notes
+
+- Use `output: 'static'` for this theme. This is the recommended and most reliable mode on Cloudflare Pages.
+- This package is implemented with static-first behavior (Hugo-like delivery) and avoids Node-only runtime dependencies in core UI paths.
+- If your consumer project is currently `output: 'server'`, switch it to static unless you intentionally need SSR.
+
 ### 2) Use layouts/components
 
 Use `BlowfishSiteLayout` for full Blowfish behavior (head/header/footer/search/runtime):
