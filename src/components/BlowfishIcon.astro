@@ -6,10 +6,25 @@ export interface Props {
 
 const { name, class: className } = Astro.props;
 const iconSrc = name ? `/blowfish-icons/${name}.svg` : null;
+const iconMaskStyle = iconSrc
+  ? [
+      `mask-image: url('${iconSrc}')`,
+      `-webkit-mask-image: url('${iconSrc}')`,
+      'mask-repeat: no-repeat',
+      '-webkit-mask-repeat: no-repeat',
+      'mask-position: center',
+      '-webkit-mask-position: center',
+      'mask-size: contain',
+      '-webkit-mask-size: contain',
+      'background-color: currentColor',
+    ].join('; ')
+  : '';
 ---
 
 {iconSrc ? (
-  <span class:list={['relative block icon', className]}>
-    <img src={iconSrc} alt="" aria-hidden="true" class="h-[1em] w-[1em]" loading="lazy" decoding="async" />
-  </span>
+  <span
+    class:list={['relative block icon h-[1em] w-[1em]', className]}
+    style={iconMaskStyle}
+    aria-hidden="true"
+  />
 ) : null}
