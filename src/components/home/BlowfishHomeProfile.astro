@@ -1,5 +1,6 @@
 ---
 import { t } from '../../lib/i18n';
+import BlowfishIcon from '../BlowfishIcon.astro';
 import type { BlowfishHomepageConfig, BlowfishRecentArticle } from '../../types/homepage';
 import BlowfishHomeRecent from './BlowfishHomeRecent.astro';
 
@@ -11,6 +12,7 @@ export interface Props {
 
 const { config, articles = [], contentHtml = '' } = Astro.props;
 const avatar = config.homepageImage || config.image;
+const getIconName = (label: string, icon?: string) => icon || label.toLowerCase().replaceAll(' ', '-');
 ---
 
 <article
@@ -26,8 +28,11 @@ const avatar = config.homepageImage || config.image;
     {config.links && config.links.length > 0 && (
       <div class="mt-1 flex flex-wrap text-2xl">
         {config.links.map((link) => (
-          <a class="px-1 text-primary-700 hover:text-primary-500 dark:text-primary-300 dark:hover:text-primary-400" href={link.href} target="_blank" rel="noopener noreferrer">
-            {link.label}
+          <a class="px-1 text-primary-700 hover:text-primary-500 dark:text-primary-300 dark:hover:text-primary-400" href={link.href} target="_blank" rel="noopener noreferrer" aria-label={link.label} title={link.label}>
+            <span class="inline-block align-text-bottom">
+              <BlowfishIcon name={getIconName(link.label, link.icon)} />
+            </span>
+            <span class="sr-only">{link.label}</span>
           </a>
         ))}
       </div>

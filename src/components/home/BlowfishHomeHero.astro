@@ -1,5 +1,6 @@
 ---
 import { t } from '../../lib/i18n';
+import BlowfishIcon from '../BlowfishIcon.astro';
 import BlowfishHomeRecent from './BlowfishHomeRecent.astro';
 import type { BlowfishHomepageConfig, BlowfishRecentArticle } from '../../types/homepage';
 
@@ -27,6 +28,7 @@ const linkClass = disableFilter
 const proseClass = disableFilter
   ? 'prose dark:prose-invert w-full'
   : 'prose prose-invert w-full';
+const getIconName = (label: string, icon?: string) => icon || label.toLowerCase().replaceAll(' ', '-');
 ---
 
 <article class="max-w-full prose dark:prose-invert">
@@ -59,7 +61,10 @@ const proseClass = disableFilter
             <div class="mt-3 mb-10 flex flex-wrap text-2xl">
               {config.links.map((link) => (
                 <a class={linkClass} href={link.href} target="_blank" rel="me noopener noreferrer" aria-label={link.label} title={link.label}>
-                  {link.label}
+                  <span class="inline-block align-text-bottom">
+                    <BlowfishIcon name={getIconName(link.label, link.icon)} />
+                  </span>
+                  <span class="sr-only">{link.label}</span>
                 </a>
               ))}
             </div>
