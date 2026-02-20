@@ -380,14 +380,46 @@ const runtimeKaTeXErrorLabel = t('components.katex_render_error');
     document.querySelectorAll('.bf-typeit').forEach((el) => {
       if (el.getAttribute('data-rendered') === 'true') return;
       const speed = Number(el.getAttribute('data-speed') || 75);
+      const startDelay = Number(el.getAttribute('data-start-delay') || 0);
+      const lifeLike = el.getAttribute('data-life-like') === 'true';
+      const breakLines = el.getAttribute('data-break-lines') !== 'false';
+      const waitUntilVisible = el.getAttribute('data-wait-until-visible') !== 'false';
       const loop = el.getAttribute('data-loop') === 'true';
+      const randomLines = el.getAttribute('data-random-lines') === 'true';
+      let strings = [];
+      const rawStrings = el.getAttribute('data-strings');
+      if (rawStrings) {
+        try {
+          const parsed = JSON.parse(rawStrings);
+          if (Array.isArray(parsed)) {
+            strings = parsed.map((value) => String(value)).filter((value) => value.trim().length > 0);
+          }
+        } catch {
+          strings = [];
+        }
+      }
       const text = el.textContent || '';
+      if (strings.length === 0 && text.trim().length > 0) {
+        strings = [text];
+      }
+      if (strings.length === 0) return;
+      if (randomLines) {
+        for (let i = strings.length - 1; i > 0; i -= 1) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const tmp = strings[i];
+          strings[i] = strings[j];
+          strings[j] = tmp;
+        }
+      }
       el.textContent = '';
       new window.TypeIt(el, {
+        strings,
         speed,
+        lifeLike,
+        startDelay,
+        breakLines,
         loop,
-        waitUntilVisible: true,
-        strings: [text]
+        waitUntilVisible
       }).go();
       el.setAttribute('data-rendered', 'true');
     });

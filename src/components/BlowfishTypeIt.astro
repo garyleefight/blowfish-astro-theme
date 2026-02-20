@@ -5,16 +5,36 @@ export interface Props {
   text?: string;
   strings?: string[];
   speed?: number;
-  lifeLike?: number;
+  lifeLike?: boolean | number;
+  startDelay?: number;
+  breakLines?: boolean;
+  waitUntilVisible?: boolean;
   loop?: boolean;
+  randomLines?: boolean;
 }
 
 const props = Astro.props as Record<string, unknown>;
 const text = pickString(props, ['text']);
-const strings = pickArray<string>(props, ['strings']);
-const displayText = text || strings.join(' | ');
+const strings = pickArray<unknown>(props, ['strings']).filter((value): value is string => typeof value === 'string');
+const displayText = text || strings[0] || '';
+const resolvedStrings = text ? [text] : strings;
 const speed = pickNumber(props, ['speed', 'lifeLike'], 75);
+const lifeLike = pickBoolean(props, ['lifeLike'], false);
+const startDelay = pickNumber(props, ['startDelay'], 0);
+const breakLines = pickBoolean(props, ['breakLines'], true);
+const waitUntilVisible = pickBoolean(props, ['waitUntilVisible'], true);
 const loop = pickBoolean(props, ['loop'], false);
+const randomLines = pickBoolean(props, ['randomLines'], false);
 ---
 
-<span class="bf-typeit border-r border-neutral-400 pe-0.5 dark:border-neutral-500" data-speed={speed} data-loop={loop ? 'true' : 'false'}>{displayText}</span>
+<span
+  class="bf-typeit border-r border-neutral-400 pe-0.5 dark:border-neutral-500"
+  data-strings={JSON.stringify(resolvedStrings)}
+  data-speed={speed}
+  data-life-like={lifeLike ? 'true' : 'false'}
+  data-start-delay={startDelay}
+  data-break-lines={breakLines ? 'true' : 'false'}
+  data-wait-until-visible={waitUntilVisible ? 'true' : 'false'}
+  data-loop={loop ? 'true' : 'false'}
+  data-random-lines={randomLines ? 'true' : 'false'}
+>{displayText}</span>
