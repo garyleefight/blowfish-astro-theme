@@ -57,6 +57,8 @@ export interface Props {
   homepage?: BlowfishHomepageConfig;
   homepageArticles?: BlowfishRecentArticle[];
   homepageContentHtml?: string;
+  showThemeAttribution?: boolean;
+  copyright?: string;
 }
 
 const {
@@ -100,6 +102,8 @@ const {
   homepage,
   homepageArticles = [],
   homepageContentHtml = '',
+  showThemeAttribution = true,
+  copyright,
 } = Astro.props;
 
 const resolvedMainMenu = mainMenu ?? nav.map((item) => ({ name: item.label, url: item.href }));
@@ -168,7 +172,7 @@ const isHome = Astro.url.pathname === '/';
         )}
       </main>
       <BlowfishScrollTop />
-      <BlowfishFooter footerMenu={footerMenu} />
+      <BlowfishFooter footerMenu={footerMenu} showThemeAttribution={showThemeAttribution} copyright={copyright} />
     </div>
     <BlowfishRuntime />
   </body>

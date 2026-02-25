@@ -51,7 +51,7 @@ const onlyIcon = footerMenu.length > 0 && footerMenu.every((item) => !item.name)
     <p class="text-sm text-neutral-500 dark:text-neutral-400" set:html={copyright}></p>
     {showThemeAttribution && (
       <p class="text-xs text-neutral-500 dark:text-neutral-400" set:html={t('footer.powered_by', {
-        Hugo: '<a class="hover:underline hover:decoration-primary-400 hover:text-primary-500" href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a>',
+        Astro: '<a class="hover:underline hover:decoration-primary-400 hover:text-primary-500" href="https://astro.build/" target="_blank" rel="noopener noreferrer">Astro</a>',
         Theme: '<a class="hover:underline hover:decoration-primary-400 hover:text-primary-500" href="https://blowfish.page/" target="_blank" rel="noopener noreferrer">Blowfish</a>',
       })}></p>
     )}

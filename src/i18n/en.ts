@@ -62,7 +62,7 @@ const en = {
   footer: {
     dark_appearance: 'Switch to dark appearance',
     light_appearance: 'Switch to light appearance',
-    powered_by: 'Powered by {{ .Hugo }} &amp; {{ .Theme }}',
+    powered_by: 'Powered by {{ .Astro }} &amp; {{ .Theme }}',
   },
   list: {
     externalurl_title: 'Link to external site',

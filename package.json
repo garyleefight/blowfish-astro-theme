@@ -1,6 +1,6 @@
 {
   "name": "@garyleefight/blowfish-astro-theme",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Blowfish-inspired Astro theme package with compatibility-focused component APIs.",
   "type": "module",
   "main": "./src/index.ts",
